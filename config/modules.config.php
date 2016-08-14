@@ -24,5 +24,6 @@ return [
     'Zend\Validator',
     'Application',
     'Blog',
-    'User'
+    'User',
+    'Avaliacao'
 ];

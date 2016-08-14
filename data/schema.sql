@@ -26,4 +26,4 @@ CREATE TABLE users
 );
 
 INSERT INTO users(username, password, full_name)
-            values('luiz@schoolofnet.com','$2y$10$95j.s/9nI1AkhcmAreJlIOmYvGck3z5KHuWkbeiloBsgxyrsyEofC', 'Luiz Carlos');
+            values('kauemsc@gmail.com','$2y$10$95j.s/9nI1AkhcmAreJlIOmYvGck3z5KHuWkbeiloBsgxyrsyEofC', 'Kaue Rodrigues');
