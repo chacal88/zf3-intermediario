@@ -55,7 +55,7 @@ class Veiculo
         $this->modelo = (!empty($data['modelo'])) ? $data['modelo'] : null;
         $this->ano = (!empty($data['ano'])) ? $data['ano'] : null;
         $this->cor = (!empty($data['cor'])) ? $data['cor'] : null;
-        $this->docProprietario = (!empty($data['docProprietario'])) ? $data['docProprietario'] : null;
+        $this->docProprietario = (!empty($data['doc_proprietario'])) ? $data['doc_proprietario'] : null;
     }
 
     /**
@@ -71,7 +71,7 @@ class Veiculo
             'modelo' => $this->modelo,
             'ano' => $this->ano,
             'cor' => $this->cor,
-            'docProprietario' => $this->docProprietario
+            'doc_proprietario' => $this->docProprietario
         ];
     }
 }

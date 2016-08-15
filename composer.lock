@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6d76d83ab08ef82ad60de0361a9fb6ec",
-    "content-hash": "cc38630eb4a01bcc103a55a649205f3b",
+    "hash": "5bc961e3a58ab560e03d14df076ef326",
+    "content-hash": "9192261e941dd5d1ce474f54af7bf344",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -3542,16 +3542,16 @@
         },
         {
             "name": "zendframework/zend-developer-tools",
-            "version": "1.1.0",
+            "version": "dev-patch-3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/zendframework/ZendDeveloperTools.git",
-                "reference": "e772794d4163c61e909366d4907e22a629662842"
+                "url": "https://github.com/samsonasik/ZendDeveloperTools.git",
+                "reference": "78afa0275f1de7b062e126d69a75aea74207b48c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/ZendDeveloperTools/zipball/e772794d4163c61e909366d4907e22a629662842",
-                "reference": "e772794d4163c61e909366d4907e22a629662842",
+                "url": "https://api.github.com/repos/samsonasik/ZendDeveloperTools/zipball/78afa0275f1de7b062e126d69a75aea74207b48c",
+                "reference": "78afa0275f1de7b062e126d69a75aea74207b48c",
                 "shasum": ""
             },
             "require": {
@@ -3592,7 +3592,32 @@
                     "ZendDeveloperTools\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "ZendDeveloperToolsTest\\": "test/"
+                }
+            },
+            "scripts": {
+                "check": [
+                    "@cs",
+                    "@test"
+                ],
+                "coveralls": [
+                    "coveralls"
+                ],
+                "cs": [
+                    "phpcs"
+                ],
+                "cs-fix": [
+                    "phpcbf"
+                ],
+                "test": [
+                    "phpunit"
+                ],
+                "test-coverage": [
+                    "phpunit --coverage-clover clover.xml"
+                ]
+            },
             "license": [
                 "BSD-3-Clause"
             ],
@@ -3615,7 +3640,10 @@
                 "module",
                 "zf2"
             ],
-            "time": "2016-06-27 20:51:58"
+            "support": {
+                "source": "https://github.com/samsonasik/ZendDeveloperTools/tree/patch-3"
+            },
+            "time": "2016-07-01 00:17:57"
         },
         {
             "name": "zendframework/zend-dom",
@@ -3733,7 +3761,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "zendframework/zend-component-installer": 20
+        "zendframework/zend-component-installer": 20,
+        "zendframework/zend-developer-tools": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

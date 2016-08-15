@@ -12,14 +12,14 @@ return [
     ],
     'router' => [
         'routes' => [
-            'admin-avaliacao' => [
+            'private-avaliacao' => [
                 'type' => Literal::class,
                 'options' => [
                     'route' => '/admin'
                 ],
                 'may_terminate' => false,
                 'child_routes' => [
-                    'veiculo' => [
+                    'avaliacao' => [
                         'type' => 'segment',
                         'options' => [
                             'route' => '/veiculo[/:action[/:id]]',
@@ -35,9 +35,7 @@ return [
                     ],
                 ]
             ]
-        ]
-
-
+        ],
     ],
     'view_manager' => [
         'template_path_stack' => [

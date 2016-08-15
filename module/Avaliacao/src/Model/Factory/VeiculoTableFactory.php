@@ -5,6 +5,7 @@ namespace Avaliacao\Model\Factory;
 
 use Avaliacao\Model;
 use Interop\Container\ContainerInterface;
+use Avaliacao\Model\VeiculoTable;
 use Interop\Container\Exception\ContainerException;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
@@ -29,6 +30,6 @@ class VeiculoTableFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         $tableGateway = $container->get(Model\VeiculoTableGateway::class);
-        return new PostTable($tableGateway);
+        return new VeiculoTable($tableGateway);
     }
 }

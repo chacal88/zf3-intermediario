@@ -7,6 +7,7 @@ use Avaliacao\Controller\VeiculoController;
 use Avaliacao\Form\Factory\PostFormFactory;
 use Avaliacao\Form\PostForm;
 use Avaliacao\Model\Factory\VeiculoTableGatewayFactory;
+use Avaliacao\Model\Factory\VeiculoTableFactory;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ControllerProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;

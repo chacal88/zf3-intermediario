@@ -27,3 +27,18 @@ CREATE TABLE users
 
 INSERT INTO users(username, password, full_name)
             values('kauemsc@gmail.com','$2y$10$95j.s/9nI1AkhcmAreJlIOmYvGck3z5KHuWkbeiloBsgxyrsyEofC', 'Kaue Rodrigues');
+
+CREATE TABLE veiculos
+(
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  placa VARCHAR(24),
+  renavam VARCHAR(24),
+  marca VARCHAR(24),
+  modelo VARCHAR(24),
+  ano VARCHAR(24),
+  cor VARCHAR(24),
+  doc_proprietario VARCHAR(24)
+);
+
+INSERT INTO veiculos(placa, renavam, marca, modelo, ano, cor, doc_proprietario)
+values('mhs9056','12354540','Ferrari','3380','2016','Vermelha','06416206919');

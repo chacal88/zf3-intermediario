@@ -11,6 +11,10 @@
     "homepage": "http://framework.zend.com/",
     "minimum-stability": "dev",
     "prefer-stable": true,
+    "repositories" : [ {
+        "type" : "vcs",
+        "url" : "git@github.com:samsonasik/ZendDeveloperTools.git"
+    }],
     "require": {
         "php": "^5.6 || ^7.0",
         "zendframework/zend-component-installer": "^1.0 || ^0.3 || ^1.0.0-dev@dev",
@@ -46,7 +50,7 @@
         "serve": "php -S 0.0.0.0:8080 -t public/ public/index.php"
     },
     "require-dev": {
-        "zendframework/zend-developer-tools": "^1.1.0",
+        "zendframework/zend-developer-tools": "dev-patch-3",
         "zendframework/zend-test": "^3.0.1"
     }
 }

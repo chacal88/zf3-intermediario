@@ -33,7 +33,7 @@ class VeiculoController extends AbstractActionController
         $postTable = $this->table;
 
         return new ViewModel([
-            'posts' => $postTable->fetchAll()
+            'veiculos' => $postTable->fetchAll()
         ]);
     }
 

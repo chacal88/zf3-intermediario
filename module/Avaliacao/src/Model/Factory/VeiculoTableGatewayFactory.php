@@ -16,7 +16,7 @@ class VeiculoTableGatewayFactory
         $dbAdapter = $container->get(AdapterInterface::class);
         $resultSetPrototype = new ResultSet();
         $resultSetPrototype->setArrayObjectPrototype(new Veiculo());
-        return new TableGateway('veiculo', $dbAdapter, null, $resultSetPrototype);
+        return new TableGateway('veiculos', $dbAdapter, null, $resultSetPrototype);
     }
 
 
