@@ -1,40 +1,74 @@
-<h1>Add new Post</h1>
+<h1>Cadastrar Veiculo</h1>
 
 <?php
 
-$title = $form->get('title');
-$title->setAttribute('class', 'form-control')
+$placa = $form->get('placa');
+$placa->setAttribute('class', 'form-control')
     ->setLabelAttributes(['class' => 'control-label']);
 
-$content = $form->get('content');
-$content->setAttribute('class', 'form-control')
+$renavam = $form->get('renavam');
+$renavam->setAttribute('class', 'form-control')
     ->setLabelAttributes(['class' => 'control-label']);
 
 $submit = $form->get('submit');
-$submit->setAttribute('class', 'btn btn-primary');
+$submit->setAttribute('class', 'btn btn-success');
 
-$form->setAttribute('action', $this->url('admin-blog/post', ['action' => 'add']));
+$form->setAttribute('action', $this->url(Avaliacao\Lib\Enum\RoutesEnum::AVALIACAO_VEICULO, ['action' => 'add']));
 $form->prepare();
-
-echo $this->form()->openTag($form);
 ?>
-
-<?php $message = $this->formElementErrors($title, ['class' => 'help-block']); ?>
-<div class="form-group<?= $message ? " has-error" : "" ?>">
-    <?= $this->formLabel($title); ?>
-    <?= $this->formElement($title); ?>
-    <?= $message ?>
+<div class="mt-element-step">
+    <div class="row step-line">
+        <div class="col-md-4 mt-step-col first active">
+            <div class="mt-step-number bg-white">
+                <i class="fa fa-car"></i>
+            </div>
+            <div class="mt-step-title uppercase font-grey-cascade">Veiculo</div>
+            <div class="mt-step-content font-grey-cascade">Dados do veiculo</div>
+        </div>
+        <div class="col-md-4 mt-step-col">
+            <div class="mt-step-number bg-white">
+                <i class="fa fa-user"></i>
+            </div>
+            <div class="mt-step-title uppercase font-grey-cascade">Cliente</div>
+            <div class="mt-step-content font-grey-cascade">Dados do cliente</div>
+        </div>
+        <div class="col-md-4 mt-step-col last">
+            <div class="mt-step-number bg-white">
+                <i class="fa fa-rocket"></i>
+            </div>
+            <div class="mt-step-title uppercase font-grey-cascade">Fipe</div>
+            <div class="mt-step-content font-grey-cascade">Selecione tabela Fipe</div>
+        </div>
+    </div>
 </div>
 
-<?php $message = $this->formElementErrors($content, ['class' => 'help-block']); ?>
-<div class="form-group<?= $message ? " has-error" : "" ?>">
-    <?= $this->formLabel($content); ?>
-    <?= $this->formElement($content); ?>
-    <?= $message ?>
-</div>
+<div class="portlet-body form">
 
-<?php
-echo $this->formSubmit($submit);
-echo $this->formHidden($form->get('id'));
-echo $this->form()->closeTag();
-?>
+    <?php echo $this->form()->openTag($form); ?>
+
+    <?php $message = $this->formElementErrors($placa, ['class' => 'help-block']); ?>
+
+    <div class="form-group<?= $message ? " has-error" : "" ?>">
+        <?= $this->formLabel($placa); ?>
+            <?= $this->formElement($placa); ?>
+            <?= $message ?>
+    </div>
+
+    <?php $message = $this->formElementErrors($renavam, ['class' => 'help-block']); ?>
+
+    <div class="form-group<?= $message ? " has-error" : "" ?>">
+        <?= $this->formLabel($renavam); ?>
+        <?= $this->formElement($renavam); ?>
+        <?= $message ?>
+    </div>
+
+    <div class="form-actions right">
+        <?php echo $this->formSubmit($submit); ?>
+    </div>
+
+    <?php
+        echo $this->formHidden($form->get('id'));
+        echo $this->form()->closeTag();
+    ?>
+
+</div>

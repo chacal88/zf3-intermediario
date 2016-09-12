@@ -30,8 +30,12 @@ return [
         ],
     ],
     'view_manager' => [
+        'template_map' => [
+            'layout/login'           => __DIR__ . '/../view/layout/login.phtml'
+        ],
         'template_path_stack' => [
             'user' => __DIR__ . "/../view"
-        ]
+        ],
     ]
+
 ];

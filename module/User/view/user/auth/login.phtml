@@ -1,17 +1,15 @@
-<h1>Faça seu login</h1>
-
 <?php
-
+$form->setAttribute('class', 'login-form');
 $username = $form->get('username');
-$username->setAttribute('class', 'form-control')
-    ->setLabelAttributes(['class' => 'control-label']);
+$username->setAttribute('class', 'form-control form-control-solid placeholder-no-fix')
+    ->setLabelAttributes(['class' => 'control-label visible-ie8 visible-ie9"']);
 
 $password = $form->get('password');
-$password->setAttribute('class', 'form-control')
-    ->setLabelAttributes(['class' => 'control-label']);
+$password->setAttribute('class', 'form-control form-control-solid placeholder-no-fix')
+    ->setLabelAttributes(['class' => 'control-label visible-ie8 visible-ie9']);
 
 $submit = $form->get('submit');
-$submit->setAttribute('class', 'btn btn-primary');
+$submit->setAttribute('class', 'btn green uppercase');
 
 $form->setAttribute('action', $this->url('login'));
 $form->prepare();
@@ -26,23 +24,30 @@ $form->prepare();
     </div>
 <?php endif; ?>
 
-<div class="row">
-    <div class="col-md-6">
-        <?php echo $this->form()->openTag($form); ?>
-
-        <div class="form-group">
-            <?= $this->formLabel($username); ?>
-            <?= $this->formElement($username); ?>
-        </div>
-
-        <div class="form-group">
-            <?= $this->formLabel($password); ?>
-            <?= $this->formElement($password); ?>
-        </div>
-
-        <?php
-        echo $this->formSubmit($submit);
-        echo $this->form()->closeTag();
-        ?>
+<?php echo $this->form()->openTag($form); ?>
+    <h3 class="form-title font-green">Logar</h3>
+    <div class="form-group">
+        <?= $this->formLabel($username); ?>
+        <?= $this->formElement($username); ?>
     </div>
-</div>
+
+    <div class="form-group">
+        <?= $this->formLabel($password); ?>
+        <?= $this->formElement($password); ?>
+    </div>
+
+<?php echo $this->formSubmit($submit); ?>
+<!--    <label class="rememberme check mt-checkbox mt-checkbox-outline">-->
+<!--        <input type="checkbox" name="remember" value="1"/>Remember-->
+<!--        <span></span>-->
+<!--    </label>-->
+<!--    <a href="javascript:;" id="forget-password" class="forget-password">Forgot Password?</a>-->
+    <div class="login-options"></div>
+    <div class="create-account">
+        <p>
+<!--            <a href="javascript:;" id="register-btn" class="uppercase">Cadastre-se</a>-->
+        </p>
+    </div>
+<?php
+echo $this->form()->closeTag();
+?>

@@ -1,0 +1,15 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: kaue
+ * Date: 31/08/2016
+ * Time: 00:21
+ */
+
+namespace Avaliacao\Service;
+
+
+interface ICarrosFipeService
+{
+    const name = "carros";
+}

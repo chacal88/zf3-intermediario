@@ -26,6 +26,11 @@ class AuthController extends AbstractActionController
             return $this->redirect()->toRoute('admin-blog/post');
         }
 
+        // Get the "layout" view model and set an alternate template
+        $layout = $this->layout();
+        $layout->setTemplate('layout/login');
+
+
         $form = new LoginForm();
         $messageError = null;
         if ($this->getRequest()->isPost()) {

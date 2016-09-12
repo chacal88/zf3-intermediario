@@ -2,6 +2,7 @@
 
 namespace Avaliacao;
 
+use Avaliacao\Controller\ApiVeiculoController;
 use Zend\Router\Http\Literal;
 
 return [
@@ -15,11 +16,11 @@ return [
             'private-avaliacao' => [
                 'type' => Literal::class,
                 'options' => [
-                    'route' => '/admin'
+                    'route' => '/avaliacao'
                 ],
                 'may_terminate' => false,
                 'child_routes' => [
-                    'avaliacao' => [
+                    'veiculo' => [
                         'type' => 'segment',
                         'options' => [
                             'route' => '/veiculo[/:action[/:id]]',
@@ -34,12 +35,25 @@ return [
                         ]
                     ],
                 ]
-            ]
+            ],
+            'test' => [
+                'type' => 'literal',
+                'verb' => 'get',
+                'options' => [
+                    'route' => '/test',
+                    'defaults' => [
+                        'controller' => ApiVeiculoController::class,
+                    ],
+                ],
+            ],
         ],
     ],
     'view_manager' => [
         'template_path_stack' => [
-            'blog' => __DIR__ . "/../view"
-        ]
+            'avaliacao' => __DIR__ . "/../view"
+        ],
+        'strategies' => array(
+            'ViewJsonStrategy',
+        ),
     ]
 ];

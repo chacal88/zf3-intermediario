@@ -1,35 +1,35 @@
-<h1>Edit Post</h1>
+<h1>Editar Veiculo</h1>
 
 <?php
 
-$title = $form->get('title');
-$title->setAttribute('class', 'form-control')
+$placa = $form->get('placa');
+$placa->setAttribute('class', 'form-control')
     ->setLabelAttributes(['class' => 'control-label']);
 
-$content = $form->get('content');
-$content->setAttribute('class', 'form-control')
+$renavam = $form->get('renavam');
+$renavam->setAttribute('class', 'form-control')
     ->setLabelAttributes(['class' => 'control-label']);
 
 $submit = $form->get('submit');
 $submit->setAttribute('class', 'btn btn-primary');
 
-$form->setAttribute('action', $this->url('admin-blog/post', ['action' => 'edit', 'id' => $id]));
+$form->setAttribute('action', $this->url($this->route, ['action' => 'edit', 'id' => $id]));
 $form->prepare();
 
 echo $this->form()->openTag($form);
 ?>
 
-<?php $message = $this->formElementErrors($title, ['class' => 'help-block']); ?>
+<?php $message = $this->formElementErrors($placa, ['class' => 'help-block']); ?>
 <div class="form-group<?= $message ? " has-error" : "" ?>">
-    <?= $this->formLabel($title); ?>
-    <?= $this->formElement($title); ?>
+    <?= $this->formLabel($placa); ?>
+    <?= $this->formElement($placa); ?>
     <?= $message ?>
 </div>
 
-<?php $message = $this->formElementErrors($content, ['class' => 'help-block']); ?>
+<?php $message = $this->formElementErrors($renavam, ['class' => 'help-block']); ?>
 <div class="form-group<?= $message ? " has-error" : "" ?>">
-    <?= $this->formLabel($content); ?>
-    <?= $this->formElement($content); ?>
+    <?= $this->formLabel($renavam); ?>
+    <?= $this->formElement($renavam); ?>
     <?= $message ?>
 </div>
 

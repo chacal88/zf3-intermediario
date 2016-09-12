@@ -22,7 +22,7 @@ class VeiculoTable
 
     public function save(Veiculo $veiculo)
     {
-        $id = (int)$veiculo->id;
+        $id = (int)$veiculo->getId();
 
         if ($id === 0) {
             $this->tableGateway->insert($veiculo->getArrayCopy());
@@ -49,9 +49,6 @@ class VeiculoTable
                 'Could not retrieve the row %d', $id
             ));
         }
-
-        $rowsComment = $this->commentTable->fetchAll($row->id);
-        $row->comments = iterator_to_array($rowsComment);
 
         return $row;
     }

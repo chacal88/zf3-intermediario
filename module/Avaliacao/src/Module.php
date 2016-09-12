@@ -2,12 +2,14 @@
 
 namespace Avaliacao;
 
+use Avaliacao\Controller\ApiVeiculoController;
+use Avaliacao\Controller\Factory\ApiVeiculoControllerFactory;
 use Avaliacao\Controller\Factory\VeiculoControllerFactory;
 use Avaliacao\Controller\VeiculoController;
-use Avaliacao\Form\Factory\PostFormFactory;
-use Avaliacao\Form\PostForm;
-use Avaliacao\Model\Factory\VeiculoTableGatewayFactory;
+use Avaliacao\Form\Factory\VeiculoFormFactory;
+use Avaliacao\Form\VeiculoForm;
 use Avaliacao\Model\Factory\VeiculoTableFactory;
+use Avaliacao\Model\Factory\VeiculoTableGatewayFactory;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ControllerProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
@@ -24,9 +26,13 @@ class Module implements ConfigProviderInterface, ServiceProviderInterface, Contr
     {
         return [
             'factories' => [
-                Model\VeiculoTable::class => VeiculoTableFactory::class,
-                Model\VeiculoTableGateway::class => VeiculoTableGatewayFactory::class,
-                PostForm::class => PostFormFactory::class
+                Model\VeiculoTable::class                   => VeiculoTableFactory::class,
+                Model\VeiculoTableGateway::class            => VeiculoTableGatewayFactory::class,
+                VeiculoForm::class                          => VeiculoFormFactory::class,
+                Service\ApiService::class                   => Service\Factory\ApiServiceFactory::class,
+                Service\ICarrosFipeService::class           => Service\Factory\FipeServiceFactory::class,
+                Service\IMotosFipeService::class            => Service\Factory\FipeServiceFactory::class,
+                Service\ICaminhoesFipeService::class        => Service\Factory\FipeServiceFactory::class
             ]
         ];
     }
@@ -35,7 +41,8 @@ class Module implements ConfigProviderInterface, ServiceProviderInterface, Contr
     {
         return [
             'factories' => [
-                VeiculoController::class => VeiculoControllerFactory::class,
+                VeiculoController::class        => VeiculoControllerFactory::class,
+                ApiVeiculoController::class     => ApiVeiculoControllerFactory::class
             ]
         ];
     }
