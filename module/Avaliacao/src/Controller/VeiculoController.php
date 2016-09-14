@@ -5,11 +5,13 @@ namespace Avaliacao\Controller;
 
 
 use Application\Storage\ZendSessionStorage;
+use Avaliacao\Form\FipeForm;
 use Avaliacao\Form\VeiculoForm;
 use Avaliacao\Lib\Enum\RoutesEnum;
 use Avaliacao\Model\Veiculo;
 use Avaliacao\Model\VeiculoTable;
 use Avaliacao\Service\ApiService;
+use Avaliacao\Service\FipeService;
 use Zend\Http\Client;
 use Zend\Http\Request;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -35,10 +37,21 @@ class VeiculoController extends AbstractActionController
      */
     private $form;
 
+
+    /**
+     * @var FipeForm
+     */
+    private $fipeForm;
+
     /**
      * @var ApiService
      */
     private $apiService;
+
+    /**
+     * @var FipeService
+     */
+    private $fipeService;
 
     /**
      * VeiculoController constructor.
@@ -46,11 +59,19 @@ class VeiculoController extends AbstractActionController
      * @param VeiculoForm $form
      * @param ApiService $apiService
      */
-    public function __construct(VeiculoTable $table, VeiculoForm $form, ApiService $apiService)
+    public function __construct(
+        VeiculoTable $table,
+        VeiculoForm $form,
+        FipeForm $fipeForm,
+        ApiService $apiService,
+        FipeService $fipeService
+    )
     {
         $this->table = $table;
         $this->form = $form;
+        $this->fipeForm = $fipeForm;
         $this->apiService = $apiService;
+        $this->fipeService = $fipeService;
     }
 
     /**
@@ -116,7 +137,7 @@ class VeiculoController extends AbstractActionController
         $session = new Container('cadastro_veiculo');
         $session->offsetSet('veiculo', $veiculo);
 
-        return $this->redirect()->toRoute(RoutesEnum::AVALIACAO_VEICULO,['action' => 'step1']);
+        return $this->redirect()->toRoute(RoutesEnum::AVALIACAO_VEICULO, ['action' => 'step1']);
     }
 
     public function step1Action()
@@ -131,6 +152,24 @@ class VeiculoController extends AbstractActionController
 //        $proprietario = $session->offsetGet('proprietario');
 //        \Zend\Debug\Debug::dump($proprietario);
 
+    }
+
+    public function step2Action()
+    {
+        $form = $this->fipeForm;
+
+        $request = $this->getRequest();
+
+        if (!$request->isPost()) {
+
+            $marca = $this->fipeService->getMarcas();
+
+
+            
+            $form->get('marca')->setValueOptions($marca);
+
+            return ['form' => $form];
+        }
     }
 
     /**

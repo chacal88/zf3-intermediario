@@ -6,7 +6,9 @@ use Avaliacao\Controller\ApiVeiculoController;
 use Avaliacao\Controller\Factory\ApiVeiculoControllerFactory;
 use Avaliacao\Controller\Factory\VeiculoControllerFactory;
 use Avaliacao\Controller\VeiculoController;
+use Avaliacao\Form\Factory\FipeFormFactory;
 use Avaliacao\Form\Factory\VeiculoFormFactory;
+use Avaliacao\Form\FipeForm;
 use Avaliacao\Form\VeiculoForm;
 use Avaliacao\Model\Factory\VeiculoTableFactory;
 use Avaliacao\Model\Factory\VeiculoTableGatewayFactory;
@@ -29,6 +31,7 @@ class Module implements ConfigProviderInterface, ServiceProviderInterface, Contr
                 Model\VeiculoTable::class                   => VeiculoTableFactory::class,
                 Model\VeiculoTableGateway::class            => VeiculoTableGatewayFactory::class,
                 VeiculoForm::class                          => VeiculoFormFactory::class,
+                FipeForm::class                             => FipeFormFactory::class,
                 Service\ApiService::class                   => Service\Factory\ApiServiceFactory::class,
                 Service\ICarrosFipeService::class           => Service\Factory\FipeServiceFactory::class,
                 Service\IMotosFipeService::class            => Service\Factory\FipeServiceFactory::class,

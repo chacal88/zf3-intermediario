@@ -3,9 +3,11 @@
 namespace Avaliacao\Controller\Factory;
 
 use Avaliacao\Controller\VeiculoController;
+use Avaliacao\Form\FipeForm;
 use Avaliacao\Form\VeiculoForm;
 use Avaliacao\Model\VeiculoTable;
 use Avaliacao\Service\ApiService;
+use Avaliacao\Service\FipeService;
 use Interop\Container\ContainerInterface;
 
 class VeiculoControllerFactory
@@ -15,9 +17,11 @@ class VeiculoControllerFactory
     {
         $veiculoTable = $container->get(VeiculoTable::class);
         $veiculoForm = $container->get(VeiculoForm::class);
+        $fipeForm = $container->get(FipeForm::class);
         $apiService = $container->get(ApiService::class);
-        
-        return new VeiculoController($veiculoTable, $veiculoForm, $apiService);
+        $fipeService = $container->get(FipeService::class);
+
+        return new VeiculoController($veiculoTable, $veiculoForm, $fipeForm, $apiService, $fipeService);
     }
 
 
