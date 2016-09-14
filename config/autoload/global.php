@@ -13,7 +13,9 @@
 
 return [
     'db' => [
-        'driver'=>'Pdo',
-        'dsn' => sprintf('sqlite:%s/data/blog.db', realpath(getcwd()))
+        'driver'   => 'Pdo_Mysql',
+        'database' => 'avaliacao',
+        'username' => 'root',
+        'password' => 'nexmedia'
     ]
 ];
