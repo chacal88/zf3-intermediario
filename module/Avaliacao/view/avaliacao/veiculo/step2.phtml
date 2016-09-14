@@ -1,0 +1,162 @@
+<h1>Cadastrar Veiculo</h1>
+<?php
+
+$marca = $form->get('marca');
+$marca->setAttribute('class', 'form-control')
+    ->setLabelAttributes(['class' => 'control-label']);
+
+$modelo = $form->get('modelo');
+$modelo->setAttribute('class', 'form-control')
+    ->setLabel('Selecione o modelo')
+    ->setLabelAttributes(['class' => 'control-label']);
+
+$ano = $form->get('ano');
+$ano->setAttribute('class', 'form-control')
+    ->setLabel('Selecione o Ano')
+    ->setLabelAttributes(['class' => 'control-label']);
+
+$submit = $form->get('submit');
+$submit->setAttribute('class', 'btn btn-success');
+
+$form->setAttribute('action', $this->url(Avaliacao\Lib\Enum\RoutesEnum::AVALIACAO_VEICULO, ['action' => 'add']));
+$form->prepare();
+?>
+
+<div class="mt-element-step">
+    <div class="row step-line">
+        <div class="col-md-4 mt-step-col first active">
+            <div class="mt-step-number bg-white">
+                <i class="fa fa-car"></i>
+            </div>
+            <div class="mt-step-title uppercase font-grey-cascade">Veiculo</div>
+            <div class="mt-step-content font-grey-cascade">Dados do veiculo</div>
+        </div>
+        <div class="col-md-4 mt-step-col active">
+            <div class="mt-step-number bg-white">
+                <i class="fa fa-user"></i>
+            </div>
+            <div class="mt-step-title uppercase font-grey-cascade">Cliente</div>
+            <div class="mt-step-content font-grey-cascade">Dados do cliente</div>
+        </div>
+        <div class="col-md-4 mt-step-col active last">
+            <div class="mt-step-number bg-white">
+                <i class="fa fa-rocket"></i>
+            </div>
+            <div class="mt-step-title uppercase font-grey-cascade">Fipe</div>
+            <div class="mt-step-content font-grey-cascade">Selecione tabela Fipe</div>
+        </div>
+    </div>
+</div>
+
+<div class="portlet-body form">
+
+    <?php echo $this->form()->openTag($form); ?>
+
+    <?php $message = $this->formElementErrors($marca, ['class' => 'help-block']); ?>
+
+    <div class="form-group<?= $message ? " has-error" : "" ?>">
+        <?= $this->formLabel($marca); ?>
+        <?= $this->formElement($marca); ?>
+        <?= $message ?>
+    </div>
+
+    <div class="form-group<?= $message ? " has-error" : "" ?>">
+        <?= $this->formLabel($modelo); ?>
+        <?= $this->formElement($modelo); ?>
+        <?= $message ?>
+    </div>
+
+    <div class="form-group<?= $message ? " has-error" : "" ?>">
+        <?= $this->formLabel($ano); ?>
+        <?= $this->formElement($ano); ?>
+        <?= $message ?>
+    </div>
+
+
+    <div class="form-actions right">
+        <?php echo $this->formSubmit($submit); ?>
+    </div>
+
+    <?php
+    echo $this->form()->closeTag();
+    ?>
+
+</div>
+<script>
+
+    $(function () {
+
+        var $marca = $('#select-marca');
+        var $modelo = $('#select-modelo');
+        var $ano = $('#select-ano');
+
+        $marca.change(function () {
+
+            if ($marca.val() != '') {
+                $.ajax({
+                    type: "POST",
+                    url: "./get-modelo",
+                    data: { marca: $marca.val() },
+                    success: function (result) {
+                        console.log(result.modelos);
+                        //                    var obj = jQuery.parseJSON( result.modelos );
+                        //                    console.log(obj);
+                        $modelo.empty().append(function () {
+                            var output = '';
+                            $.each(result.modelos, function (key, value) {
+                                output += "<option value='" + key + "' >" + value + " </option>";
+                            });
+                            return output;
+                        });
+                        $ano.empty();
+                    }
+                });
+
+            }
+
+        }).change();
+
+        $modelo.change(function () {
+
+            if ($marca.val() != '' && $modelo.val() != '') {
+                $.ajax({
+                        type: "POST",
+                        url: "./get-ano",
+                        data: { marca: $marca.val() , modelo: $modelo.val()},
+                    success: function (result) {
+                        console.log(result.anos);
+                        //                    var obj = jQuery.parseJSON( result.modelos );
+                        //                    console.log(obj);
+                        $ano.empty().append(function () {
+                            var output = '';
+                            $.each(result.anos, function (key, value) {
+                                output += "<option value='" + key + "' >" + value + " </option>";
+                            });
+                            return output;
+                        });
+                    }
+                });
+
+            }
+
+        }).change();
+
+
+        $ano.change(function () {
+
+            if ($marca.val() != '' && $modelo.val() != '' && $ano.val() != '') {
+                $.ajax({
+                    type: "POST",
+                    url: "./get-veiculo",
+                    data: { marca: $marca.val() , modelo: $modelo.val(),ano: $ano.val()},
+                    success: function (result) {
+                        console.log(result.veiculo);
+                    }
+                });
+
+            }
+
+        }).change();
+
+    });
+</script>
