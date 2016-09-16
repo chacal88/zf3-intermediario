@@ -12,7 +12,7 @@
  */
 return [
     'ZendDeveloperTools',
-    'Zend\I18n',
+    //'Zend\I18n',
     'Zend\InputFilter',
     'Zend\Filter',
     'Zend\Hydrator',

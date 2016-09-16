@@ -3,6 +3,7 @@
 
 namespace Avaliacao\Model;
 
+use Avaliacao\Model\Proprietario;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\String_;
 
@@ -10,51 +11,62 @@ use phpDocumentor\Reflection\Types\String_;
  * Class Veiculo
  * @package Avaliacao\Model
  */
-class Veiculo
+class Veiculo implements IModel
 {
     /**
-     * @var Integer
+     * @var int
      */
     private $id;
 
     /**
-     * @var String_
+     * @var string
      */
     private $placa;
 
     /**
-     * @var Integer
+     * @var int
      */
     private $renavam;
 
     /**
-     * @var String_
+     * @var string
      */
     private $marca;
 
     /**
-     * @var String_
+     * @var string
      */
     private $modelo;
 
     /**
-     * @var Integer
+     * @var int
      */
     private $ano;
 
     /**
-     * @var Integer
+     * @var int
      */
-    private $anoModelo;
+    private $ano_modelo;
+
     /**
-     * @var String_
+     * @var string
      */
     private $cor;
 
     /**
-     * @var Integer
+     * @var int
      */
-    private $docProprietario;
+    private $proprietario_doc;
+
+    /**
+     * @var int
+     */
+    private $proprietario_id;
+
+    /**
+     * @var Proprietario
+     */
+    private $proprietario;
 
 
     /**
@@ -62,15 +74,16 @@ class Veiculo
      */
     public function exchangeArray(array $data)
     {
-        $this->id = (!empty($data['id'])) ? $data['id'] : null;
-        $this->placa = (!empty($data['placa'])) ? $data['placa'] : null;
-        $this->renavam = (!empty($data['renavam'])) ? $data['renavam'] : null;
-        $this->marca = (!empty($data['marca'])) ? $data['marca'] : null;
-        $this->modelo = (!empty($data['modelo'])) ? $data['modelo'] : null;
-        $this->ano = (!empty($data['ano'])) ? $data['ano'] : null;
-        $this->anoModelo = (!empty($data['ano_modelo'])) ? $data['ano_modelo'] : null;
-        $this->cor = (!empty($data['cor'])) ? $data['cor'] : null;
-        $this->docProprietario = (!empty($data['doc_proprietario'])) ? $data['doc_proprietario'] : null;
+        $this->id               = (!empty($data['id']))                 ? $data['id'] : null;
+        $this->placa            = (!empty($data['placa']))              ? $data['placa'] : null;
+        $this->renavam          = (!empty($data['renavam']))            ? $data['renavam'] : null;
+        $this->marca            = (!empty($data['marca']))              ? $data['marca'] : null;
+        $this->modelo           = (!empty($data['modelo']))             ? $data['modelo'] : null;
+        $this->ano              = (!empty($data['ano']))                ? $data['ano'] : null;
+        $this->ano_modelo       = (!empty($data['ano_modelo']))         ? $data['ano_modelo'] : null;
+        $this->cor              = (!empty($data['cor']))                ? $data['cor'] : null;
+        $this->proprietario_id  = (!empty($data['proprietario_id']))    ? $data['proprietario_id'] : null;
+        $this->proprietario_doc = (!empty($data['proprietario_doc']))   ? $data['proprietario_doc'] : null;
     }
 
     /**
@@ -79,15 +92,15 @@ class Veiculo
      */
     public function exchangeApi(array $data)
     {
-        $data = $data['data']['ConsultaDebitosResult']['Conteudo'];
-        $this->placa = (!empty($data['Veiculo']['Placa'])) ? $data['Veiculo']['Placa'] : null;
-        $this->renavam = (!empty($data['Veiculo']['Renavam'])) ? $data['Veiculo']['Renavam'] : null;
-        $this->marca = (!empty($data['Veiculo']['Marca'])) ? $data['Veiculo']['Marca'] : null;
-        $this->modelo = (!empty($data['ModeloVeiculo'])) ? $data['ModeloVeiculo'] : null;
-        $this->ano = (!empty($data['Veiculo']['AnoFabricacao'])) ? $data['Veiculo']['AnoFabricacao'] : null;
-        $this->anoModelo = (!empty($data['AnoModeloVeiculo'])) ? $data['AnoModeloVeiculo'] : null;
-        $this->cor = (!empty($data['CorVeiculo'])) ? $data['CorVeiculo'] : null;
-        $this->docProprietario = (!empty($data['Veiculo']['ProprietarioAtual']['CpfCnpj'])) ? $data['Veiculo']['ProprietarioAtual']['CpfCnpj'] : null;
+        $data                   = $data['data']['ConsultaDebitosResult']['Conteudo'];
+        $this->placa            = (!empty($data['Veiculo']['Placa']))           ? $data['Veiculo']['Placa'] : null;
+        $this->renavam          = (!empty($data['Veiculo']['Renavam']))         ? $data['Veiculo']['Renavam'] : null;
+        $this->marca            = (!empty($data['Veiculo']['Marca']))           ? $data['Veiculo']['Marca'] : null;
+        $this->modelo           = (!empty($data['ModeloVeiculo']))              ? $data['ModeloVeiculo'] : null;
+        $this->ano              = (!empty($data['Veiculo']['AnoFabricacao']))   ? $data['Veiculo']['AnoFabricacao'] : null;
+        $this->anoModelo        = (!empty($data['AnoModeloVeiculo']))           ? $data['AnoModeloVeiculo'] : null;
+        $this->cor              = (!empty($data['CorVeiculo']))                 ? $data['CorVeiculo'] : null;
+        $this->docProprietario  = (!empty($data['Veiculo']['ProprietarioAtual']['CpfCnpj'])) ? $data['Veiculo']['ProprietarioAtual']['CpfCnpj'] : null;
 
     }
 
@@ -97,15 +110,16 @@ class Veiculo
     public function getArrayCopy()
     {
         return [
-            'id' => $this->id,
-            'placa' => $this->placa,
-            'renavam' => $this->renavam,
-            'marca' => $this->marca,
-            'modelo' => $this->modelo,
-            'ano' => $this->ano,
-            // 'ano_modelo' => $this->anoModelo,
-            'cor' => $this->cor,
-            'doc_proprietario' => $this->docProprietario
+            'id'                => $this->id,
+            'placa'             => $this->placa,
+            'renavam'           => $this->renavam,
+            'marca'             => $this->marca,
+            'modelo'            => $this->modelo,
+            'ano'               => $this->ano,
+            'ano_modelo'        => $this->anoModelo,
+            'cor'               => $this->cor,
+            'proprietario_doc'  => $this->proprietario_doc,
+            'proprietario_id'   => $this->proprietario_id
         ];
     }
 

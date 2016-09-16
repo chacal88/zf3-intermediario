@@ -30,8 +30,16 @@ class Module implements ConfigProviderInterface, ServiceProviderInterface, Contr
             'factories' => [
                 Model\VeiculoTable::class                   => VeiculoTableFactory::class,
                 Model\VeiculoTableGateway::class            => VeiculoTableGatewayFactory::class,
+                Model\ProprietarioTable::class              => ProprietarioTableFactory::class,
+                Model\ProprietarioTableGateway::class       => ProprietarioTableGatewayFactory::class,
+                Model\EnderecoTable::class                  => EnderecoTableFactory::class,
+                Model\EnderecoTableGateway::class           => EnderecoTableGatewayFactory::class,
+                Model\TelefoneTable::class                  => TelefoneTableFactory::class,
+                Model\TelefoneTableGateway::class           => TelefoneTableGatewayFactory::class,
+
                 VeiculoForm::class                          => VeiculoFormFactory::class,
                 FipeForm::class                             => FipeFormFactory::class,
+
                 Service\ApiService::class                   => Service\Factory\ApiServiceFactory::class,
                 Service\ICarrosFipeService::class           => Service\Factory\FipeServiceFactory::class,
                 Service\IMotosFipeService::class            => Service\Factory\FipeServiceFactory::class,

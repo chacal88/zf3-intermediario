@@ -154,7 +154,7 @@ class VeiculoController extends AbstractActionController
 
     }
 
-    public function step2Action()
+    public function proprietarioAction()
     {
         $form = $this->fipeForm;
 

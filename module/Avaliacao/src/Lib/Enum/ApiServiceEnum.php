@@ -11,5 +11,5 @@ abstract class ApiServiceEnum extends AbstractEnum
     /**
      *
      */
-    const API_URL = "http://api.service.dev.br/api/consulta/debitos/";
+    const API_URL = "http://apiservice.superfrota.com.br/api/consulta/debitos/";
 }
