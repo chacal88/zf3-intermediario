@@ -33,16 +33,16 @@
                 <div class="form-group">
                     <label class="control-label col-md-3">Nome:</label>
                     <div class="col-md-9">
-                        <p class="form-control-static"> Bob </p>
+                        <p class="form-control-static"><?= $proprietario->nome; ?></p>
                     </div>
                 </div>
             </div>
             <!--/span-->
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="control-label col-md-3">Cpf:</label>
+                    <label class="control-label col-md-3">Cpf/Cnpj:</label>
                     <div class="col-md-9">
-                        <p class="form-control-static"> Nilson </p>
+                        <p class="form-control-static"><?= $proprietario->cpf_cnpj; ?></p>
                     </div>
                 </div>
             </div>
@@ -53,7 +53,7 @@
                 <div class="form-group">
                     <label class="control-label col-md-3">Email:</label>
                     <div class="col-md-9">
-                        <p class="form-control-static"> Bob </p>
+                        <p class="form-control-static"><?= $proprietario->email; ?></p>
                     </div>
                 </div>
             </div>
@@ -65,7 +65,7 @@
                     <label class="control-label col-md-3">Sexo</label>
                     <div class="col-md-9">
                         <div class="col-md-9">
-                            <p class="form-control-static"> Masculino </p>
+                            <p class="form-control-static"><?= $proprietario->sexo; ?></p>
                         </div>
                     </div>
                 </div>
@@ -75,7 +75,7 @@
                 <div class="form-group">
                     <label class="control-label col-md-3">Nascimento:</label>
                     <div class="col-md-9">
-                        <p class="form-control-static"> 20.01.1984 </p>
+                        <p class="form-control-static"><?= $proprietario->data_nascimento; ?></p>
                     </div>
                 </div>
             </div>
@@ -83,6 +83,7 @@
             <!--/span-->
         </div>
         <div class="group-telefone">
+
             <h5 class="form-section">Telefone</h5>
             <div data-repeater-list="group-telefone">
 

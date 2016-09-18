@@ -30,6 +30,16 @@ class Proprietario implements IModel
     protected $email;
 
     /**
+     * @var string
+     */
+    protected $sexo;
+
+    /**
+     * @var Date
+     */
+    protected $data_nascimento;
+
+    /**
      * @var array
      */
     protected $enderecos;
@@ -44,10 +54,10 @@ class Proprietario implements IModel
      */
     public function exchangeArray(array $data)
     {
-        $this->id       = (!empty($data['id']))         ? $data['id'] : null;
-        $this->nome     = (!empty($data['nome']))       ? $data['nome'] : null;
-        $this->cpf_cnpj = (!empty($data['cpf_cnpj']))   ? $data['cpf_cnpj'] : null;
-        $this->email    = (!empty($data['email']))      ? $data['email'] : null;
+        $this->id = (!empty($data['id'])) ? $data['id'] : null;
+        $this->nome = (!empty($data['nome'])) ? $data['nome'] : null;
+        $this->cpf_cnpj = (!empty($data['cpf_cnpj'])) ? $data['cpf_cnpj'] : null;
+        $this->email = (!empty($data['email'])) ? $data['email'] : null;
     }
 
     /**
@@ -56,10 +66,10 @@ class Proprietario implements IModel
     public function getArrayCopy()
     {
         return [
-            'id'        => $this->id,
-            'nome'      => $this->nome,
-            'cpf_cnpj'  => $this->cpf_cnpj,
-            'email'     => $this->email,
+            'id' => $this->id,
+            'nome' => $this->nome,
+            'cpf_cnpj' => $this->cpf_cnpj,
+            'email' => $this->email,
         ];
     }
 
@@ -128,6 +138,38 @@ class Proprietario implements IModel
     }
 
     /**
+     * @return string
+     */
+    public function getSexo()
+    {
+        return $this->sexo;
+    }
+
+    /**
+     * @param string $sexo
+     */
+    public function setSexo($sexo)
+    {
+        $this->sexo = $sexo;
+    }
+
+    /**
+     * @return Date
+     */
+    public function getDataNascimento()
+    {
+        return $this->data_nascimento;
+    }
+
+    /**
+     * @param Date $data_nascimento
+     */
+    public function setDataNascimento($data_nascimento)
+    {
+        $this->data_nascimento = $data_nascimento;
+    }
+
+    /**
      * @return array
      */
     public function getEnderecos()
@@ -158,4 +200,6 @@ class Proprietario implements IModel
     {
         $this->telefones = $telefones;
     }
+
+    
 }
