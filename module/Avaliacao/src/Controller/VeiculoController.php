@@ -4,7 +4,6 @@
 namespace Avaliacao\Controller;
 
 
-use Application\Storage\ZendSessionStorage;
 use Avaliacao\Form\FipeForm;
 use Avaliacao\Form\VeiculoForm;
 use Avaliacao\Lib\Enum\RoutesEnum;
@@ -12,13 +11,9 @@ use Avaliacao\Model\Veiculo;
 use Avaliacao\Model\VeiculoTable;
 use Avaliacao\Service\ApiService;
 use Avaliacao\Service\FipeService;
-use Zend\Http\Client;
-use Zend\Http\Request;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Session\Container;
-use Zend\Session\SessionManager;
-use Zend\Session\Storage\ArrayStorage;
-use Zend\Session\Storage\SessionStorage;
+use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -36,7 +31,6 @@ class VeiculoController extends AbstractActionController
      * @var VeiculoForm
      */
     private $form;
-
 
     /**
      * @var FipeForm
@@ -164,12 +158,69 @@ class VeiculoController extends AbstractActionController
 
             $marca = $this->fipeService->getMarcas();
 
+            $selectMarcas = array();
+            for ($i = 0; $i < count($marca); $i++) {
+                $selectMarcas[$marca[$i]['codigo']] = $marca[$i]['nome'];
+            }
 
-            
-            $form->get('marca')->setValueOptions($marca);
+            $form->get('marca')->setLabel('Selecione a marca:')->setEmptyOption('Selecione')->setValueOptions($selectMarcas);
 
             return ['form' => $form];
         }
+    }
+
+    public function getModeloAction()
+    {
+        $marca = (int)$this->params()->fromPost('marca', 0);
+
+        $modelo = $this->fipeService->getModelos($marca);
+
+        $selectModelos = array();
+        for ($i = 0; $i < count($modelo); $i++) {
+            $selectModelos[$modelo[$i]['codigo']] = $modelo[$i]['nome'];
+        }
+
+        return new JsonModel([
+            'modelos' => $selectModelos
+        ]);
+    }
+
+    public function getAnoAction()
+    {
+        $marca = (int)$this->params()->fromPost('marca', 0);
+        $modelo = (int)$this->params()->fromPost('modelo', 0);
+
+        $anos = $this->fipeService->getAnos($marca, $modelo);
+
+        $selectAnos = array();
+        for ($i = 0; $i < count($anos); $i++) {
+            $selectAnos[$anos[$i]['codigo']] = $anos[$i]['nome'];
+        }
+
+        return new JsonModel([
+            'anos' => $selectAnos
+        ]);
+    }
+
+    public function getVeiculoAction()
+    {
+        $marca = $this->params()->fromPost('marca', 0);
+        $modelo = $this->params()->fromPost('modelo', 0);
+        $ano = $this->params()->fromPost('ano', 0);
+
+        $veiculo = $this->fipeService->getVeiculo($marca, $modelo, $ano);
+
+//        \Zend\Debug\Debug::dump($veiculos);
+//
+//
+//        $selectVeiculos = array();
+//        for ($i = 0; $i < count($veiculos); $i++) {
+//            $selectVeiculos[$veiculos[$i]['codigo']] = $veiculos[$i]['nome'];
+//        }
+
+        return new JsonModel([
+            'veiculo' => $veiculo
+        ]);
     }
 
     /**
