@@ -40,6 +40,16 @@ class Endereco implements IModel
     protected $cep;
 
     /**
+     * @var string
+     */
+    protected $cidade;
+
+    /**
+     * @var string
+     */
+    protected $uf;
+
+    /**
      * @param array $data
      */
     public function exchangeArray(array $data)
@@ -50,6 +60,22 @@ class Endereco implements IModel
         $this->complemento  = (!empty($data['complemento']))? $data['complemento'] : null;
         $this->bairro       = (!empty($data['bairro']))     ? $data['bairro'] : null;
         $this->cep          = (!empty($data['cep']))        ? $data['cep'] : null;
+        $this->cidade       = (!empty($data['cidade']))     ? $data['cidade'] : null;
+        $this->uf           = (!empty($data['uf']))         ? $data['uf'] : null;
+
+    }
+
+    /**
+     * @param $data
+     */
+    public function exchangeApi($data)
+    {
+        $this->logradouro   = (!empty($data->LOGRADOURO)) ? $data->LOGRADOURO : null;
+        $this->numero       = (!empty($data->NUMERO))     ? $data->NUMERO : null;
+        $this->bairro       = (!empty($data->BAIRRO))     ? $data->BAIRRO : null;
+        $this->cep          = (!empty($data->CEP))        ? $data->CEP : null;
+        $this->cidade       = (!empty($data->CIDADE))     ? $data->CIDADE : null;
+        $this->uf           = (!empty($data->UF))         ? $data->UF : null;
     }
 
     /**
@@ -64,6 +90,8 @@ class Endereco implements IModel
             'complemento'   => $this->complemento,
             'bairro'        => $this->bairro,
             'cep'           => $this->cep,
+            'cidade'        => $this->cidade,
+            'uf'            => $this->uf
         ];
     }
 

@@ -3,7 +3,7 @@
 
 namespace Avaliacao\Model;
 
-use Avaliacao\Model\Proprietario;
+use Avaliacao\Model\Cliente;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\String_;
 
@@ -64,7 +64,7 @@ class Veiculo implements IModel
     private $proprietario_id;
 
     /**
-     * @var Proprietario
+     * @var Cliente
      */
     private $proprietario;
 

@@ -3,6 +3,7 @@
 namespace Avaliacao\Service;
 
 use Avaliacao\Lib\Enum\DataWashEnum;
+use Avaliacao\Model\Cliente;
 use Avaliacao\Model\Veiculo;
 use Zend\Http\Client;
 use Zend\Http\Request;
@@ -64,9 +65,9 @@ class ApiService
         return $veiculo;
     }
 
-    public function findPeople($cpf)
+    public function findPeople(Cliente $cliente)
     {
-        $soap = "http://webservice.datawash.com.br/localizacao.asmx/ConsultaCPFCompleta?Cliente=neoshare&Usuario=*&Senha=neoshare2015&CPF=$cpf";
+        $soap = "http://webservice.datawash.com.br/localizacao.asmx/ConsultaCPFCompleta?Cliente=neoshare&Usuario=*&Senha=neoshare2015&CPF=" . $cliente->getCpfCnpj();
 
         $this->request->setUri($soap);
         $this->request->setMethod(Request::METHOD_GET);
@@ -75,12 +76,12 @@ class ApiService
         $response = $this->client->send($this->request);
 
         if ($response->isSuccess()) {
-
             $result  = simplexml_load_string($response->getBody());
+//            \Zend\Debug\Debug::dump($result);
+            $cliente->exchangeApi($result);
+
+            return $cliente;
         }
-
-        return $result;
-
     }
 
 

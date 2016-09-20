@@ -29,7 +29,7 @@ class ProprietarioTableFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $tableGateway = $container->get(Model\ProprietarioTableGateway::class);
-        return new ProprietarioTable($tableGateway);
+        $tableGateway = $container->get(Model\ClienteTableGateway::class);
+        return new ClienteTable($tableGateway);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Avaliacao\Model\Factory;
 
-use Avaliacao\Model\Proprietario;
+use Avaliacao\Model\Cliente;
 use Interop\Container\ContainerInterface;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\ResultSet\ResultSet;
@@ -15,7 +15,7 @@ class ProprietarioTableGatewayFactory
     {
         $dbAdapter = $container->get(AdapterInterface::class);
         $resultSetPrototype = new ResultSet();
-        $resultSetPrototype->setArrayObjectPrototype(new Proprietario());
+        $resultSetPrototype->setArrayObjectPrototype(new Cliente());
         return new TableGateway('proprietarios', $dbAdapter, null, $resultSetPrototype);
     }
 

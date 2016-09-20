@@ -11,7 +11,7 @@ class VeiculoFormFactory
 
     public function __invoke(ContainerInterface $container)
     {
-        $inputFilter = new VeiculoInputFilter();
+        $inputFilter = new EnderecoInputFilter();
         $form = new  VeiculoForm();
         $form->setInputFilter($inputFilter);
         return $form;

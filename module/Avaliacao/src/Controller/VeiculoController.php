@@ -4,9 +4,11 @@
 namespace Avaliacao\Controller;
 
 
+use Avaliacao\Form\ClienteForm;
 use Avaliacao\Form\FipeForm;
 use Avaliacao\Form\VeiculoForm;
 use Avaliacao\Lib\Enum\RoutesEnum;
+use Avaliacao\Model\Cliente;
 use Avaliacao\Model\Veiculo;
 use Avaliacao\Model\VeiculoTable;
 use Avaliacao\Service\ApiService;
@@ -131,24 +133,43 @@ class VeiculoController extends AbstractActionController
         $session = new Container('cadastro_veiculo');
         $session->offsetSet('veiculo', $veiculo);
 
-        return $this->redirect()->toRoute(RoutesEnum::AVALIACAO_VEICULO, ['action' => 'step1']);
+        return $this->redirect()->toRoute(RoutesEnum::AVALIACAO_VEICULO, ['action' => 'cliente']);
     }
 
-    public function step1Action()
+    public function clienteAction()
     {
 
-//        $session = new Container('cadastro_veiculo');
-//        $veiculo = $session->offsetGet('veiculo');
+        $session = new Container('cadastro_veiculo');
+        $veiculo = $session->offsetGet('veiculo');
 //        \Zend\Debug\Debug::dump($session->offsetGet('veiculo'));
-//
-//        $proprietario = $this->apiService->findPeople($veiculo->getDocProprietario());
-//        $session->offsetSet('proprietario', $proprietario);
-//        $proprietario = $session->offsetGet('proprietario');
-//        \Zend\Debug\Debug::dump($proprietario);
 
+        $cliente = new Cliente();
+        $cliente->setCpfCnpj($veiculo->getDocProprietario());
+
+        $cliente = $this->apiService->findPeople($cliente);
+
+//        \Zend\Debug\Debug::dump($session->offsetGet('veiculo'));
+        $form = new ClienteForm();
+        $form->bind($cliente);
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+
+            $form->setData($request->getPost());
+//            if ($form->isValid()) {
+                return $this->redirect()->toRoute(RoutesEnum::AVALIACAO_VEICULO, ['action' => 'fipe']);
+//            }else{
+//                \Zend\Debug\Debug::dump($form->getMessages());
+//            }
+
+        }
+
+        return [
+            'form' => $form,
+        ];
     }
 
-    public function proprietarioAction()
+    public function fipeAction()
     {
         $form = $this->fipeForm;
 

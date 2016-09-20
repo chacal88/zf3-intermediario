@@ -19,15 +19,15 @@ class Telefone implements IModel
      */
     protected $numero;
 
-    /**
-     * @var int
-     */
-    protected $ddd;
-
-    /**
-     * @var int
-     */
-    protected $ddi;
+//    /**
+//     * @var int
+//     */
+//    protected $ddd;
+//
+//    /**
+//     * @var int
+//     */
+//    protected $ddi;
 
     /**
      * @var string
@@ -47,8 +47,8 @@ class Telefone implements IModel
     {
         $this->id       = (!empty($data['id']))         ? $data['id'] : null;
         $this->numero   = (!empty($data['numero']))     ? $data['numero'] : null;
-        $this->ddd      = (!empty($data['ddd']))        ? $data['ddd'] : null;
-        $this->ddi      = (!empty($data['ddi']))        ? $data['ddi'] : null;
+//        $this->ddd      = (!empty($data['ddd']))        ? $data['ddd'] : null;
+//        $this->ddi      = (!empty($data['ddi']))        ? $data['ddi'] : null;
         $this->tipo     = (!empty($data['tipo']))       ? $data['tipo'] : null;
         $this->whatsapp = (!empty($data['whatsapp']))   ? $data['whatsapp'] : null;
     }
@@ -61,8 +61,8 @@ class Telefone implements IModel
         return [
             'id'        => $this->id,
             'numero'    => $this->numero,
-            'ddd'       => $this->ddd,
-            'ddi'       => $this->ddi,
+//            'ddd'       => $this->ddd,
+//            'ddi'       => $this->ddi,
             'tipo'      => $this->tipo,
             'whatsapp'  => $this->whatsapp,
         ];
@@ -100,37 +100,37 @@ class Telefone implements IModel
         $this->numero = $numero;
     }
 
-    /**
-     * @return int
-     */
-    public function getDdd()
-    {
-        return $this->ddd;
-    }
-
-    /**
-     * @param int $ddd
-     */
-    public function setDdd($ddd)
-    {
-        $this->ddd = $ddd;
-    }
-
-    /**
-     * @return int
-     */
-    public function getDdi()
-    {
-        return $this->ddi;
-    }
-
-    /**
-     * @param int $ddi
-     */
-    public function setDdi($ddi)
-    {
-        $this->ddi = $ddi;
-    }
+//    /**
+//     * @return int
+//     */
+//    public function getDdd()
+//    {
+//        return $this->ddd;
+//    }
+//
+//    /**
+//     * @param int $ddd
+//     */
+//    public function setDdd($ddd)
+//    {
+//        $this->ddd = $ddd;
+//    }
+//
+//    /**
+//     * @return int
+//     */
+//    public function getDdi()
+//    {
+//        return $this->ddi;
+//    }
+//
+//    /**
+//     * @param int $ddi
+//     */
+//    public function setDdi($ddi)
+//    {
+//        $this->ddi = $ddi;
+//    }
 
     /**
      * @return string

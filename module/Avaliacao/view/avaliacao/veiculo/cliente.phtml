@@ -1,0 +1,152 @@
+<h1>Cadastrar Veiculo</h1>
+<div class="mt-element-step">
+    <div class="row step-line">
+        <div class="col-md-4 mt-step-col first active">
+            <div class="mt-step-number bg-white">
+                <i class="fa fa-car"></i>
+            </div>
+            <div class="mt-step-title uppercase font-grey-cascade">Veiculo</div>
+            <div class="mt-step-content font-grey-cascade">Dados do veiculo</div>
+        </div>
+        <div class="col-md-4 mt-step-col active">
+            <div class="mt-step-number bg-white">
+                <i class="fa fa-user"></i>
+            </div>
+            <div class="mt-step-title uppercase font-grey-cascade">Cliente</div>
+            <div class="mt-step-content font-grey-cascade">Dados do cliente</div>
+        </div>
+        <div class="col-md-4 mt-step-col last">
+            <div class="mt-step-number bg-white">
+                <i class="fa fa-rocket"></i>
+            </div>
+            <div class="mt-step-title uppercase font-grey-cascade">Fipe</div>
+            <div class="mt-step-content font-grey-cascade">Selecione tabela Fipe</div>
+        </div>
+    </div>
+</div>
+<?php
+$form->setAttribute('action', $this->url(Avaliacao\Lib\Enum\RoutesEnum::AVALIACAO_VEICULO, ['action' => 'cliente']));
+
+$form->prepare();
+?>
+
+<div class="portlet-body form">
+
+    <?php
+        echo $this->form()->openTag($form);
+        $cliente = $form->get('cliente');
+    ?>
+
+    <?php $message = $this->formElementErrors($cliente->get('nome'), ['class' => 'help-block']); ?>
+
+    <div class="form-group<?= $message ? " has-error" : "" ?>">
+        <?= $this->formLabel($cliente->get('nome')); ?>
+        <?= $this->formElement($cliente->get('nome')); ?>
+        <?= $message ?>
+    </div>
+
+    <?php $message = $this->formElementErrors($cliente->get('cpfCnpj'), ['class' => 'help-block']); ?>
+
+    <div class="form-group<?= $message ? " has-error" : "" ?>">
+        <?= $this->formLabel($cliente->get('cpfCnpj')); ?>
+        <?= $this->formElement($cliente->get('cpfCnpj')); ?>
+        <?= $message ?>
+    </div>
+
+    <?php $message = $this->formElementErrors($cliente->get('email'), ['class' => 'help-block']); ?>
+
+    <div class="form-group<?= $message ? " has-error" : "" ?>">
+        <?= $this->formLabel($cliente->get('email')); ?>
+        <?= $this->formElement($cliente->get('email')); ?>
+        <?= $message ?>
+    </div>
+
+    <?php $message = $this->formElementErrors($cliente->get('sexo'), ['class' => 'help-block']); ?>
+
+    <div class="form-group<?= $message ? " has-error" : "" ?>">
+        <?= $this->formLabel($cliente->get('sexo')); ?>
+        <br>
+        <?= $this->formElement($cliente->get('sexo')); ?>
+        <?= $message ?>
+    </div>
+
+    <?php $message = $this->formElementErrors($cliente->get('dataNascimento'), ['class' => 'help-block']); ?>
+
+    <div class="form-group<?= $message ? " has-error" : "" ?>">
+        <?= $this->formLabel($cliente->get('dataNascimento')); ?>
+        <?= $this->formElement($cliente->get('dataNascimento')); ?>
+        <?= $message ?>
+    </div>
+
+    <div class="endereco">
+        <?php echo $this->formCollection($cliente->get('enderecos')); ?>
+        <br>
+        <button class="btn btn-primary" onclick="return add_endereco()">Adicionar Endereço</button>
+    </div>
+
+    <div class="telefone form-inline">
+        <?php echo $this->formCollection($cliente->get('telefones')); ?>
+        <button class="btn btn-primary" onclick="return add_telefone()">Adicionar Telefone</button>
+    </div>
+
+    <div class="form-actions right">
+        <?php echo $this->formSubmit($form->get('submit')); ?>
+    </div>
+
+    <?php
+//    echo $this->formHidden($form->get('id'));
+    echo $this->form()->closeTag();
+    ?>
+
+</div>
+
+<!---->
+
+
+<?php
+//$brand = $product->get('brand');
+//
+//// Since the brand is a 1:1 relationship, its elements are rendered normally:
+//echo $this->formRow($product->get('name'));
+//echo $this->formRow($brand->get('name'));
+//echo $this->formRow($brand->get('url'));
+
+// And finally, we render the CSRF and submit elements:
+//echo $this->formHidden($form->get('csrf'));
+//echo $this->formElement($form->get('submit'));
+
+//echo $this->form()->closeTag();
+?>
+
+<script>
+    function add_endereco() {
+        var currentCount = $('form > .endereco > fieldset > fieldset').length;
+        var template = $('form > .endereco > fieldset > span').data('template');
+        template = template.replace(/__index__/g, currentCount);
+
+        $('form > .endereco > fieldset').append(template);
+
+        return false;
+    }
+
+    $('.delete').click(function () {
+        $(this).closest('.row').remove();
+        return false;
+    });
+
+    function add_telefone() {
+        var currentCount = $('form > .telefone > fieldset > fieldset').length;
+        var template = $('form > .telefone > fieldset > span').data('template');
+        template = template.replace(/__index__/g, currentCount);
+
+        $('form > .telefone > fieldset').append(template);
+
+        return false;
+    }
+
+    function remove_element(buttom) {
+        buttom.closest('fieldset').remove();
+        return false;
+    }
+
+</script>

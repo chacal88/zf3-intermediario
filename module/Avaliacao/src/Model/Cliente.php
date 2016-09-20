@@ -4,10 +4,10 @@
 namespace Avaliacao\Model;
 
 /**
- * Class Proprietario
+ * Class Cliente
  * @package Avaliacao\Model
  */
-class Proprietario implements IModel
+class Cliente implements IModel
 {
     /**
      * @var int
@@ -40,12 +40,12 @@ class Proprietario implements IModel
     protected $data_nascimento;
 
     /**
-     * @var array
+     * @var Endereco[]
      */
     protected $enderecos;
 
     /**
-     * @var array
+     * @var Telefone[]
      */
     protected $telefones;
 
@@ -58,6 +58,52 @@ class Proprietario implements IModel
         $this->nome = (!empty($data['nome'])) ? $data['nome'] : null;
         $this->cpf_cnpj = (!empty($data['cpf_cnpj'])) ? $data['cpf_cnpj'] : null;
         $this->email = (!empty($data['email'])) ? $data['email'] : null;
+    }
+
+    /**
+     * @param $data
+     */
+    public function exchangeApi($data)
+    {
+        $this->nome = (string) (!empty($data->DADOS->NOME)) ? $data->DADOS->NOME : null;
+        $this->cpf_cnpj = (!empty($data->DADOS->CPF)) ? $data->DADOS->CPF : null;
+        $this->data_nascimento = (!empty($data->DADOS->DATA_NASC)) ? $data->DADOS->DATA_NASC : null;
+        $this->sexo = (!empty($data->DADOS->SEXO)) ? $data->DADOS->SEXO : null;
+
+        $enderecoArray = $data->DADOS->ENDERECOS;
+        $enderecoSize = count($data->DADOS->ENDERECOS);
+        if(count($enderecoSize) >0)
+        {
+            for($i=0;$i< $enderecoSize;$i++){
+                $endereco = new Endereco();
+                $endereco->exchangeApi($enderecoArray[$i]->ENDERECO);
+                $this->addEndereco($endereco);
+            }
+        }
+
+        $telefoneArray = $data->DADOS->TELEFONES_MOVEIS;
+        $telefoneSize = count($telefoneArray);
+        if(count($telefoneSize) >0)
+        {
+            for($i=0;$i< $telefoneSize;$i++){
+                $telefone = new Telefone();
+                $telefone->setNumero($telefoneArray[$i]->TELEFONE);
+                $telefone->setTipo('Cel');
+                $this->addTelefone($telefone);
+            }
+        }
+
+        $telefoneArray = $data->DADOS->TELEFONES_COMERCIAIS;
+        $telefoneSize = count($telefoneArray);
+        if(count($telefoneSize) >0)
+        {
+            for($i=0;$i< $telefoneSize;$i++){
+                $telefone = new Telefone();
+                $telefone->setNumero($telefoneArray[$i]->TELEFONE);
+                $telefone->setTipo('Comercial');
+                $this->addTelefone($telefone);
+            }
+        }
     }
 
     /**
@@ -87,6 +133,7 @@ class Proprietario implements IModel
     public function setId($id)
     {
         $this->id = $id;
+        return $this;
     }
 
     /**
@@ -103,6 +150,7 @@ class Proprietario implements IModel
     public function setNome($nome)
     {
         $this->nome = $nome;
+        return $this;
     }
 
     /**
@@ -135,6 +183,7 @@ class Proprietario implements IModel
     public function setEmail($email)
     {
         $this->email = $email;
+        return $this;
     }
 
     /**
@@ -151,6 +200,7 @@ class Proprietario implements IModel
     public function setSexo($sexo)
     {
         $this->sexo = $sexo;
+        return $this;
     }
 
     /**
@@ -167,10 +217,11 @@ class Proprietario implements IModel
     public function setDataNascimento($data_nascimento)
     {
         $this->data_nascimento = $data_nascimento;
+        return $this;
     }
 
     /**
-     * @return array
+     * @return Endereco[]
      */
     public function getEnderecos()
     {
@@ -178,15 +229,25 @@ class Proprietario implements IModel
     }
 
     /**
-     * @param array $enderecos
+     * @param Endereco[] $enderecos
      */
-    public function setEnderecos($enderecos)
+    public function setEnderecos(array $enderecos)
     {
         $this->enderecos = $enderecos;
+        return $this;
     }
 
     /**
-     * @return array
+     * @param Endereco $endereco
+     */
+    public function addEndereco(Endereco $endereco)
+    {
+        $this->enderecos[] = $endereco;
+        return $this;
+    }
+
+    /**
+     * @return Telefone[]
      */
     public function getTelefones()
     {
@@ -194,12 +255,22 @@ class Proprietario implements IModel
     }
 
     /**
-     * @param array $telefones
+     * @param Telefone[] $telefones
      */
-    public function setTelefones($telefones)
+    public function setTelefones(array $telefones)
     {
         $this->telefones = $telefones;
+        return $this;
     }
 
-    
+    /**
+     * @param Telefone $telefone
+     */
+    public function addTelefone(Telefone $telefone)
+    {
+        $this->telefones[] = $telefone;
+        return $this;
+    }
+
+
 }
