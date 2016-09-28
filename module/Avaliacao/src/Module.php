@@ -6,6 +6,7 @@ use Avaliacao\Controller\ApiVeiculoController;
 use Avaliacao\Controller\Factory\ApiVeiculoControllerFactory;
 use Avaliacao\Controller\Factory\VeiculoControllerFactory;
 use Avaliacao\Controller\VeiculoController;
+use Avaliacao\Fieldset\ClienteFieldset;
 use Avaliacao\Form\Factory\FipeFormFactory;
 use Avaliacao\Form\Factory\VeiculoFormFactory;
 use Avaliacao\Form\FipeForm;
@@ -15,6 +16,7 @@ use Avaliacao\Model\Factory\VeiculoTableGatewayFactory;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ControllerProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
+use Zend\ServiceManager\Factory\InvokableFactory;
 
 class Module implements ConfigProviderInterface, ServiceProviderInterface, ControllerProviderInterface
 {
@@ -39,6 +41,7 @@ class Module implements ConfigProviderInterface, ServiceProviderInterface, Contr
 
                 VeiculoForm::class                          => VeiculoFormFactory::class,
                 FipeForm::class                             => FipeFormFactory::class,
+                ClienteFieldset::class                      => InvokableFactory::class,
 
                 Service\ApiService::class                   => Service\Factory\ApiServiceFactory::class,
                 Service\ICarrosFipeService::class           => Service\Factory\FipeServiceFactory::class,

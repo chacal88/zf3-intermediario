@@ -131,7 +131,10 @@ $form->prepare();
             </div>
 
             <div class="form-actions right">
-                <?php echo $this->formSubmit($submit); ?>
+                <?php
+                    echo $this->formHidden($form->get('codigofipe'));
+                    echo $this->formSubmit($submit);
+                ?>
             </div>
 
             <?php echo $this->form()->closeTag(); ?>
@@ -208,13 +211,7 @@ $form->prepare();
                     success: function (result) {
                         document.getElementById('#fipe-div').style.display = 'block';
 
-                        $('#fipe-codigo').empty().append(function () {
-                            return result.veiculo.CodigoFipe
-                        });
-
-                        $('#codigo-fipe').empty().append(function () {
-                            return result.veiculo.CodigoFipe
-                        });
+                        $('#codigo-fipe').val(result.veiculo.CodigoFipe);
 
                         $('#fipe-marca').empty().append(function () {
                             return result.veiculo.Marca

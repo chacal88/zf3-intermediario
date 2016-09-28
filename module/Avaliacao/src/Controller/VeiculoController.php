@@ -206,6 +206,7 @@ class VeiculoController extends AbstractActionController
         }
 
         \Zend\Debug\Debug::dump($request->getPost());exit;
+        
 //        $cliente = new Cliente();
 //        $cliente->exchangeArray($form->getData());
 
