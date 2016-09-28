@@ -21,6 +21,7 @@ class AuthenticationServiceFactory
             return password_verify($passwordSent, $passwordInDatabase);
         };
         $dbAdapter = $container->get(AdapterInterface::class);
+        //bcrypt
         $authAdapter = new CallbackCheckAdapter($dbAdapter, 'users', 'username', 'password', $passwordCallbackVerify);
         $storage = new Session();
         return new AuthenticationService($storage, $authAdapter);

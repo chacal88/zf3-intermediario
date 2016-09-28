@@ -36,12 +36,12 @@ class Module implements ConfigProviderInterface, ServiceProviderInterface, Contr
                 if ($authService->hasIdentity()) {
                     return;
                 } else {
-                    foreach ($resources as $key => $value) {
-                        if (strpos($routeName, $value) !== false) {
+                   // foreach ($resources as $key => $value) {
+                     //   if (strpos($routeName, $value) !== false) {
                             $match->setParam('controller', AuthController::class)
                                 ->setParam('action', 'login');
-                        }
-                    }
+                     //   }
+                 //   }
                 }
             }, 100);
 

@@ -14,8 +14,9 @@
 return [
     'db' => [
         'driver'   => 'Pdo_Mysql',
+        'host' => '162.243.44.191',
         'database' => 'avaliacao',
-        'username' => 'root',
-        'password' => 'nexmedia'
+        'username' => 'kaue',
+        'password' => '102030ka'
     ]
 ];
