@@ -18,25 +18,27 @@ $ano->setAttribute('class', 'form-control')
 $submit = $form->get('submit');
 $submit->setAttribute('class', 'btn btn-success');
 
-$form->setAttribute('action', $this->url(Avaliacao\Lib\Enum\RoutesEnum::AVALIACAO_VEICULO, ['action' => 'add']));
+$form->setAttribute('action', $this->url(Avaliacao\Lib\Enum\RoutesEnum::AVALIACAO_VEICULO, ['action' => 'fipe']));
 $form->prepare();
 ?>
 
 <div class="mt-element-step">
     <div class="row step-line">
-        <div class="col-md-4 mt-step-col first active">
+        <div class="col-md-4 mt-step-col first active" >
             <div class="mt-step-number bg-white">
                 <i class="fa fa-car"></i>
             </div>
             <div class="mt-step-title uppercase font-grey-cascade">Veiculo</div>
-            <div class="mt-step-content font-grey-cascade">Dados do veiculo</div>
+            <a class="mt-step-content font-grey-cascade"
+               href="<?= $this->url(\Avaliacao\Lib\Enum\RoutesEnum::AVALIACAO_VEICULO, ['action' => 'add']); ?>">Dados do veiculo</a>
         </div>
         <div class="col-md-4 mt-step-col active">
             <div class="mt-step-number bg-white">
                 <i class="fa fa-user"></i>
             </div>
             <div class="mt-step-title uppercase font-grey-cascade">Cliente</div>
-            <div class="mt-step-content font-grey-cascade">Dados do cliente</div>
+            <a class="mt-step-content font-grey-cascade"
+               href="<?= $this->url(\Avaliacao\Lib\Enum\RoutesEnum::AVALIACAO_VEICULO, ['action' => 'cliente']); ?>">Dados do cliente</a>
         </div>
         <div class="col-md-4 mt-step-col active last">
             <div class="mt-step-number bg-white">
@@ -48,67 +50,124 @@ $form->prepare();
     </div>
 </div>
 
-<div class="portlet-body form">
-
-    <?php echo $this->form()->openTag($form); ?>
-
-    <?php $message = $this->formElementErrors($marca, ['class' => 'help-block']); ?>
-
-    <div class="form-group<?= $message ? " has-error" : "" ?>">
-        <?= $this->formLabel($marca); ?>
-        <?= $this->formElement($marca); ?>
-        <?= $message ?>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Dados do veiculo</h3>
     </div>
+    <div class="panel-body">
+        <div class="row marketing">
+            <div class="col-lg-6">
+                <label>Marca</label> - <span><?php echo $veiculo->getMarca(); ?></span>
+            </div>
 
-    <div class="form-group<?= $message ? " has-error" : "" ?>">
-        <?= $this->formLabel($modelo); ?>
-        <?= $this->formElement($modelo); ?>
-        <?= $message ?>
+            <div class="col-lg-6">
+                <label>Modelo</label> - <span><?php echo $veiculo->getModelo(); ?></span>
+            </div>
+
+            <div class="col-lg-6">
+                <label>Ano Modelo</label> - <span><?php echo $veiculo->getAnoModelo(); ?></span>
+            </div>
+            <div class="col-lg-6">
+                <label>Fabricação</label> - <span><?php echo $veiculo->getAno(); ?></span>
+            </div>
+        </div>
     </div>
-
-    <div class="form-group<?= $message ? " has-error" : "" ?>">
-        <?= $this->formLabel($ano); ?>
-        <?= $this->formElement($ano); ?>
-        <?= $message ?>
-    </div>
-
-
-    <div class="form-actions right">
-        <?php echo $this->formSubmit($submit); ?>
-    </div>
-
-    <?php
-    echo $this->form()->closeTag();
-    ?>
-
 </div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Tabela Fipe</h3>
+    </div>
+    <div class="panel-body">
+        <div class="portlet-body form">
+
+            <?php echo $this->form()->openTag($form); ?>
+
+            <?php $message = $this->formElementErrors($marca, ['class' => 'help-block']); ?>
+
+            <div class="form-group<?= $message ? " has-error" : "" ?>">
+                <?= $this->formLabel($marca); ?>
+                <?= $this->formElement($marca); ?>
+                <?= $message ?>
+            </div>
+
+            <div class="form-group<?= $message ? " has-error" : "" ?>">
+                <?= $this->formLabel($modelo); ?>
+                <?= $this->formElement($modelo); ?>
+                <?= $message ?>
+            </div>
+
+            <div class="form-group<?= $message ? " has-error" : "" ?>">
+                <?= $this->formLabel($ano); ?>
+                <?= $this->formElement($ano); ?>
+                <?= $message ?>
+            </div>
+
+            <div id='#fipe-div'style="display: none;" class="panel panel-default">
+                <div class="panel-heading">
+                    Dados Fipe
+                </div>
+                <div class="panel-body">
+                    <div class="row marketing">
+                        <div class="col-lg-6">
+                            <label>Codigo Fipe</label> - <span id="fipe-codigo"></span>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label>Marca</label> - <span id="fipe-marca"></span>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label>Modelo</label> - <span id="fipe-modelo"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>Ano</label> - <span id="fipe-ano"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>Valor</label> - <span id="fipe-valor"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions right">
+                <?php echo $this->formSubmit($submit); ?>
+            </div>
+
+            <?php echo $this->form()->closeTag(); ?>
+
+        </div>
+    </div>
+</div>
+
+
 <script>
 
     $(function () {
 
-        var $marca = $('#select-marca');
-        var $modelo = $('#select-modelo');
-        var $ano = $('#select-ano');
+        var marca = $('#select-marca');
+        var modelo = $('#select-modelo');
+        var ano = $('#select-ano');
 
-        $marca.change(function () {
+        marca.change(function () {
 
-            if ($marca.val() != '') {
+            if (marca.val() != '') {
                 $.ajax({
                     type: "POST",
                     url: "./get-modelo",
-                    data: { marca: $marca.val() },
+                    data: {marca: marca.val()},
                     success: function (result) {
                         console.log(result.modelos);
                         //                    var obj = jQuery.parseJSON( result.modelos );
                         //                    console.log(obj);
-                        $modelo.empty().append(function () {
+                        modelo.empty().append(function () {
                             var output = '';
                             $.each(result.modelos, function (key, value) {
                                 output += "<option value='" + key + "' >" + value + " </option>";
                             });
                             return output;
                         });
-                        $ano.empty();
+                        ano.empty();
                     }
                 });
 
@@ -116,18 +175,15 @@ $form->prepare();
 
         }).change();
 
-        $modelo.change(function () {
+        modelo.change(function () {
 
-            if ($marca.val() != '' && $modelo.val() != '') {
+            if (marca.val() != '' && modelo.val() != '') {
                 $.ajax({
-                        type: "POST",
-                        url: "./get-ano",
-                        data: { marca: $marca.val() , modelo: $modelo.val()},
+                    type: "POST",
+                    url: "./get-ano",
+                    data: {marca: marca.val(), modelo: modelo.val()},
                     success: function (result) {
-                        console.log(result.anos);
-                        //                    var obj = jQuery.parseJSON( result.modelos );
-                        //                    console.log(obj);
-                        $ano.empty().append(function () {
+                        ano.empty().append(function () {
                             var output = '';
                             $.each(result.anos, function (key, value) {
                                 output += "<option value='" + key + "' >" + value + " </option>";
@@ -142,21 +198,45 @@ $form->prepare();
         }).change();
 
 
-        $ano.change(function () {
+        ano.change(function () {
 
-            if ($marca.val() != '' && $modelo.val() != '' && $ano.val() != '') {
+            if (marca.val() != '' && modelo.val() != '' && ano.val() != '') {
                 $.ajax({
                     type: "POST",
                     url: "./get-veiculo",
-                    data: { marca: $marca.val() , modelo: $modelo.val(),ano: $ano.val()},
+                    data: {marca: marca.val(), modelo: modelo.val(), ano: ano.val()},
                     success: function (result) {
-                        console.log(result.veiculo);
+                        document.getElementById('#fipe-div').style.display = 'block';
+
+                        $('#fipe-codigo').empty().append(function () {
+                            return result.veiculo.CodigoFipe
+                        });
+
+                        $('#codigo-fipe').empty().append(function () {
+                            return result.veiculo.CodigoFipe
+                        });
+
+                        $('#fipe-marca').empty().append(function () {
+                            return result.veiculo.Marca
+                        });
+
+                        $('#fipe-modelo').empty().append(function () {
+                            return result.veiculo.Modelo
+                        });
+
+                        $('#fipe-ano').empty().append(function () {
+                            return result.veiculo.AnoModelo
+                        });
+
+                        $('#fipe-valor').empty().append(function () {
+                            return result.veiculo.Valor
+                        });
+
                     }
                 });
 
             }
 
         }).change();
-
     });
 </script>

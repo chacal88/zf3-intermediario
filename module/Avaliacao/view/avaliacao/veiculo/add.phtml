@@ -25,19 +25,21 @@ $form->prepare();
             <div class="mt-step-title uppercase font-grey-cascade">Veiculo</div>
             <div class="mt-step-content font-grey-cascade">Dados do veiculo</div>
         </div>
-        <div class="col-md-4 mt-step-col">
+        <div class="col-md-4 mt-step-col" href="<?= $this->url(\Avaliacao\Lib\Enum\RoutesEnum::AVALIACAO_VEICULO, ['action' => 'cliente']); ?>">
             <div class="mt-step-number bg-white">
                 <i class="fa fa-user"></i>
             </div>
             <div class="mt-step-title uppercase font-grey-cascade">Cliente</div>
-            <div class="mt-step-content font-grey-cascade">Dados do cliente</div>
+            <a class="mt-step-content font-grey-cascade"
+               href="<?= $this->url(\Avaliacao\Lib\Enum\RoutesEnum::AVALIACAO_VEICULO, ['action' => 'cliente']); ?>">Dados do cliente</a>
         </div>
-        <div class="col-md-4 mt-step-col last">
+        <div class="col-md-4 mt-step-col last" href="<?= $this->url(\Avaliacao\Lib\Enum\RoutesEnum::AVALIACAO_VEICULO, ['action' => 'fipe']); ?>">
             <div class="mt-step-number bg-white">
                 <i class="fa fa-rocket"></i>
             </div>
             <div class="mt-step-title uppercase font-grey-cascade">Fipe</div>
-            <div class="mt-step-content font-grey-cascade">Selecione tabela Fipe</div>
+            <a class="mt-step-content font-grey-cascade"
+               href="<?= $this->url(\Avaliacao\Lib\Enum\RoutesEnum::AVALIACAO_VEICULO, ['action' => 'fipe']); ?>">Selecione tabela Fipe</a>
         </div>
     </div>
 </div>

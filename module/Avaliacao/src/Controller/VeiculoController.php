@@ -138,40 +138,50 @@ class VeiculoController extends AbstractActionController
 
     public function clienteAction()
     {
-
-        $session = new Container('cadastro_veiculo');
-        $veiculo = $session->offsetGet('veiculo');
-//        \Zend\Debug\Debug::dump($session->offsetGet('veiculo'));
-
-        $cliente = new Cliente();
-        $cliente->setCpfCnpj($veiculo->getDocProprietario());
-
-        $cliente = $this->apiService->findPeople($cliente);
-
-//        \Zend\Debug\Debug::dump($session->offsetGet('veiculo'));
         $form = new ClienteForm();
-        $form->bind($cliente);
 
         $request = $this->getRequest();
-        if ($request->isPost()) {
 
-            $form->setData($request->getPost());
-//            if ($form->isValid()) {
-                return $this->redirect()->toRoute(RoutesEnum::AVALIACAO_VEICULO, ['action' => 'fipe']);
-//            }else{
-//                \Zend\Debug\Debug::dump($form->getMessages());
-//            }
+        if (!$request->isPost()) {
 
+            $session = new Container('cadastro_veiculo');
+
+            $veiculo = $session->offsetGet('veiculo');
+
+            $cliente = new Cliente();
+            $cliente->setCpfCnpj($veiculo->getDocProprietario());
+
+            $cliente = $this->apiService->findPeople($cliente);
+
+            $form->bind($cliente);
+
+            return [
+                'form' => $form,
+            ];
         }
 
-        return [
-            'form' => $form,
-        ];
+        $form->setData($request->getPost());
+
+        if (!$form->isValid()) {
+//            return ['form' => $form];
+        }
+
+        $cliente = new Cliente();
+        $cliente->exchangeArray($form->getData());
+
+        $session = new Container('cadastro_veiculo');
+        $session->offsetSet('cliente', $cliente);
+
+        return $this->redirect()->toRoute(RoutesEnum::AVALIACAO_VEICULO, ['action' => 'fipe']);
+
     }
 
     public function fipeAction()
     {
         $form = $this->fipeForm;
+
+        $session = new Container('cadastro_veiculo');
+        $veiculo = $session->offsetGet('veiculo');
 
         $request = $this->getRequest();
 
@@ -186,8 +196,20 @@ class VeiculoController extends AbstractActionController
 
             $form->get('marca')->setLabel('Selecione a marca:')->setEmptyOption('Selecione')->setValueOptions($selectMarcas);
 
-            return ['form' => $form];
+            return ['form' => $form, 'veiculo' => $veiculo];
         }
+
+        $form->setData($request->getPost());
+
+        if (!$form->isValid()) {
+//            return ['form' => $form];
+        }
+
+        \Zend\Debug\Debug::dump($request->getPost());exit;
+//        $cliente = new Cliente();
+//        $cliente->exchangeArray($form->getData());
+
+
     }
 
     public function getModeloAction()

@@ -6,7 +6,8 @@
                 <i class="fa fa-car"></i>
             </div>
             <div class="mt-step-title uppercase font-grey-cascade">Veiculo</div>
-            <div class="mt-step-content font-grey-cascade">Dados do veiculo</div>
+            <a class="mt-step-content font-grey-cascade"
+               href="<?= $this->url(\Avaliacao\Lib\Enum\RoutesEnum::AVALIACAO_VEICULO, ['action' => 'add']); ?>">Dados do veiculo</a>
         </div>
         <div class="col-md-4 mt-step-col active">
             <div class="mt-step-number bg-white">
@@ -20,7 +21,8 @@
                 <i class="fa fa-rocket"></i>
             </div>
             <div class="mt-step-title uppercase font-grey-cascade">Fipe</div>
-            <div class="mt-step-content font-grey-cascade">Selecione tabela Fipe</div>
+            <a class="mt-step-content font-grey-cascade"
+               href="<?= $this->url(\Avaliacao\Lib\Enum\RoutesEnum::AVALIACAO_VEICULO, ['action' => 'fipe']); ?>">Selecione tabela Fipe</a>
         </div>
     </div>
 </div>

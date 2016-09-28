@@ -47,10 +47,18 @@ class  FipeForm extends Form
         ]);
 
         $this->add([
+            'name' => 'codigofipe',
+            'type' => Element\Hidden::class,
+            'attributes' => [
+                'id' => 'codigo-fipe'
+            ]
+        ]);
+
+        $this->add([
             'name' => 'submit',
             'type' => Element\Submit::class,
             'attributes' => [
-                'value' => 'Próximo',
+                'value' => 'Finalizar',
                 'id' => 'submitbutton'
             ]
         ]);
