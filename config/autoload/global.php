@@ -12,11 +12,11 @@
  */
 
 return [
-    'db' => [
-        'driver'   => 'Pdo_Mysql',
-        'host' => '162.243.44.191',
-        'database' => 'avaliacao',
-        'username' => 'kaue',
-        'password' => '102030ka'
-    ]
+//    'db' => [
+//        'driver'   => 'Pdo_Mysql',
+//        'host' => '162.243.44.191',
+//        'database' => 'avaliacao',
+//        'username' => 'kaue',
+//        'password' => '102030ka'
+//    ]
 ];

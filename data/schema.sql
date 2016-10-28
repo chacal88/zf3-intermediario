@@ -1,3 +1,14 @@
+#./vendor/bin/doctrine-module orm:convert-mapping --filter="(Veiculos|Clientes|Enderecos|Telefones)" --from-database --namespace='Avaliacao\Entity\'  annotation module/Avaliacao/src/Entity
+#./vendor/bin/doctrine-module orm:generate:entities --filter='Avaliacao\\Entity' --generate-annotations --generate-methods -- module/Avaliacao/src/Entity
+
+#./vendor/bin/doctrine-module orm:convert-mapping --filter="Users" --from-database --namespace='User\Entity\'  annotation module/User/src/Entity
+#./vendor/bin/doctrine-module orm:generate:entities --filter='User\\Entity\\User' --generate-annotations --generate-methods -- module/User/src/Entity
+
+
+./vendor/bin/doctrine-module orm:convert-mapping --filter="(WebMotors)" --from-database --namespace='Avaliacao\Entity\'  annotation module/Avaliacao/src/Entity
+
+
+
 CREATE TABLE post ( id INTEGER PRIMARY KEY AUTOINCREMENT, title varchar(100) NOT NULL, content TEXT NOT NULL);
 insert into post(title, content) values('Post 1', 'Content 1');
 insert into post(title, content) values('Post 2', 'Content 2');

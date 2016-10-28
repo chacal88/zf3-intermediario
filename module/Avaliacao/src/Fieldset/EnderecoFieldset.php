@@ -1,11 +1,11 @@
 <?php
 namespace Avaliacao\Fieldset;
 
-use Avaliacao\Model\Endereco;
+use Avaliacao\Entity\Endereco;
 use Zend\Form\Element;
 use Zend\Form\Fieldset;
-use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
 use Zend\InputFilter\InputFilterProviderInterface;
+use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 class EnderecoFieldset extends Fieldset implements InputFilterProviderInterface
 {

@@ -1,7 +1,7 @@
 <?php
 namespace Avaliacao\Fieldset;
 
-use Avaliacao\Model\Telefone;
+use Avaliacao\Entity\Telefone;
 use Zend\Form\Element;
 use Zend\Form\Fieldset;
 use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
@@ -65,11 +65,11 @@ class TelefoneFieldset extends Fieldset implements InputFilterProviderInterface
                 'label' => 'delete',
             ],
             'attributes' => [
-                'value'=> 'Delete',
+                'value' => 'Delete',
                 'class' => 'btn btn-danger',
                 'onclick' => 'return remove_element(this)',
 //                'disabled'=>'true',
-                'id'=> 'delete'
+                'id' => 'delete'
             ]
         ]);
 

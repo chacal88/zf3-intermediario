@@ -1,0 +1,65 @@
+<div class="col-lg-6">
+    <label>Placa</label> - <span><?php echo $veiculo->getPlaca(); ?></span>
+</div>
+
+<div class="col-lg-6">
+    <label>Renavam</label> - <span><?php echo $veiculo->getRenavam(); ?></span>
+</div>
+
+<div class="col-lg-6">
+    <label>Marca</label> - <span><?php echo $veiculo->getMarca(); ?></span>
+</div>
+
+<div class="col-lg-6">
+    <label>Fabricação</label> - <span><?php echo $veiculo->getAno(); ?></span>
+</div>
+
+<div class="col-lg-6">
+    <label>Modelo</label> - <span><?php echo $veiculo->getModelo(); ?></span>
+</div>
+
+<div class="col-lg-6">
+    <label>Ano Modelo</label> - <span><?php echo $veiculo->getAnoModelo(); ?></span>
+</div>
+
+<div class="col-lg-12">
+    <label>Cor</label> - <span><?php echo $veiculo->getCor(); ?></span>
+</div>
+
+<?php if (count($veiculo->getDebitos()) > 0): ?>
+    <h4 style="margin-left: 10px;">Debitos</h4>
+    <?php foreach ($veiculo->getDebitos() as $key => $val): ?>
+        <hr style="margin: 10px">
+        <div class="col-lg-3">
+            <label>Identificação</label> - <span><?php echo $val->getClasse() ?></span>
+        </div>
+
+        <div class="col-lg-3">
+            <label>Numero Detrannet</label> - <span><?php echo $val->getNumeroDetrannet(); ?></span>
+        </div>
+        <div class="col-lg-6">
+            <label>Vencimento</label> - <span><?php echo $this->dateFormat(
+                    $val->getVencimento(),
+                    IntlDateFormatter::MEDIUM, // date
+                    IntlDateFormatter::NONE, // time
+                    "pt_BR"
+                ); ?></span>
+        </div>
+
+        <div class="col-lg-3">
+            <label>Juros</label> - <span><?php echo $this->currencyFormat($val->getJuros(), 'BRL', null, 'pt_BR');?></span>
+        </div>
+
+        <div class="col-lg-3">
+            <label>Multa</label> - <span><?php echo $this->currencyFormat($val->getMulta(), 'BRL', null, 'pt_BR');?></span>
+        </div>
+
+        <div class="col-lg-3">
+            <label>Valor Atual</label> - <span><?php echo $this->currencyFormat($val->getValorAtual(), 'BRL', null, 'pt_BR');?></span>
+        </div>
+
+        <div class="col-lg-3">
+            <label>Valor Nominal</label> - <span><?php echo $this->currencyFormat($val->getValorNominal(), 'BRL', null, 'pt_BR');?></span>
+        </div>
+    <?php endforeach; ?>
+<?php endif; ?>

@@ -4,18 +4,15 @@
 namespace Avaliacao\Controller;
 
 
+use Avaliacao\Entity\Cliente;
+use Avaliacao\Entity\Veiculo;
 use Avaliacao\Form\ClienteForm;
-use Avaliacao\Form\FipeForm;
 use Avaliacao\Form\VeiculoForm;
 use Avaliacao\Lib\Enum\RoutesEnum;
-use Avaliacao\Model\Cliente;
-use Avaliacao\Model\Veiculo;
-use Avaliacao\Model\VeiculoTable;
+use Avaliacao\Service\ApiDetranService;
 use Avaliacao\Service\ApiService;
-use Avaliacao\Service\FipeService;
+use Avaliacao\Service\VeiculoService;
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Session\Container;
-use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -26,18 +23,14 @@ class VeiculoController extends AbstractActionController
 {
 
     /**
-     * @var VeiculoTable
-     */
-    private $table;
-    /**
      * @var VeiculoForm
      */
-    private $form;
+    private $veiculoForm;
 
     /**
-     * @var FipeForm
+     * @var ClienteForm
      */
-    private $fipeForm;
+    private $clienteForm;
 
     /**
      * @var ApiService
@@ -45,29 +38,35 @@ class VeiculoController extends AbstractActionController
     private $apiService;
 
     /**
-     * @var FipeService
+     * @var VeiculoService
      */
-    private $fipeService;
+    private $veiculoService;
+    /**
+     * @var ApiDetranService
+     */
+    private $apiDetranService;
 
     /**
      * VeiculoController constructor.
-     * @param VeiculoTable $table
-     * @param VeiculoForm $form
+     * @param VeiculoForm $veiculoForm
+     * @param ClienteForm $clienteForm
+     * @param VeiculoService $veiculoService
      * @param ApiService $apiService
+     * @param ApiDetranService $apiDetranService
      */
     public function __construct(
-        VeiculoTable $table,
-        VeiculoForm $form,
-        FipeForm $fipeForm,
+        VeiculoForm $veiculoForm,
+        ClienteForm $clienteForm,
+        VeiculoService $veiculoService,
         ApiService $apiService,
-        FipeService $fipeService
-    )
+        ApiDetranService $apiDetranService)
     {
-        $this->table = $table;
-        $this->form = $form;
-        $this->fipeForm = $fipeForm;
+
+        $this->veiculoForm = $veiculoForm;
+        $this->clienteForm = $clienteForm;
+        $this->veiculoService = $veiculoService;
         $this->apiService = $apiService;
-        $this->fipeService = $fipeService;
+        $this->apiDetranService = $apiDetranService;
     }
 
     /**
@@ -75,30 +74,31 @@ class VeiculoController extends AbstractActionController
      */
     public function indexAction()
     {
-        $postTable = $this->table;
 
         return new ViewModel([
-            'veiculos' => $postTable->fetchAll()
+            'veiculos' => $this->veiculoService->findAll(Veiculo::class)
         ]);
     }
 
+    /**
+     * @return \Zend\Http\Response|ViewModel
+     */
     public function viewAction()
     {
         $id = (int)$this->params()->fromRoute('id', 0);
 
         if (!$id) {
-            return $this->redirect()->toRoute(RoutesEnum::AVALIACAO_VEICULO);
+            return $this->redirect()->toRoute(RoutesEnum::VEICULO);
         }
 
-        try {
-            $veiculo = $this->table->find($id);
-        } catch (\Exception $e) {
-            return $this->redirect()->toRoute(RoutesEnum::AVALIACAO_VEICULO);
+        $veiculo = $this->veiculoService->findOneBy(Veiculo::class, ['id' => $id]);
+
+        if ($veiculo == false) {
+            return $this->redirect()->toRoute(RoutesEnum::VEICULO);
         }
 
         return new ViewModel([
             'veiculo' => $veiculo,
-            'commentForm' => ''
         ]);
     }
 
@@ -108,9 +108,7 @@ class VeiculoController extends AbstractActionController
     public function addAction()
     {
 
-
-        $form = $this->form;
-
+        $form = $this->veiculoForm;
         $request = $this->getRequest();
 
         if (!$request->isPost()) {
@@ -123,190 +121,80 @@ class VeiculoController extends AbstractActionController
             return ['form' => $form];
         }
 
-        $veiculo = new Veiculo();
-        $veiculo->exchangeArray($form->getData());
+        /** @var Veiculo $veiculo */
+        $veiculo = $form->getData();
+
+        if ($this->veiculoService->findOneBy(Veiculo::class, ['placa' => $veiculo->getPlaca()])) {
+            return $this->redirect()->toRoute(RoutesEnum::VEICULO, ['action' => 'view', 'id' => $veiculo->getId()]);
+        }
+
         $veiculo = $this->apiService->findCar($veiculo);
 
         if (null === $veiculo->getRenavam()) {
             return ['form' => $form];
         }
-        $session = new Container('cadastro_veiculo');
-        $session->offsetSet('veiculo', $veiculo);
 
-        return $this->redirect()->toRoute(RoutesEnum::AVALIACAO_VEICULO, ['action' => 'cliente']);
-    }
+        $veiculo = $this->veiculoService->save($veiculo);
 
-    public function clienteAction()
-    {
-        $form = new ClienteForm();
+        $veiculoBot = $this->apiDetranService->insertVeiculo($veiculo);
 
-        $request = $this->getRequest();
+        if (empty($veiculoBot['id'])) {
 
-        if (!$request->isPost()) {
+            $veiculo = $this->veiculoService->delete($veiculo);
 
-            $session = new Container('cadastro_veiculo');
-
-            $veiculo = $session->offsetGet('veiculo');
-
-            $cliente = new Cliente();
-            $cliente->setCpfCnpj($veiculo->getDocProprietario());
-
-            $cliente = $this->apiService->findPeople($cliente);
-
-            $form->bind($cliente);
-
-            return [
-                'form' => $form,
-            ];
+            //TODO criar validacao pra exibir na view
+            throw new \InvalidArgumentException('Não foi possivel se comunicar com Detran.', 500);
         }
 
-        $form->setData($request->getPost());
+        $veiculo->setIdBot($veiculoBot['id']);
 
-        if (!$form->isValid()) {
-//            return ['form' => $form];
-        }
+        $veiculo = $this->veiculoService->update($veiculo);
 
-        $cliente = new Cliente();
-        $cliente->exchangeArray($form->getData());
-
-        $session = new Container('cadastro_veiculo');
-        $session->offsetSet('cliente', $cliente);
-
-        return $this->redirect()->toRoute(RoutesEnum::AVALIACAO_VEICULO, ['action' => 'fipe']);
-
-    }
-
-    public function fipeAction()
-    {
-        $form = $this->fipeForm;
-
-        $session = new Container('cadastro_veiculo');
-        $veiculo = $session->offsetGet('veiculo');
-
-        $request = $this->getRequest();
-
-        if (!$request->isPost()) {
-
-            $marca = $this->fipeService->getMarcas();
-
-            $selectMarcas = array();
-            for ($i = 0; $i < count($marca); $i++) {
-                $selectMarcas[$marca[$i]['codigo']] = $marca[$i]['nome'];
-            }
-
-            $form->get('marca')->setLabel('Selecione a marca:')->setEmptyOption('Selecione')->setValueOptions($selectMarcas);
-
-            return ['form' => $form, 'veiculo' => $veiculo];
-        }
-
-        $form->setData($request->getPost());
-
-        if (!$form->isValid()) {
-//            return ['form' => $form];
-        }
-
-        \Zend\Debug\Debug::dump($request->getPost());exit;
-        
-//        $cliente = new Cliente();
-//        $cliente->exchangeArray($form->getData());
-
-
-    }
-
-    public function getModeloAction()
-    {
-        $marca = (int)$this->params()->fromPost('marca', 0);
-
-        $modelo = $this->fipeService->getModelos($marca);
-
-        $selectModelos = array();
-        for ($i = 0; $i < count($modelo); $i++) {
-            $selectModelos[$modelo[$i]['codigo']] = $modelo[$i]['nome'];
-        }
-
-        return new JsonModel([
-            'modelos' => $selectModelos
-        ]);
-    }
-
-    public function getAnoAction()
-    {
-        $marca = (int)$this->params()->fromPost('marca', 0);
-        $modelo = (int)$this->params()->fromPost('modelo', 0);
-
-        $anos = $this->fipeService->getAnos($marca, $modelo);
-
-        $selectAnos = array();
-        for ($i = 0; $i < count($anos); $i++) {
-            $selectAnos[$anos[$i]['codigo']] = $anos[$i]['nome'];
-        }
-
-        return new JsonModel([
-            'anos' => $selectAnos
-        ]);
-    }
-
-    public function getVeiculoAction()
-    {
-        $marca = $this->params()->fromPost('marca', 0);
-        $modelo = $this->params()->fromPost('modelo', 0);
-        $ano = $this->params()->fromPost('ano', 0);
-
-        $veiculo = $this->fipeService->getVeiculo($marca, $modelo, $ano);
-
-//        \Zend\Debug\Debug::dump($veiculos);
-//
-//
-//        $selectVeiculos = array();
-//        for ($i = 0; $i < count($veiculos); $i++) {
-//            $selectVeiculos[$veiculos[$i]['codigo']] = $veiculos[$i]['nome'];
-//        }
-
-        return new JsonModel([
-            'veiculo' => $veiculo
-        ]);
+        return $this->redirect()->toRoute(RoutesEnum::VEICULO, ['action' => 'cliente', 'id' => $veiculo->getId()]);
     }
 
     /**
      * @return array|\Zend\Http\Response
      */
-    public function editAction()
+    public function clienteAction()
     {
-        $id = (int)$this->params()->fromRoute('id', 0);
 
-        if (!$id) {
-            return $this->redirect()->toRoute(RoutesEnum::AVALIACAO_VEICULO);
+        $veiculoId = $this->params()->fromRoute('id', 0);
+
+        /** @var Veiculo $veiculo */
+        if (!$veiculoId || !($veiculo = $this->veiculoService->findOneBy(Veiculo::class, ['id' => $veiculoId]))) {
+            return $this->redirect()->toRoute(RoutesEnum::VEICULO);
         }
 
-        try {
-            $veiculo = $this->table->find($id);
-        } catch (\Exception $e) {
-            return $this->redirect()->toRoute(RoutesEnum::AVALIACAO_VEICULO);
-        }
-
-        $form = $this->form;
-        $form->bind($veiculo);
-
+        $form = $this->clienteForm;
         $request = $this->getRequest();
 
         if (!$request->isPost()) {
+
+            $cliente = $veiculo->getCliente();
+
+            if (empty($cliente) && !($cliente = $this->veiculoService->findOneBy(Cliente::class, ['cpfCnpj' => $veiculo->getProprietarioDoc()]))) {
+                $cliente = $this->apiService->findByDoc($veiculo->getProprietarioDoc());
+            }
+            $form->bind($cliente);
             return [
-                'id' => $id,
-                'form' => $form
+                'form' => $form,
+                'veiculoId' => $veiculoId
             ];
         }
 
         $form->setData($request->getPost());
+        $form->isValid();
 
-        if (!$form->isValid()) {
-            return [
-                'id' => $id,
-                'form' => $form
-            ];
-        }
+        $cliente = new Cliente();
+        $cliente->hydrate($form->getData()['cliente']);
 
-        $this->table->save($veiculo);
-        return $this->redirect()->toRoute(RoutesEnum::AVALIACAO_VEICULO);
+        $veiculo->setCliente($cliente);
+
+        $this->veiculoService->update($veiculo);
+
+        return $this->redirect()->toRoute(RoutesEnum::VEICULO);
+
     }
 
     /**
@@ -316,11 +204,17 @@ class VeiculoController extends AbstractActionController
     {
         $id = (int)$this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute(RoutesEnum::AVALIACAO_VEICULO);
+            return $this->redirect()->toRoute(RoutesEnum::VEICULO);
         }
 
-        $this->table->delete($id);
-        return $this->redirect()->toRoute(RoutesEnum::AVALIACAO_VEICULO);
+        $veiculo = $this->veiculoService->findOneBy(Veiculo::class, ['id' => $id]);
+
+        if ($veiculo == false) {
+            return $this->redirect()->toRoute(RoutesEnum::VEICULO);
+        }
+        $this->veiculoService->delete($veiculo);
+
+        return $this->redirect()->toRoute(RoutesEnum::VEICULO);
 
     }
 

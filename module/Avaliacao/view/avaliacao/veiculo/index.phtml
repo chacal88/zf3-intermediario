@@ -63,11 +63,15 @@
                             <td><?= $this->escapeHtml($veiculo->getCor()); ?></td>
                             <td>
                                 <a class="btn btn-info btn-sm"
-                                   href="<?= $this->url(RoutesEnum::AVALIACAO_VEICULO, ['action' => 'view', 'id' => $veiculo->getId()]); ?>">
+                                   href="<?= $this->url(RoutesEnum::VEICULO, ['action' => 'view', 'id' => $veiculo->getId()]); ?>">
                                     Visualizar
                                 </a>
+                                <a class="btn btn-info btn-sm"
+                                   href="<?= $this->url(RoutesEnum::WEBMOTORS, ['action' => 'avaliar', 'id' => $veiculo->getId()]); ?>">
+                                    Avaliar
+                                </a>
                                 <a class="btn btn-danger btn-sm" data-toggle="confirmation"
-                                   href="<?= $this->url(RoutesEnum::AVALIACAO_VEICULO, ['action' => 'delete', 'id' => $veiculo->getId()]); ?>">
+                                   href="<?= $this->url(RoutesEnum::VEICULO, ['action' => 'delete', 'id' => $veiculo->getId()]); ?>">
                                     Deletar
                                 </a>
                             </td>

@@ -12,7 +12,7 @@
  */
 return [
     'ZendDeveloperTools',
-    //'Zend\I18n',
+    'Zend\I18n',
     'Zend\InputFilter',
     'Zend\Filter',
     'Zend\Hydrator',
@@ -24,11 +24,13 @@ return [
     'Zend\Mvc\Console',
     'Zend\Log',
     'Zend\Form',
-    'Zend\Db',
+//    'Zend\Db',
     'Zend\Router',
     'Zend\Validator',
+    'DoctrineModule',
+    'DoctrineORMModule',
     'Application',
-    'Blog',
+    'Common',
     'User',
     'Avaliacao'
 ];

@@ -4,9 +4,10 @@
 namespace Avaliacao\Controller;
 
 
-use Avaliacao\Model\VeiculoTable;
-use Avaliacao\Service\FipeService;
-use JansenFelipe\FipeGratis\FipeGratis;
+use Avaliacao\Entity\Debito;
+use Avaliacao\Entity\Veiculo;
+use Avaliacao\Service\VeiculoService;
+use Zend\Hydrator\ClassMethods;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
 
@@ -18,30 +19,33 @@ class ApiVeiculoController extends AbstractRestfulController
 {
 
     /**
-     * @var VeiculoTable
+     * @var VeiculoService
      */
-    private $table;
+    private $veiculoService;
 
 
-    private $fipeService;
-
-    public function __construct(VeiculoTable $table, FipeService $fipeService)
+    public function __construct(VeiculoService $veiculoService)
     {
-        $this->table = $table;
-
-        $this->fipeService = $fipeService;
+        $this->veiculoService = $veiculoService;
     }
 
-    public function getList()
+    public function update($id, $data)
     {
 
-        $marca = $this->fipeService->getModelos(23);
+        $veiculo = $this->veiculoService->findOneBy(Veiculo::class, ['id' => $id]);
+
+        /** @var Veiculo $veiculo */
+        if (! $veiculo ) {
+            return new JsonModel(['status' => 'erro', 'menssage'=>'Veiculo não localizado']);
+        }
+
+        $veiculo->hydrate($data['data']);
+        $veiculo = $this->veiculoService->update($veiculo);
+
+        $hydrator = new ClassMethods();
+        $data = $hydrator->extract($veiculo);
 
 
-
-        return new JsonModel([
-            'marca' => $marca
-        ]);
-
+        return new JsonModel(['status' => 'ok', 'data' => $data]);
     }
 }

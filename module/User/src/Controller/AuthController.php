@@ -2,6 +2,7 @@
 
 namespace User\Controller;
 
+use Avaliacao\Lib\Enum\RoutesEnum;
 use User\Form\LoginForm;
 use Zend\Authentication\AuthenticationServiceInterface;
 use Zend\Authentication\Adapter\DbTable\CallbackCheckAdapter;
@@ -23,7 +24,7 @@ class AuthController extends AbstractActionController
     public function loginAction()
     {
         if ($this->authService->hasIdentity()) {
-            return $this->redirect()->toRoute('admin-blog/post');
+            return $this->redirect()->toRoute(RoutesEnum::VEICULO);
         }
 
         // Get the "layout" view model and set an alternate template
@@ -45,7 +46,7 @@ class AuthController extends AbstractActionController
 
                 $result = $this->authService->authenticate();
                 if ($result->isValid()) {
-                    return $this->redirect()->toRoute('admin-blog/post');
+                    return $this->redirect()->toRoute(RoutesEnum::VEICULO);
                 } else {
                     $messageError = "Login Inválido!";
                 }

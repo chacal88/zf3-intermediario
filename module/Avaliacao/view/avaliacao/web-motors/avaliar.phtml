@@ -1,0 +1,243 @@
+<h1>Avaliação WebMotors</h1>
+<?php
+
+$marca = $form->get('marca');
+$marca->setAttribute('class', 'form-control')
+    ->setLabelAttributes(['class' => 'control-label']);
+
+$modelo = $form->get('modelo');
+$modelo->setAttribute('class', 'form-control')
+    ->setLabel('Selecione o modelo')
+    ->setLabelAttributes(['class' => 'control-label']);
+
+$ano = $form->get('ano');
+$ano->setAttribute('class', 'form-control')
+    ->setLabel('Selecione o Ano')
+    ->setLabelAttributes(['class' => 'control-label']);
+
+$veiculos = $form->get('veiculos');
+$veiculos->setAttribute('class', 'form-control')
+    ->setLabel('Selecione o Veiculo')
+    ->setLabelAttributes(['class' => 'control-label']);
+
+
+$submit = $form->get('submit');
+$submit->setAttribute('class', 'btn btn-success');
+
+$form->setAttribute('action', $this->url(Avaliacao\Lib\Enum\RoutesEnum::WEBMOTORS, ['action' => 'avaliar','id' => $id]));
+$form->prepare();
+?>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Dados do veiculo</h3>
+    </div>
+    <div class="panel-body">
+        <div class="row marketing">
+            <?= $this->partial('veiculo/label', ['veiculo' => $veiculo]); ?>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Tabela WebMotors</h3>
+    </div>
+    <div class="panel-body">
+        <div class="portlet-body form">
+
+            <?php echo $this->form()->openTag($form); ?>
+
+            <?php $message = $this->formElementErrors($marca, ['class' => 'help-block']); ?>
+
+            <div class="form-group<?= $message ? " has-error" : "" ?>">
+                <?= $this->formLabel($marca); ?>
+                <?= $this->formElement($marca); ?>
+                <?= $message ?>
+            </div>
+
+            <div class="form-group<?= $message ? " has-error" : "" ?>">
+                <?= $this->formLabel($modelo); ?>
+                <?= $this->formElement($modelo); ?>
+                <?= $message ?>
+            </div>
+
+            <div class="form-group<?= $message ? " has-error" : "" ?>">
+                <?= $this->formLabel($ano); ?>
+                <?= $this->formElement($ano); ?>
+                <?= $message ?>
+            </div>
+
+            <div class="form-group<?= $message ? " has-error" : "" ?>">
+                <?= $this->formLabel($veiculos); ?>
+                <?= $this->formElement($veiculos); ?>
+                <?= $message ?>
+            </div>
+
+            <div id='#webmotors-div'style="display: none;" class="panel panel-default">
+                <div class="panel-heading">
+                    Dados WebMotors
+                </div>
+                <div class="panel-body">
+                    <div class="row marketing">
+                        <div class="col-lg-6">
+                            <label>Marca</label> - <span id="campo_marca"></span>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label>Modelo</label> - <span id="campo_modelo"></span>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label>Ano</label> - <span id="campo_ano"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>Cor</label> - <span id="campo_cor"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>Versão</label> - <span id="campo_versao"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>preco</label> - <span id="campo_preco"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>KM</label> - <span id="campo_km"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>Fipe</label> - <span id="campo_fipe"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions right">
+                <?php
+                    echo $this->formHidden($form->get('codigo'));
+                    echo $this->formSubmit($submit);
+                ?>
+            </div>
+
+            <?php echo $this->form()->closeTag(); ?>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    $(function () {
+
+        var marca = $('#select-marca');
+        var modelo = $('#select-modelo');
+        var ano = $('#select-ano');
+        var veiculos = $('#select-veiculos');
+
+        marca.change(function () {
+
+            if (marca.val() != '') {
+                $.ajax({
+                    type: "POST",
+                    url: "../get-modelos",
+                    data: {marca: marca.val()},
+                    success: function (result) {
+                        console.log(result.modelos);
+                        //                    var obj = jQuery.parseJSON( result.modelos );
+                        //                    console.log(obj);
+                        modelo.empty().append(function () {
+                            var output = "<option>Selecione</option>";
+                            $.each(result.modelos, function (key, value) {
+                                output += "<option value='" + value.modelo + "' >" + value.modelo + " </option>";
+                            });
+                            return output;
+                        });
+                        ano.empty();
+                    }
+                });
+
+            }
+
+        }).change();
+
+        modelo.change(function () {
+
+            if (marca.val() != '' && modelo.val() != '') {
+                $.ajax({
+                    type: "POST",
+                    url: "../get-anos",
+                    data: {marca: marca.val(), modelo: modelo.val()},
+                    success: function (result) {
+                        ano.empty().append(function () {
+                            var output = "<option>Selecione</option>";
+                            $.each(result.anos, function (key, value) {
+                                output += "<option value='" + value.ano + "' >" + value.ano + " </option>";
+                            });
+                            return output;
+                        });
+                    }
+                });
+
+            }
+
+        }).change();
+
+
+        ano.change(function () {
+
+            if (marca.val() != '' && modelo.val() != '' && ano.val() != '') {
+                $.ajax({
+                    type: "POST",
+                    url: "../get-veiculos",
+                    data: {marca: marca.val(), modelo: modelo.val(), ano: ano.val()},
+                    success: function (result) {
+                        veiculos.empty().append(function () {
+                            var output = "<option>Selecione</option>";
+                            $.each(result.veiculos, function (key, value) {
+                                output += "<option value='" + key + "' >" + value + " </option>";
+                            });
+                            return output;
+                        });
+                    }
+                });
+            }
+        }).change();
+
+        veiculos.change(function () {
+
+            $.ajax({
+                type: "POST",
+                url: "../get-veiculo",
+                data: {id: veiculos.val()},
+                success: function (result) {
+                    veiculos.append(function () {
+                        document.getElementById('#webmotors-div').style.display = 'block';
+
+                        $('#campo_marca').empty().append(function () {
+                            return result.webmotors.marca
+                        });
+                        $('#campo_modelo').empty().append(function () {
+                            return result.webmotors.modelo
+                        });
+                        $('#campo_cor').empty().append(function () {
+                            return result.webmotors.cor
+                        });
+                        $('#campo_versao').empty().append(function () {
+                            return result.webmotors.versao
+                        });
+                        $('#campo_preco').empty().append(function () {
+                            return result.webmotors.preco
+                        });
+                        $('#campo_km').empty().append(function () {
+                            return result.webmotors.km
+                        });
+                        $('#campo_fipe').empty().append(function () {
+                            return result.webmotors.fipe
+                        });
+                    });
+                }
+            });
+        }).change();
+    });
+</script>

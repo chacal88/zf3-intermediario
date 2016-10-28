@@ -3,8 +3,8 @@
 namespace Avaliacao\Service;
 
 use Avaliacao\Lib\Enum\DataWashEnum;
-use Avaliacao\Model\Cliente;
-use Avaliacao\Model\Veiculo;
+use Avaliacao\Entity\Cliente;
+use Avaliacao\Entity\Veiculo;
 use Zend\Http\Client;
 use Zend\Http\Request;
 
@@ -59,15 +59,32 @@ class ApiService
         if ($response->isSuccess()) {
 
             $result = json_decode($response->getContent(), true);
-            $veiculo->exchangeApi($result);
+            if($result != null){
+
+                $veiculo->exchangeApi($result);
+            }
         }
 
         return $veiculo;
     }
 
-    public function findPeople(Cliente $cliente)
+    public function findByDoc($doc)
     {
-        $soap = "http://webservice.datawash.com.br/localizacao.asmx/ConsultaCPFCompleta?Cliente=neoshare&Usuario=*&Senha=neoshare2015&CPF=" . $cliente->getCpfCnpj();
+        $numeros = preg_replace('/[^0-9]/', '', $doc);
+
+        if (strlen($numeros) <= 11) {
+            $cliente = $this->findCpf($doc);
+        } elseif (strlen($numeros) > 11) {
+            $cliente = $this->findCnpj($doc);
+        }
+
+        return $cliente;
+    }
+
+    public function findCpf($doc)
+    {
+
+        $soap = "http://webservice.datawash.com.br/localizacao.asmx/ConsultaCPFCompleta?Cliente=neoshare&Usuario=*&Senha=neoshare2015&CPF=" . $doc;
 
         $this->request->setUri($soap);
         $this->request->setMethod(Request::METHOD_GET);
@@ -76,9 +93,28 @@ class ApiService
         $response = $this->client->send($this->request);
 
         if ($response->isSuccess()) {
-            $result  = simplexml_load_string($response->getBody());
-//            \Zend\Debug\Debug::dump($result);
-            $cliente->exchangeApi($result);
+            $result = simplexml_load_string($response->getBody());
+            $cliente = new Cliente();
+            $cliente->exchangeApiCpf($result);
+            return $cliente;
+        }
+    }
+
+    public function findCnpj($doc)
+    {
+
+        $soap = "http://webservice.datawash.com.br/localizacao.asmx/ConsultaCNPJ?Cliente=neoshare&Usuario=*&Senha=neoshare2015&CNPJ=" . $doc;
+
+        $this->request->setUri($soap);
+        $this->request->setMethod(Request::METHOD_GET);
+
+        $this->client->setOptions(array('timeout' => 300));
+        $response = $this->client->send($this->request);
+
+        if ($response->isSuccess()) {
+            $result = simplexml_load_string($response->getBody());
+            $cliente = new Cliente();
+            $cliente->exchangeApiCnpj($result);
 
             return $cliente;
         }

@@ -1,3 +1,4 @@
+<?php  use \Avaliacao\Lib\Enum\RoutesEnum;?>
 <h1>Cadastrar Veiculo</h1>
 <div class="mt-element-step">
     <div class="row step-line">
@@ -7,7 +8,7 @@
             </div>
             <div class="mt-step-title uppercase font-grey-cascade">Veiculo</div>
             <a class="mt-step-content font-grey-cascade"
-               href="<?= $this->url(\Avaliacao\Lib\Enum\RoutesEnum::AVALIACAO_VEICULO, ['action' => 'add']); ?>">Dados do veiculo</a>
+               href="<?= $this->url(RoutesEnum::VEICULO, ['action' => 'add']); ?>">Dados do veiculo</a>
         </div>
         <div class="col-md-4 mt-step-col active">
             <div class="mt-step-number bg-white">
@@ -22,12 +23,12 @@
             </div>
             <div class="mt-step-title uppercase font-grey-cascade">Fipe</div>
             <a class="mt-step-content font-grey-cascade"
-               href="<?= $this->url(\Avaliacao\Lib\Enum\RoutesEnum::AVALIACAO_VEICULO, ['action' => 'fipe']); ?>">Selecione tabela Fipe</a>
+               href="<?= $this->url(RoutesEnum::VEICULO, ['action' => 'fipe']); ?>">Selecione tabela Fipe</a>
         </div>
     </div>
 </div>
 <?php
-$form->setAttribute('action', $this->url(Avaliacao\Lib\Enum\RoutesEnum::AVALIACAO_VEICULO, ['action' => 'cliente']));
+$form->setAttribute('action', $this->url(RoutesEnum::VEICULO, ['action' => 'cliente','id'=>$this->veiculoId]));
 
 $form->prepare();
 ?>
@@ -39,6 +40,15 @@ $form->prepare();
         $cliente = $form->get('cliente');
     ?>
 
+    <?php $message = $this->formElementErrors($cliente->get('tipo'), ['class' => 'help-block']); ?>
+
+    <div class="form-group<?= $message ? " has-error" : "" ?>">
+        <?= $this->formLabel($cliente->get('tipo')); ?>
+        <br>
+        <?= $this->formElement($cliente->get('tipo')); ?>
+        <?= $message ?>
+    </div>
+
     <?php $message = $this->formElementErrors($cliente->get('nome'), ['class' => 'help-block']); ?>
 
     <div class="form-group<?= $message ? " has-error" : "" ?>">
@@ -46,6 +56,7 @@ $form->prepare();
         <?= $this->formElement($cliente->get('nome')); ?>
         <?= $message ?>
     </div>
+
 
     <?php $message = $this->formElementErrors($cliente->get('cpfCnpj'), ['class' => 'help-block']); ?>
 
@@ -63,20 +74,24 @@ $form->prepare();
         <?= $message ?>
     </div>
 
-    <?php $message = $this->formElementErrors($cliente->get('sexo'), ['class' => 'help-block']); ?>
+    <?php if ($cliente->get('tipo')->getValue()  == 'Fisica'): ?>
+        <?php $message = $this->formElementErrors($cliente->get('sexo'), ['class' => 'help-block']); ?>
+
+        <div class="form-group<?= $message ? " has-error" : "" ?>">
+            <?= $this->formLabel($cliente->get('sexo')); ?>
+            <br>
+            <?= $this->formElement($cliente->get('sexo')); ?>
+            <?= $message ?>
+        </div>
+    <?php endif; ?>
+
+
+
+    <?php $message = $this->formElementErrors($cliente->get('data'), ['class' => 'help-block']); ?>
 
     <div class="form-group<?= $message ? " has-error" : "" ?>">
-        <?= $this->formLabel($cliente->get('sexo')); ?>
-        <br>
-        <?= $this->formElement($cliente->get('sexo')); ?>
-        <?= $message ?>
-    </div>
-
-    <?php $message = $this->formElementErrors($cliente->get('dataNascimento'), ['class' => 'help-block']); ?>
-
-    <div class="form-group<?= $message ? " has-error" : "" ?>">
-        <?= $this->formLabel($cliente->get('dataNascimento')); ?>
-        <?= $this->formElement($cliente->get('dataNascimento')); ?>
+        <?= $this->formLabel($cliente->get('data')); ?>
+        <?= $this->formElement($cliente->get('data')); ?>
         <?= $message ?>
     </div>
 
@@ -92,7 +107,10 @@ $form->prepare();
     </div>
 
     <div class="form-actions right">
-        <?php echo $this->formSubmit($form->get('submit')); ?>
+        <?php
+            echo $this->formHidden($cliente->get('id'));
+            echo $this->formSubmit($form->get('submit'));
+        ?>
     </div>
 
     <?php

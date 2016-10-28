@@ -1,16 +1,16 @@
 <h1>Cadastrar Veiculo</h1>
 <?php
 
-$marca = $form->get('marca');
+$marca = $form->get('marcaFipe');
 $marca->setAttribute('class', 'form-control')
     ->setLabelAttributes(['class' => 'control-label']);
 
-$modelo = $form->get('modelo');
+$modelo = $form->get('modeloFipe');
 $modelo->setAttribute('class', 'form-control')
     ->setLabel('Selecione o modelo')
     ->setLabelAttributes(['class' => 'control-label']);
 
-$ano = $form->get('ano');
+$ano = $form->get('anoFipe');
 $ano->setAttribute('class', 'form-control')
     ->setLabel('Selecione o Ano')
     ->setLabelAttributes(['class' => 'control-label']);
@@ -18,7 +18,7 @@ $ano->setAttribute('class', 'form-control')
 $submit = $form->get('submit');
 $submit->setAttribute('class', 'btn btn-success');
 
-$form->setAttribute('action', $this->url(Avaliacao\Lib\Enum\RoutesEnum::AVALIACAO_VEICULO, ['action' => 'fipe']));
+$form->setAttribute('action', $this->url(Avaliacao\Lib\Enum\RoutesEnum::VEICULO, ['action' => 'fipe','id' => $veiculo->getId()]));
 $form->prepare();
 ?>
 
@@ -30,7 +30,7 @@ $form->prepare();
             </div>
             <div class="mt-step-title uppercase font-grey-cascade">Veiculo</div>
             <a class="mt-step-content font-grey-cascade"
-               href="<?= $this->url(\Avaliacao\Lib\Enum\RoutesEnum::AVALIACAO_VEICULO, ['action' => 'add']); ?>">Dados do veiculo</a>
+               href="<?= $this->url(\Avaliacao\Lib\Enum\RoutesEnum::VEICULO, ['action' => 'add']); ?>">Dados do veiculo</a>
         </div>
         <div class="col-md-4 mt-step-col active">
             <div class="mt-step-number bg-white">
@@ -38,7 +38,7 @@ $form->prepare();
             </div>
             <div class="mt-step-title uppercase font-grey-cascade">Cliente</div>
             <a class="mt-step-content font-grey-cascade"
-               href="<?= $this->url(\Avaliacao\Lib\Enum\RoutesEnum::AVALIACAO_VEICULO, ['action' => 'cliente']); ?>">Dados do cliente</a>
+               href="<?= $this->url(\Avaliacao\Lib\Enum\RoutesEnum::VEICULO, ['action' => 'cliente']); ?>">Dados do cliente</a>
         </div>
         <div class="col-md-4 mt-step-col active last">
             <div class="mt-step-number bg-white">
@@ -132,7 +132,7 @@ $form->prepare();
 
             <div class="form-actions right">
                 <?php
-                    echo $this->formHidden($form->get('codigofipe'));
+                    echo $this->formHidden($form->get('codigoFipe'));
                     echo $this->formSubmit($submit);
                 ?>
             </div>
@@ -157,7 +157,7 @@ $form->prepare();
             if (marca.val() != '') {
                 $.ajax({
                     type: "POST",
-                    url: "./get-modelo",
+                    url: "../get-modelo",
                     data: {marca: marca.val()},
                     success: function (result) {
                         console.log(result.modelos);
@@ -183,7 +183,7 @@ $form->prepare();
             if (marca.val() != '' && modelo.val() != '') {
                 $.ajax({
                     type: "POST",
-                    url: "./get-ano",
+                    url: "../get-ano",
                     data: {marca: marca.val(), modelo: modelo.val()},
                     success: function (result) {
                         ano.empty().append(function () {
@@ -206,12 +206,14 @@ $form->prepare();
             if (marca.val() != '' && modelo.val() != '' && ano.val() != '') {
                 $.ajax({
                     type: "POST",
-                    url: "./get-veiculo",
+                    url: "../get-veiculo",
                     data: {marca: marca.val(), modelo: modelo.val(), ano: ano.val()},
                     success: function (result) {
                         document.getElementById('#fipe-div').style.display = 'block';
 
-                        $('#codigo-fipe').val(result.veiculo.CodigoFipe);
+                        $('#fipe-codigo').val(result.veiculo.CodigoFipe);
+
+                        $('#codigofipe').val(result.veiculo.CodigoFipe);
 
                         $('#fipe-marca').empty().append(function () {
                             return result.veiculo.Marca

@@ -6,6 +6,7 @@ use Avaliacao\Controller\ApiVeiculoController;
 use Avaliacao\Model\VeiculoTable;
 use Avaliacao\Service\FipeService;
 use Avaliacao\Service\ICarrosFipeService;
+use Avaliacao\Service\VeiculoService;
 use Interop\Container\ContainerInterface;
 
 class ApiVeiculoControllerFactory
@@ -13,12 +14,9 @@ class ApiVeiculoControllerFactory
 
     public function __invoke(ContainerInterface $container)
     {
-        $veiculoTable = $container->get(VeiculoTable::class);
+        $veiculoService = $container->get(VeiculoService::class);
 
-        
-        $fipeService = $container->get(ICarrosFipeService::class);
-
-        return new ApiVeiculoController($veiculoTable, $fipeService);
+        return new ApiVeiculoController($veiculoService);
     }
 
 }

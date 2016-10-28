@@ -15,7 +15,7 @@ class  FipeForm extends Form
         parent::__construct('fipe');
 
         $this->add([
-            'name' => 'marca',
+            'name' => 'marcaFipe',
             'type' => Element\Select::class,
             'attributes' => [
                 'id' => 'select-marca'
@@ -23,7 +23,7 @@ class  FipeForm extends Form
         ]);
 
         $this->add([
-            'name' => 'modelo',
+            'name' => 'modeloFipe',
             'type' => Element\Select::class,
             'attributes' => [
                 'id' => 'select-modelo'
@@ -31,7 +31,7 @@ class  FipeForm extends Form
         ]);
 
         $this->add([
-            'name' => 'ano',
+            'name' => 'anoFipe',
             'type' => Element\Select::class,
             'attributes' => [
                 'id' => 'select-ano'
@@ -39,7 +39,7 @@ class  FipeForm extends Form
         ]);
 
         $this->add([
-            'name' => 'veiculos',
+            'name' => 'veiculo',
             'type' => Element\Select::class,
             'attributes' => [
                 'id' => 'select-veiculo'
@@ -47,10 +47,10 @@ class  FipeForm extends Form
         ]);
 
         $this->add([
-            'name' => 'codigofipe',
+            'name' => 'codigoFipe',
             'type' => Element\Hidden::class,
             'attributes' => [
-                'id' => 'codigo-fipe'
+                'id' => 'codigofipe'
             ]
         ]);
 

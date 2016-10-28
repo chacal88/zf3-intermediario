@@ -25,39 +25,13 @@
             <li class="nav-item">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-home"></i>
-                    <span class="title">Usuarios</span>
-                    <span class="selected"></span>
-                    <span class="arrow"></span>
-                </a>
-                <ul class="sub-menu">
-                    <li class="nav-item">
-                        <a href="<?= $this->url(\Avaliacao\Lib\Enum\RoutesEnum::AVALIACAO_USER, ['action' => 'index']); ?>"
-                           class="nav-link ">
-                            <i class="icon-bar-chart"></i>
-                            <span class="title">Listar</span>
-                            <span class="selected"></span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="<?= $this->url(\Avaliacao\Lib\Enum\RoutesEnum::AVALIACAO_USER, ['action' => 'view']); ?>"
-                           class="nav-link ">
-                            <i class="icon-bulb"></i>
-                            <span class="title">Cadastrar</span>
-                            <span class="badge badge-success">1</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="nav-item">
-                <a href="javascript:;" class="nav-link nav-toggle">
-                    <i class="icon-home"></i>
                     <span class="title">Veiculos</span>
                     <span class="selected"></span>
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu">
                     <li class="nav-item">
-                        <a href="<?= $this->url(\Avaliacao\Lib\Enum\RoutesEnum::AVALIACAO_VEICULO, ['action' => 'index']); ?>"
+                        <a href="<?= $this->url(\Avaliacao\Lib\Enum\RoutesEnum::VEICULO, ['action' => 'index']); ?>"
                            class="nav-link ">
                             <i class="icon-bar-chart"></i>
                             <span class="title">Listar</span>
@@ -65,7 +39,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="<?= $this->url(\Avaliacao\Lib\Enum\RoutesEnum::AVALIACAO_VEICULO, ['action' => 'add']); ?>"
+                        <a href="<?= $this->url(\Avaliacao\Lib\Enum\RoutesEnum::VEICULO, ['action' => 'add']); ?>"
                            class="nav-link ">
                             <i class="icon-bulb"></i>
                             <span class="title">Cadastrar</span>

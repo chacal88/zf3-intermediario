@@ -1,11 +1,11 @@
 <?php
 namespace Avaliacao\Fieldset;
 
-use Avaliacao\Model\Cliente;
+use Avaliacao\Entity\Cliente;
 use Zend\Form\Element;
 use Zend\Form\Fieldset;
-use Zend\InputFilter\InputFilterProviderInterface;
 use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
+use Zend\InputFilter\InputFilterProviderInterface;
 
 class ClienteFieldset extends Fieldset implements InputFilterProviderInterface
 {
@@ -13,7 +13,7 @@ class ClienteFieldset extends Fieldset implements InputFilterProviderInterface
     {
         parent::__construct('cliente');
 
-        $this->setHydrator(new ClassMethodsHydrator(false));
+        $this->setHydrator(new ClassMethodsHydrator());
         $this->setObject(new Cliente());
 
         $this->add([
@@ -68,6 +68,24 @@ class ClienteFieldset extends Fieldset implements InputFilterProviderInterface
 
         $this->add([
             'type' => Element\Radio::class,
+            'name' => 'tipo',
+            'options' => [
+                'label' => 'Tipo',
+                'value_options' => [
+                    'Fisica' => 'Fisica',
+                    'Juridica' => 'Juridica',
+                ],
+            ],
+            'attributes' => [
+                'class' => 'radio'
+            ],
+            'label_attributes' => [
+                'class' => 'control-label'
+            ],
+        ]);
+
+        $this->add([
+            'type' => Element\Radio::class,
             'name' => 'sexo',
             'options' => [
                 'label' => 'Sexo',
@@ -77,8 +95,7 @@ class ClienteFieldset extends Fieldset implements InputFilterProviderInterface
                 ],
             ],
             'attributes' => [
-                'required' => 'required',
-                'class' => 'radio'
+                'class' => 'radio',
             ],
             'label_attributes' => [
                 'class' => 'control-label'
@@ -87,7 +104,7 @@ class ClienteFieldset extends Fieldset implements InputFilterProviderInterface
 
         $this->add([
             'type' => Element\Date::class,
-            'name' => 'dataNascimento',
+            'name' => 'data',
             'options' => [
                 'label' => 'Data de Nascimento',
                 'format' => 'Y-m-d',
@@ -97,7 +114,7 @@ class ClienteFieldset extends Fieldset implements InputFilterProviderInterface
                 'max' => '2020-01-01',
                 'step' => '1', // days; default step interval is 1 day
                 'required' => 'required',
-                'class' => 'form-control'
+                'class' => 'form-control',
             ],
             'label_attributes' => [
                 'class' => 'control-label'
@@ -111,7 +128,7 @@ class ClienteFieldset extends Fieldset implements InputFilterProviderInterface
                 'label' => 'Endereços',
 //                'count' => 2,
                 'should_create_template' => true,
-                'template_placeholder' => '__placeholder__',
+                'template_placeholder' => '__index__',
                 'target_element' => [
                     'type' => EnderecoFieldset::class,
                 ],
@@ -125,7 +142,7 @@ class ClienteFieldset extends Fieldset implements InputFilterProviderInterface
                 'label' => 'Telefones',
 //                'count' => 2,
                 'should_create_template' => true,
-                'template_placeholder' => '__placeholder__',
+                'template_placeholder' => '__index__',
                 'target_element' => [
                     'type' => TelefoneFieldset::class,
                 ],
