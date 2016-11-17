@@ -9,7 +9,7 @@ use Avaliacao\Service\VeiculoService;
 use Avaliacao\Service\WebMotorsService;
 use Interop\Container\ContainerInterface;
 
-class AvaliacaoControllerFactory
+class WebMotorsControllerFactory
 {
 
     /**

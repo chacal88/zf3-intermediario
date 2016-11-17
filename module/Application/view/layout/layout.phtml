@@ -2,6 +2,8 @@
 <?= $this->headScript()
     ->prependFile($this->basePath('js/bootstrap.min.js'))
     ->prependFile($this->basePath('js/jquery-2.2.4.min.js'))
+    ->prependFile($this->basePath('js/jquery.maskedinput.min.js'))
+    ->prependFile($this->basePath('js/jquery.maskMoney.min.js'))
 ?>
 <!DOCTYPE html>
 <!--[if IE 8]>
@@ -14,7 +16,7 @@
 <!-- BEGIN HEAD -->
 <?= $this->layoutHead ?>
 <!-- END HEAD -->
-<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white ">
 <div class="page-wrapper">
     <!-- BEGIN HEADER -->
     <?= $this->layoutHeader ?>
@@ -33,7 +35,7 @@
             <div class="page-content">
                 <!-- BEGIN PAGE HEADER-->
                 <!-- BEGIN THEME PANEL -->
-                <?= $this->layoutThemePainel ?>
+                <!--<?= $this->layoutThemePainel ?>-->
                 <!-- END THEME PANEL -->
                 <?= $this->content; ?>
             </div>

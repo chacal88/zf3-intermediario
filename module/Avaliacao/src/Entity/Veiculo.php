@@ -45,14 +45,14 @@ class Veiculo
     /**
      * @var string
      *
-     * @ORM\Column(name="marca", type="string", length=24, nullable=true)
+     * @ORM\Column(name="marca", type="string", length=60, nullable=true)
      */
     private $marca;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="modelo", type="string", length=24, nullable=true)
+     * @ORM\Column(name="modelo", type="string", length=60, nullable=true)
      */
     private $modelo;
 
@@ -127,14 +127,6 @@ class Veiculo
     private $status;
 
     /**
-     * @var WebMotors
-     *
-     * @ORM\ManyToOne(targetEntity="Avaliacao\Entity\WebMotors")
-     * @ORM\JoinColumn(name="webmotors_id", referencedColumnName="id")
-     */
-    private $webmotors;
-
-    /**
      * @ORM\OneToMany(targetEntity="Avaliacao\Entity\Debito",mappedBy="veiculo", cascade={"persist","remove"})
      *
      * @var ArrayCollection
@@ -143,18 +135,22 @@ class Veiculo
     protected $debitos;
 
     /**
+     * @ORM\OneToMany(targetEntity="Avaliacao\Entity\AvaliacaoFipe",mappedBy="veiculo", cascade={"persist","remove"})
+     *
+     * @var ArrayCollection
+     *
+     */
+    protected $avaliacoes;
+
+    /**
      * Veiculo constructor.
      */
     public function __construct()
     {
         $this->debitos = new ArrayCollection();
+        $this->avaliacoes = new ArrayCollection();
     }
 
-//    /**
-//     * @ORM\ManyToOne(targetEntity="Avaliacao\Entity\Cliente",cascade={"persist"})
-//     * @ORM\JoinColumn(name="cliente_id", referencedColumnName="id")
-//     */
-//    private $cliente;
     use TCliente;
 
 
@@ -514,26 +510,6 @@ class Veiculo
     }
 
     /**
-     * @return mixed
-     */
-    public function getWebmotors()
-    {
-        return $this->webmotors;
-    }
-
-
-    /**
-     * @param $webmotors
-     * @return Veiculo
-     */
-    public function setWebmotors($webmotors)
-    {
-        $this->webmotors = $webmotors;
-
-        return $this;
-    }
-
-    /**
      * @return ArrayCollection
      */
     public function getDebitos()
@@ -557,6 +533,28 @@ class Veiculo
         $this->debitos[] = $debito;
     }
 
+    /**
+     * @return ArrayCollection
+     */
+    public function getAvaliacoes()
+    {
+        return $this->avaliacoes;
+    }
+
+    /**
+     * @param ArrayCollection $avaliacoes
+     */
+    public function setAvaliacoes($avaliacoes)
+    {
+        $this->avaliacoes = $avaliacoes;
+    }
+
+
+    public function addAvaliacao(AvaliacaoFipe $avaliacao)
+    {
+        $avaliacao->setVeiculo($this);
+        $this->avaliacoes[] = $avaliacao;
+    }
     /**
      * @param array $data
      * @return Veiculo
@@ -608,14 +606,28 @@ class Veiculo
 
         if (!empty($data['debitos'])) {
 
-            $debitosArray = $data['debitos'];
-            $debitosSize = count($debitosArray);
+            $avaliacoesArray = $data['debitos'];
+            $avaliacoesSize = count($avaliacoesArray);
 
-            if (count($debitosSize) > 0) {
-                for ($i = 0; $i < $debitosSize; $i++) {
-                    $debito = new Debito();
-                    $debito->hydrate($debitosArray[$i]);
-                    $this->addDebito($debito);
+            if (count($avaliacoesSize) > 0) {
+                for ($i = 0; $i < $avaliacoesSize; $i++) {
+                    $avaliacao = new Debito();
+                    $avaliacao->hydrate($avaliacoesArray[$i]);
+                    $this->addDebito($avaliacao);
+                }
+            }
+        }
+
+        if (!empty($data['avaliacoes'])) {
+
+            $avaliacoesArray = $data['avaliacoes'];
+            $avaliacoesSize = count($avaliacoesArray);
+
+            if (count($avaliacoesSize) > 0) {
+                for ($i = 0; $i < $avaliacoesSize; $i++) {
+                    $avaliacao = new AvaliacaoFipe();
+                    $avaliacao->hydrate($avaliacoesArray[$i]);
+                    $this->addAvaliacao($avaliacao);
                 }
             }
         }

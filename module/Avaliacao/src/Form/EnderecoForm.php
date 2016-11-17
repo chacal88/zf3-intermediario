@@ -7,7 +7,7 @@ namespace Avaliacao\Form;
 use Zend\Form\Element;
 use Zend\Form\Form;
 
-class  VeiculoForm extends Form
+class  EnderecoForm extends Form
 {
 
     public function __construct($name=null)

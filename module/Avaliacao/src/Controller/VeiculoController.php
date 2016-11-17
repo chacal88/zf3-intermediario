@@ -130,7 +130,7 @@ class VeiculoController extends AbstractActionController
 
         $veiculo = $this->apiService->findCar($veiculo);
 
-        if (null === $veiculo->getRenavam()) {
+        if (empty($veiculo->getRenavam())) {
             return ['form' => $form];
         }
 
@@ -212,6 +212,9 @@ class VeiculoController extends AbstractActionController
         if ($veiculo == false) {
             return $this->redirect()->toRoute(RoutesEnum::VEICULO);
         }
+
+        $this->apiDetranService->deleteVeiculo($veiculo);
+
         $this->veiculoService->delete($veiculo);
 
         return $this->redirect()->toRoute(RoutesEnum::VEICULO);

@@ -41,6 +41,7 @@ class ApiVeiculoController extends AbstractRestfulController
 
         $veiculo->hydrate($data['data']);
         $veiculo = $this->veiculoService->update($veiculo);
+//        \Zend\Debug\Debug::dump($veiculo->getIdBot());exit;
 
         $hydrator = new ClassMethods();
         $data = $hydrator->extract($veiculo);

@@ -5,12 +5,14 @@ namespace User;
 use User\Controller\Factory\AuthControllerFactory;
 use User\Controller\AuthController;
 use User\Service\Factory\AuthenticationServiceFactory;
+use User\Service\Factory\DoctrineAuthVerifyFactory;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\AuthenticationServiceInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ControllerProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\Mvc\MvcEvent;
+use Zend\ServiceManager\Factory\InvokableFactory;
 
 /**
  * Class Module
@@ -36,12 +38,12 @@ class Module implements ConfigProviderInterface, ServiceProviderInterface, Contr
                 if ($authService->hasIdentity()) {
                     return;
                 } else {
-                    foreach ($resources as $key => $value) {
-                        if (strpos($routeName, $value) !== false) {
+//                    foreach ($resources as $key => $value) {
+//                        if (strpos($routeName, $value) !== false) {
                             $match->setParam('controller', AuthController::class)
                                 ->setParam('action', 'login');
-                        }
-                    }
+//                        }
+//                    }
                 }
             }, 100);
 
@@ -63,10 +65,10 @@ class Module implements ConfigProviderInterface, ServiceProviderInterface, Contr
     {
         return [
             'aliases' => [
-                AuthenticationService::class => AuthenticationServiceInterface::class
+                AuthenticationService::class            => AuthenticationServiceInterface::class
             ],
             'factories' => [
-                AuthenticationServiceInterface::class => AuthenticationServiceFactory::class
+                AuthenticationServiceInterface::class   => AuthenticationServiceFactory::class
             ]
         ];
     }

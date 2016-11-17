@@ -25,7 +25,7 @@ abstract class ApiDetranEnum
 
     const API_FILA_URL_CONDUTOR = "condutores";
 
-    const API_FILA_VEICULO_URL_CALBACK = "http://app.velotron.com.br/bot";
+    const API_FILA_VEICULO_URL_CALBACK = "http://app.velotron.com.br/bot/veiculo";
 
     const API_FILA_CONDUTOR_URL_CALBACK = "http://app.velotron.com.br/bot";
 

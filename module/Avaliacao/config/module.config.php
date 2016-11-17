@@ -6,11 +6,6 @@ use Avaliacao\Controller\ApiVeiculoController;
 use Zend\Router\Http\Literal;
 
 return [
-    'controllers' => [
-        'factories' => [
-            #Controller\AvaliacaoController::class => InvokableFactory::class
-        ]
-    ],
     'router' => [
         'routes' => [
             'private-avaliacao' => [
@@ -44,6 +39,20 @@ return [
                             ],
                             'defaults' => [
                                 'controller' => Controller\WebMotorsController::class,
+                                'action' => 'index'
+                            ]
+                        ]
+                    ],
+                    'fipe' => [
+                        'type' => 'segment',
+                        'options' => [
+                            'route' => '/fipe[/:action[/:id]]',
+                            'constraints' => [
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'id' => '[0-9]+',
+                            ],
+                            'defaults' => [
+                                'controller' => Controller\FipeController::class,
                                 'action' => 'index'
                             ]
                         ]

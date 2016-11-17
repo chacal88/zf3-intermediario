@@ -15,7 +15,24 @@ class  FipeForm extends Form
         parent::__construct('fipe');
 
         $this->add([
-            'name' => 'marcaFipe',
+            'type' => Element\Select::class,
+            'name' => 'tipo',
+            'options' => [
+                'label' => 'Tipo',
+                'value_options' => [
+                    '' =>'Selecione',
+                    'motos' => 'Motos',
+                    'carros' => 'Carros',
+                    'caminhoes' => 'Caminhoes'
+                ],
+            ],
+            'attributes' => [
+                'id' => 'select-tipo'
+            ]
+        ]);
+
+        $this->add([
+            'name' => 'marca',
             'type' => Element\Select::class,
             'attributes' => [
                 'id' => 'select-marca'
@@ -23,7 +40,7 @@ class  FipeForm extends Form
         ]);
 
         $this->add([
-            'name' => 'modeloFipe',
+            'name' => 'modelo',
             'type' => Element\Select::class,
             'attributes' => [
                 'id' => 'select-modelo'
@@ -31,7 +48,7 @@ class  FipeForm extends Form
         ]);
 
         $this->add([
-            'name' => 'anoFipe',
+            'name' => 'ano',
             'type' => Element\Select::class,
             'attributes' => [
                 'id' => 'select-ano'
@@ -39,18 +56,10 @@ class  FipeForm extends Form
         ]);
 
         $this->add([
-            'name' => 'veiculo',
-            'type' => Element\Select::class,
+            'name' => 'codigo',
+            'type' => Element\Text::class,
             'attributes' => [
-                'id' => 'select-veiculo'
-            ]
-        ]);
-
-        $this->add([
-            'name' => 'codigoFipe',
-            'type' => Element\Hidden::class,
-            'attributes' => [
-                'id' => 'codigofipe'
+                'id' => 'codigo-fipe'
             ]
         ]);
 
@@ -58,10 +67,9 @@ class  FipeForm extends Form
             'name' => 'submit',
             'type' => Element\Submit::class,
             'attributes' => [
-                'value' => 'Finalizar',
+                'value' => 'Proximo',
                 'id' => 'submitbutton'
             ]
         ]);
-
     }
 }

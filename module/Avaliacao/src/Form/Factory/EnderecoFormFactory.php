@@ -6,7 +6,7 @@ use Avaliacao\Form\VeiculoForm;
 use Avaliacao\InputFilter\VeiculoInputFilter;
 use Interop\Container\ContainerInterface;
 
-class VeiculoFormFactory
+class EnderecoFormFactory
 {
 
     public function __invoke(ContainerInterface $container)

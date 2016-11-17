@@ -106,7 +106,7 @@ $form->prepare();
                             <label>KM</label> - <span id="campo_km"></span>
                         </div>
                         <div class="col-lg-6">
-                            <label>Fipe</label> - <span id="campo_fipe"></span>
+                            <label>Media</label> - <span id="campo_fipe"></span>
                         </div>
                     </div>
                 </div>
@@ -206,38 +206,40 @@ $form->prepare();
 
         veiculos.change(function () {
 
-            $.ajax({
-                type: "POST",
-                url: "../get-veiculo",
-                data: {id: veiculos.val()},
-                success: function (result) {
-                    veiculos.append(function () {
-                        document.getElementById('#webmotors-div').style.display = 'block';
+            if (veiculos.val() != null) {
+                $.ajax({
+                    type: "POST",
+                    url: "../get-veiculo",
+                    data: {id: veiculos.val()},
+                    success: function (result) {
+                        veiculos.append(function () {
+                            document.getElementById('#webmotors-div').style.display = 'block';
 
-                        $('#campo_marca').empty().append(function () {
-                            return result.webmotors.marca
+                            $('#campo_marca').empty().append(function () {
+                                return result.webmotors.marca
+                            });
+                            $('#campo_modelo').empty().append(function () {
+                                return result.webmotors.modelo
+                            });
+                            $('#campo_cor').empty().append(function () {
+                                return result.webmotors.cor
+                            });
+                            $('#campo_versao').empty().append(function () {
+                                return result.webmotors.versao
+                            });
+                            $('#campo_preco').empty().append(function () {
+                                return result.webmotors.preco
+                            });
+                            $('#campo_km').empty().append(function () {
+                                return result.webmotors.km
+                            });
+                            $('#campo_fipe').empty().append(function () {
+                                return result.webmotors.fipe
+                            });
                         });
-                        $('#campo_modelo').empty().append(function () {
-                            return result.webmotors.modelo
-                        });
-                        $('#campo_cor').empty().append(function () {
-                            return result.webmotors.cor
-                        });
-                        $('#campo_versao').empty().append(function () {
-                            return result.webmotors.versao
-                        });
-                        $('#campo_preco').empty().append(function () {
-                            return result.webmotors.preco
-                        });
-                        $('#campo_km').empty().append(function () {
-                            return result.webmotors.km
-                        });
-                        $('#campo_fipe').empty().append(function () {
-                            return result.webmotors.fipe
-                        });
-                    });
-                }
-            });
+                    }
+                });
+            }
         }).change();
     });
 </script>

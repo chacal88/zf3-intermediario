@@ -1,6 +1,9 @@
 <?php
 
 namespace Avaliacao\Service;
+use Avaliacao\Repository\AvaliacaoFipeRepository;
+use Common\Repository\IRepository;
+use Common\Service\TRepositoryService;
 
 /**
  * Created by PhpStorm.
@@ -8,8 +11,10 @@ namespace Avaliacao\Service;
  * Date: 15/08/2016
  * Time: 01:00
  */
-class FipeService
+class FipeService implements IRepository
 {
+
+    use TRepositoryService;
 
     private $tipo;
 
@@ -17,10 +22,13 @@ class FipeService
 
     /**
      * FipeService constructor.
+     * @param AvaliacaoFipeRepository $avaliacaoFipeRepository
+     * @param $url
      */
-    public function __construct($tipo, $url)
+    public function __construct(AvaliacaoFipeRepository $avaliacaoFipeRepository, $url)
     {
-        $this->tipo = $tipo;
+        $this->repository = $avaliacaoFipeRepository;
+
         $this->url = $url;
     }
 
@@ -75,5 +83,12 @@ class FipeService
         return ($httpCode >= 200 && $httpCode < 300) ? json_decode($html, true) : false;
     }
 
+    /**
+     * @param mixed $tipo
+     */
+    public function setTipo($tipo)
+    {
+        $this->tipo = $tipo;
+    }
 
 }

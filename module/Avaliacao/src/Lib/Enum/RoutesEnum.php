@@ -16,6 +16,8 @@ abstract class RoutesEnum
      */
     const WEBMOTORS = "private-avaliacao/webmotors";
 
+    const FIPE = "private-avaliacao/fipe";
+
     const VEICULO= "private-avaliacao/veiculo";
 
     const AUTH_LOGIN = "login";

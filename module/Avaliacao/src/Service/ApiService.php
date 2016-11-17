@@ -61,7 +61,9 @@ class ApiService
             $result = json_decode($response->getContent(), true);
             if($result != null){
 
-                $veiculo->exchangeApi($result);
+                if(!$result['data']['ConsultaDebitosResult']['PossuiErro']){
+                    $veiculo->exchangeApi($result);
+                }
             }
         }
 

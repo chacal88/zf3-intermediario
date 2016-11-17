@@ -80,7 +80,6 @@ class WebMotorsController extends AbstractActionController
             return new ViewModel(['form' => $form, 'id' => $id, 'veiculo' => $veiculo]);
         }
 
-        \Zend\Debug\Debug::dump($request->getPost());
 
         $form->setData($request->getPost());
 
@@ -88,11 +87,8 @@ class WebMotorsController extends AbstractActionController
 //            return ['form' => $form];
         }
         $veiculo = $form->getData();
-        \Zend\Debug\Debug::dump($veiculo);
-        exit;
 
-
-        $id = $this->veiculoTable->save($veiculo);
+        //$id = $this->veiculoTable->save($veiculo);
         return $this->redirect()->toRoute(RoutesEnum::VEICULO);
 
 //        $cliente = new Cliente();

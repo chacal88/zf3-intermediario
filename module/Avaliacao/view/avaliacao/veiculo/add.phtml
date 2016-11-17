@@ -18,28 +18,19 @@ $form->prepare();
 ?>
 <div class="mt-element-step">
     <div class="row step-line">
-        <div class="col-md-4 mt-step-col first active">
+        <div class="col-md-6 mt-step-col first active">
             <div class="mt-step-number bg-white">
                 <i class="fa fa-car"></i>
             </div>
             <div class="mt-step-title uppercase font-grey-cascade">Veiculo</div>
             <div class="mt-step-content font-grey-cascade">Dados do veiculo</div>
         </div>
-        <div class="col-md-4 mt-step-col" href="<?= $this->url(\Avaliacao\Lib\Enum\RoutesEnum::VEICULO, ['action' => 'cliente']); ?>">
+        <div class="col-md-6 mt-step-col last" href="<?= $this->url(\Avaliacao\Lib\Enum\RoutesEnum::VEICULO, ['action' => 'cliente']); ?>">
             <div class="mt-step-number bg-white">
                 <i class="fa fa-user"></i>
             </div>
             <div class="mt-step-title uppercase font-grey-cascade">Cliente</div>
-            <a class="mt-step-content font-grey-cascade"
-               href="<?= $this->url(\Avaliacao\Lib\Enum\RoutesEnum::VEICULO, ['action' => 'cliente']); ?>">Dados do cliente</a>
-        </div>
-        <div class="col-md-4 mt-step-col last" href="<?= $this->url(\Avaliacao\Lib\Enum\RoutesEnum::VEICULO, ['action' => 'fipe']); ?>">
-            <div class="mt-step-number bg-white">
-                <i class="fa fa-rocket"></i>
-            </div>
-            <div class="mt-step-title uppercase font-grey-cascade">Fipe</div>
-            <a class="mt-step-content font-grey-cascade"
-               href="<?= $this->url(\Avaliacao\Lib\Enum\RoutesEnum::VEICULO, ['action' => 'fipe']); ?>">Selecione tabela Fipe</a>
+            <span class="mt-step-content font-grey-cascade">Dados do cliente</span>
         </div>
     </div>
 </div>

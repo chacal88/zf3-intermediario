@@ -4,6 +4,7 @@ namespace Avaliacao\InputFilter;
 
 use Zend\Filter\StringTrim;
 use Zend\Filter\StripTags;
+use Zend\I18n\Filter\Alnum;
 use Zend\InputFilter\InputFilter;
 use Zend\Validator\NotEmpty;
 
@@ -23,6 +24,7 @@ class VeiculoInputFilter extends InputFilter
             'required' => true,
             'filters' => [
                 ['name' => StringTrim::class],
+                ['name' => Alnum::class],
                 ['name' => StripTags::class]
             ],
             'validators' => [

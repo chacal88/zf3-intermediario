@@ -10,26 +10,33 @@ class FipeInputFilter extends InputFilter
     public function __construct()
     {
         $this->add([
-            'name' => 'marca',
+            'name' => 'tipo',
             'required' => true,
-            'allow_empty' => true
+            'allow_empty' => false
+        ]);
+
+        $this->add([
+            'name' => 'marca',
+            'required' => false,
+            'allow_empty' => false
         ]);
 
         $this->add([
             'name' => 'modelo',
-            'required' => true,
-            'allow_empty' => true
+            'required' => false,
+            'allow_empty' => false
         ]);
 
         $this->add([
             'name' => 'ano',
-            'required' => true,
-            'allow_empty' => true
+            'required' => false,
+            'allow_empty' => false
         ]);
+
         $this->add([
-            'name' => 'veiculos',
-            'required' => true,
-            'allow_empty' => true
+            'name' => 'codigo',
+            'required' => false,
+            'allow_empty' => false
         ]);
 
     }
