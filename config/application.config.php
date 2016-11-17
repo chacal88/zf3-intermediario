@@ -33,7 +33,8 @@ return [
         // Whether or not to enable a configuration cache.
         // If enabled, the merged configuration will be cached and used in
         // subsequent requests.
-        'config_cache_enabled' => ($env == 'production'),
+        //'config_cache_enabled' => ($env == 'production'),
+        'config_cache_enabled' => false,
 
         // The key used to create the configuration cache file name.
         'config_cache_key' => 'application.config.cache',
