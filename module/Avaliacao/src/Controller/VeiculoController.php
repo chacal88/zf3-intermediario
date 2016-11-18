@@ -185,7 +185,7 @@ class VeiculoController extends AbstractActionController
 
             if (empty($cliente) && !($cliente = $this->veiculoService->findOneBy(Cliente::class, ['cpfCnpj' => $veiculo->getProprietarioDoc()]))) {
                 if($cpf){
-                    $cliente = $this->apiService->findByDoc($cpf);
+                    $cliente = $this->apiService->findByDoc(StrFormat::format($cpf));
                 }else{
                     $cliente = $this->apiService->findByDoc($veiculo->getProprietarioDoc());
                 }

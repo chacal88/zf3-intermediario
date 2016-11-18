@@ -59,7 +59,7 @@ return [
                     ],
                 ]
             ],
-            'bot-avaliacao' => [
+            'public-bot-avaliacao' => [
                 'type' => Literal::class,
                 'options' => [
                     'route' => '/bot'

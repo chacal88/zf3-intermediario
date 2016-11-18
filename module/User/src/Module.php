@@ -26,7 +26,7 @@ class Module implements ConfigProviderInterface, ServiceProviderInterface, Contr
      */
     public function onBootstrap(MvcEvent $e)
     {
-        $resources = ['admin', 'private'];
+        $resources = ['public'];
         $eventManager = $e->getApplication()->getEventManager();
         $container = $e->getApplication()->getServiceManager();
         $eventManager->attach(MvcEvent::EVENT_DISPATCH,
@@ -38,12 +38,13 @@ class Module implements ConfigProviderInterface, ServiceProviderInterface, Contr
                 if ($authService->hasIdentity()) {
                     return;
                 } else {
-//                    foreach ($resources as $key => $value) {
-//                        if (strpos($routeName, $value) !== false) {
-                            $match->setParam('controller', AuthController::class)
-                                ->setParam('action', 'login');
-//                        }
-//                    }
+                    foreach ($resources as $key => $value) {
+                        if (strpos($routeName, $value) !== false) {
+                            return;
+                        }
+                        $match->setParam('controller', AuthController::class)
+                            ->setParam('action', 'login');
+                    }
                 }
             }, 100);
 
