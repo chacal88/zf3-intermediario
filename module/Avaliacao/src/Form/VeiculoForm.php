@@ -24,16 +24,13 @@ class  VeiculoForm extends Form
             'type' => Element\Text::class,
             'options' => [
                 'label'=> 'Placa'
-            ]
-        ]);
-
-        $this->add([
-            'name' => 'findsubmit',
-            'type' => Element\Submit::class,
+            ],
             'attributes' => [
-                'value'=> 'Buscar Veiculo',
-//                'disabled'=>'true',
-                'id'=>'findsubmitbutton'
+                'required' => 'required',
+                'class' => 'form-control'
+            ],
+            'label_attributes' => [
+                'class' => 'control-label'
             ]
         ]);
 
@@ -42,6 +39,12 @@ class  VeiculoForm extends Form
             'type' => Element\Text::class,
             'options' => [
                 'label'=> 'Renavam'
+            ],
+            'attributes' => [
+                'class' => 'form-control'
+            ],
+            'label_attributes' => [
+                'class' => 'control-label'
             ]
         ]);
 
@@ -49,9 +52,10 @@ class  VeiculoForm extends Form
             'name' => 'submit',
             'type' => Element\Submit::class,
             'attributes' => [
-                'value'=> 'Próximo',
-//                'disabled'=>'true',
-                'id'=>'submitbutton'
+                'value'=> 'Proximo',
+                'required' => 'required',
+                'class' => 'btn btn-success'
+
             ]
         ]);
 

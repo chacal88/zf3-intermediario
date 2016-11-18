@@ -1,20 +1,11 @@
 <h1>Cadastrar Veiculo</h1>
-
 <?php
+    $placa   = $form->get('placa');
+    $renavam = $form->get('renavam');
+    $submit  = $form->get('submit');
 
-$placa = $form->get('placa');
-$placa->setAttribute('class', 'form-control')
-    ->setLabelAttributes(['class' => 'control-label']);
-
-$renavam = $form->get('renavam');
-$renavam->setAttribute('class', 'form-control')
-    ->setLabelAttributes(['class' => 'control-label']);
-
-$submit = $form->get('submit');
-$submit->setAttribute('class', 'btn btn-success');
-
-$form->setAttribute('action', $this->url(Avaliacao\Lib\Enum\RoutesEnum::VEICULO, ['action' => 'add']));
-$form->prepare();
+    $form->setAttribute('action', $this->url(Avaliacao\Lib\Enum\RoutesEnum::VEICULO, ['action' => 'add']));
+    $form->prepare();
 ?>
 <div class="mt-element-step">
     <div class="row step-line">

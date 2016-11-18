@@ -77,6 +77,7 @@ class ClienteFieldset extends Fieldset implements InputFilterProviderInterface
                 ],
             ],
             'attributes' => [
+                'required' => 'required',
                 'class' => 'radio'
             ],
             'label_attributes' => [
@@ -95,6 +96,7 @@ class ClienteFieldset extends Fieldset implements InputFilterProviderInterface
                 ],
             ],
             'attributes' => [
+                'required' => 'required',
                 'class' => 'radio',
             ],
             'label_attributes' => [

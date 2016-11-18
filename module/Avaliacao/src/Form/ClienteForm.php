@@ -26,11 +26,10 @@ class ClienteForm extends Form
             'type' => Element\Submit::class,
             'attributes' => [
                 'value'=> 'Finalizar',
-//                'disabled'=>'true',
-                'id'=>'submitbutton',
+                'required' => 'required',
                 'class' => 'btn btn-success'
-            ]
 
+            ]
         ]);
     }
 }

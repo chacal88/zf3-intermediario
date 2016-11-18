@@ -67,8 +67,10 @@ class  FipeForm extends Form
             'name' => 'submit',
             'type' => Element\Submit::class,
             'attributes' => [
-                'value' => 'Proximo',
-                'id' => 'submitbutton'
+                'value'=> 'Proximo',
+                'required' => 'required',
+                'class' => 'btn btn-success'
+
             ]
         ]);
     }

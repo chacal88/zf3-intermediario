@@ -68,7 +68,6 @@ class TelefoneFieldset extends Fieldset implements InputFilterProviderInterface
                 'value' => 'Delete',
                 'class' => 'btn btn-danger',
                 'onclick' => 'return remove_element(this)',
-//                'disabled'=>'true',
                 'id' => 'delete'
             ]
         ]);
