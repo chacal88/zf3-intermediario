@@ -10,6 +10,7 @@ use Avaliacao\Service\ApiService;
 use Avaliacao\Service\Factory\VeiculoServiceFactory;
 use Avaliacao\Service\VeiculoService;
 use Interop\Container\ContainerInterface;
+use Zend\Authentication\AuthenticationServiceInterface;
 
 class VeiculoControllerFactory
 {
@@ -31,10 +32,12 @@ class VeiculoControllerFactory
 
         $apiService = $container->get(ApiService::class);
         $apiDetranService = $container->get(ApiDetranService::class);
+        $authService = $container->get(AuthenticationServiceInterface::class);
+
 //        $fipeService = $container->get(ICarrosFipeService::class);
 //        $webMotorsService = $container->get(WebMotorsService::class);
 
-        return new VeiculoController($veiculoForm, $clienteForm, $veiculoService, $apiService, $apiDetranService);
+        return new VeiculoController($veiculoForm, $clienteForm, $veiculoService, $apiService, $apiDetranService, $authService);
     }
 
 

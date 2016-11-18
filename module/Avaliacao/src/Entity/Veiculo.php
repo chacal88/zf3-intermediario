@@ -2,6 +2,7 @@
 
 namespace Avaliacao\Entity;
 
+use Avaliacao\Entity\Traits\TAvaliador;
 use Avaliacao\Entity\Traits\TCliente;
 use Common\Entity\Traits\TEntity;
 use Common\Lib\StrFormat;
@@ -151,6 +152,8 @@ class Veiculo
         $this->avaliacoes = new ArrayCollection();
     }
 
+    use TAvaliador;
+    
     use TCliente;
 
 

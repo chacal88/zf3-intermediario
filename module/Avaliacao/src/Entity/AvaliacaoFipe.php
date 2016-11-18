@@ -4,6 +4,7 @@
 namespace Avaliacao\Entity;
 
 
+use Avaliacao\Entity\Traits\TAvaliador;
 use Common\Entity\Traits\TEntity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
@@ -91,11 +92,8 @@ class AvaliacaoFipe
      */
     private $veiculo;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="User\Entity\User",cascade={"persist"})
-     * @ORM\JoinColumn(name="avaliador_id", referencedColumnName="id",nullable=true)
-     */
-    private $avaliador;
+
+    use TAvaliador;
 
     /**
      * @return string
@@ -255,22 +253,6 @@ class AvaliacaoFipe
     public function setVeiculo($veiculo)
     {
         $this->veiculo = $veiculo;
-    }
-
-    /**
-     * @return User
-     */
-    public function getAvaliador()
-    {
-        return $this->avaliador;
-    }
-
-    /**
-     * @param mixed $avaliador
-     */
-    public function setAvaliador($avaliador)
-    {
-        $this->avaliador = $avaliador;
     }
 
 }

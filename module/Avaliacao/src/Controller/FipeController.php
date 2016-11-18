@@ -51,15 +51,16 @@ class FipeController extends AbstractActionController
     private $observacaoForm;
 
 
-    public function __construct( FipeService $fipeService,$authService,  FipeForm $fipeForm, ObservacaoForm $observacaoForm )
+    public function __construct(
+        FipeService $fipeService,
+        AuthenticationServiceInterface $authService,
+        FipeForm $fipeForm,
+        ObservacaoForm $observacaoForm)
     {
 
         $this->fipeService = $fipeService;
-
         $this->authService = $authService;
-
         $this->fipeForm = $fipeForm;
-
         $this->observacaoForm = $observacaoForm;
     }
 
@@ -94,13 +95,14 @@ class FipeController extends AbstractActionController
         $avaliacao->setVeiculo($veiculo);
         $avaliacao->setAvaliador($this->authService->getIdentity());
         $avaliacao = $this->fipeService->save($avaliacao);
-      //  return $this->redirect()->toRoute(RoutesEnum::VEICULO);
+        //  return $this->redirect()->toRoute(RoutesEnum::VEICULO);
 
         return $this->redirect()->toRoute(RoutesEnum::FIPE, ['action' => 'observacao', 'id' => $avaliacao->getId()]);
 
     }
 
-    public function observacaoAction(){
+    public function observacaoAction()
+    {
 
         $id = (int)$this->params()->fromRoute('id', 0);
 
@@ -117,7 +119,7 @@ class FipeController extends AbstractActionController
         $request = $this->getRequest();
 
         $this->fipeService->setTipo($avaliacao->getTipo());
-        $fipe = $this->fipeService->getVeiculo($avaliacao->getMarca(), $avaliacao->getModelo(),$avaliacao->getAno());
+        $fipe = $this->fipeService->getVeiculo($avaliacao->getMarca(), $avaliacao->getModelo(), $avaliacao->getAno());
 
         if (!$request->isPost()) {
 

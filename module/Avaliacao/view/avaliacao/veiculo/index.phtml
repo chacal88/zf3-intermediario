@@ -45,6 +45,7 @@
                 <table class="table table-striped table-bordered table-hover " width="100%" id="veiculosTable">
                     <thead>
                     <tr>
+                        <th class="all">Avaliador</th>
                         <th class="all">Placa</th>
                         <th class="min-phone-l">Renavam</th>
                         <th class="min-tablet">Modelo</th>
@@ -56,6 +57,7 @@
                     <tbody>
                     <?php foreach ($veiculos as $veiculo): ?>
                         <tr>
+                            <td><?= $this->escapeHtml($veiculo->getAvaliador()->getFullName()); ?></td>
                             <td><?= $this->escapeHtml($veiculo->getPlaca()); ?></td>
                             <td><?= $this->escapeHtml($veiculo->getRenavam()); ?></td>
                             <td><?= $this->escapeHtml($veiculo->getModelo()); ?></td>

@@ -12,6 +12,7 @@ use Avaliacao\Lib\Enum\RoutesEnum;
 use Avaliacao\Service\ApiDetranService;
 use Avaliacao\Service\ApiService;
 use Avaliacao\Service\VeiculoService;
+use Zend\Authentication\AuthenticationServiceInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -45,6 +46,10 @@ class VeiculoController extends AbstractActionController
      * @var ApiDetranService
      */
     private $apiDetranService;
+    /**
+     * @var AuthenticationServiceInterface
+     */
+    private $authService;
 
     /**
      * VeiculoController constructor.
@@ -59,7 +64,8 @@ class VeiculoController extends AbstractActionController
         ClienteForm $clienteForm,
         VeiculoService $veiculoService,
         ApiService $apiService,
-        ApiDetranService $apiDetranService)
+        ApiDetranService $apiDetranService,
+        AuthenticationServiceInterface $authService)
     {
 
         $this->veiculoForm = $veiculoForm;
@@ -67,6 +73,7 @@ class VeiculoController extends AbstractActionController
         $this->veiculoService = $veiculoService;
         $this->apiService = $apiService;
         $this->apiDetranService = $apiDetranService;
+        $this->authService = $authService;
     }
 
     /**
@@ -147,6 +154,7 @@ class VeiculoController extends AbstractActionController
         }
 
         $veiculo->setIdBot($veiculoBot['id']);
+        $veiculo->setAvaliador($this->authService->getIdentity());
 
         $veiculo = $this->veiculoService->update($veiculo);
 
@@ -160,6 +168,7 @@ class VeiculoController extends AbstractActionController
     {
 
         $veiculoId = $this->params()->fromRoute('id', 0);
+        $cpf = $this->params()->fromQuery('cpf');
 
         /** @var Veiculo $veiculo */
         if (!$veiculoId || !($veiculo = $this->veiculoService->findOneBy(Veiculo::class, ['id' => $veiculoId]))) {
@@ -169,12 +178,17 @@ class VeiculoController extends AbstractActionController
         $form = $this->clienteForm;
         $request = $this->getRequest();
 
+
         if (!$request->isPost()) {
 
             $cliente = $veiculo->getCliente();
 
             if (empty($cliente) && !($cliente = $this->veiculoService->findOneBy(Cliente::class, ['cpfCnpj' => $veiculo->getProprietarioDoc()]))) {
-                $cliente = $this->apiService->findByDoc($veiculo->getProprietarioDoc());
+                if($cpf){
+                    $cliente = $this->apiService->findByDoc($cpf);
+                }else{
+                    $cliente = $this->apiService->findByDoc($veiculo->getProprietarioDoc());
+                }
             }
             $form->bind($cliente);
             return [

@@ -54,7 +54,13 @@ $form->prepare();
 
     <div class="form-group<?= $message ? " has-error" : "" ?>">
         <?= $this->formLabel($cliente->get('cpfCnpj')); ?>
-        <?= $this->formElement($cliente->get('cpfCnpj')); ?>
+        <div class="input-group">
+            <?= $this->formElement($cliente->get('cpfCnpj')); ?>
+            <a class="input-group-addon"
+               href="<?= $this->url(RoutesEnum::VEICULO, ['action' => 'cliente','id' => $this->veiculoId ],['query' => ['cpf' => '06416206919']]) ?>" >
+                <i class="fa fa-search font-blue"></i>
+            </a>
+        </div>
         <?= $message ?>
     </div>
 
