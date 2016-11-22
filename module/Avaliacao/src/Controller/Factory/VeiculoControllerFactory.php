@@ -7,8 +7,8 @@ use Avaliacao\Form\ClienteForm;
 use Avaliacao\Form\VeiculoForm;
 use Avaliacao\Service\ApiDetranService;
 use Avaliacao\Service\ApiService;
-use Avaliacao\Service\Factory\VeiculoServiceFactory;
 use Avaliacao\Service\VeiculoService;
+use DataWashModule\Service\DataWashServiceConsult;
 use Interop\Container\ContainerInterface;
 use Zend\Authentication\AuthenticationServiceInterface;
 
@@ -27,17 +27,13 @@ class VeiculoControllerFactory
 
         $veiculoForm = $container->get(VeiculoForm::class);
         $clienteForm = $container->get(ClienteForm::class);
-//        $fipeForm = $container->get(FipeForm::class);
-//        $webMotorsForm = $container->get(WebMotorsForm::class);
 
         $apiService = $container->get(ApiService::class);
         $apiDetranService = $container->get(ApiDetranService::class);
         $authService = $container->get(AuthenticationServiceInterface::class);
+        $dataWashService = $container->get(DataWashServiceConsult::class);
 
-//        $fipeService = $container->get(ICarrosFipeService::class);
-//        $webMotorsService = $container->get(WebMotorsService::class);
-
-        return new VeiculoController($veiculoForm, $clienteForm, $veiculoService, $apiService, $apiDetranService, $authService);
+        return new VeiculoController($veiculoForm, $clienteForm, $veiculoService, $apiService, $apiDetranService, $authService, $dataWashService);
     }
 
 

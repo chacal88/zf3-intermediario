@@ -37,7 +37,7 @@ CREATE TABLE users
 );
 
 INSERT INTO users(username, password, full_name)
-            values('kauemsc@gmail.com','$2y$10$95j.s/9nI1AkhcmAreJlIOmYvGck3z5KHuWkbeiloBsgxyrsyEofC', 'Kaue Rodrigues');
+            values('kauemsc@gmail.com','$1$cnG3AVpL$jXiDyYBbY.nj.iky1Xuig.', 'Kaue Rodrigues');
 
 CREATE TABLE veiculos
 (

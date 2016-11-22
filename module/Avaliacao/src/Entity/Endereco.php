@@ -74,29 +74,14 @@ class Endereco
     /**
      * @param $data
      */
-    public function exchangeApi($data)
+    public function exchangeApi(\DataWash\Entity\Endereco $data)
     {
-        if (!empty($data->LOGRADOURO)) {
-            $this->setLogradouro((string)$data->LOGRADOURO);
-        }
-
-        if (!empty($data->NUMERO)) {
-            $this->setNumero((string)$data->NUMERO);
-        }
-
-        if (!empty($data->BAIRRO)) {
-            $this->setBairro((string)$data->BAIRRO);
-        }
-
-        if (!empty($data->CEP)) {
-            $this->setCep((string)$data->CEP);
-        }
-        if (!empty($data->CIDADE)) {
-            $this->setCidade((string)$data->CIDADE);
-        }
-        if (!empty($data->UF)) {
-            $this->setUf((string)$data->UF);
-        }
+        $this->setLogradouro($data->getLogradouro());
+        $this->setNumero($data->getNumero());
+        $this->setBairro($data->getBairro());
+        $this->setCep($data->getCep());
+        $this->setCidade($data->getCidade());
+        $this->setUf($data->getUf());
     }
 
     /**

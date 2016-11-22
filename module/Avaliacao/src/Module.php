@@ -4,7 +4,6 @@ namespace Avaliacao;
 
 use Avaliacao\Controller\ApiVeiculoController;
 use Avaliacao\Controller\Factory\ApiVeiculoControllerFactory;
-use Avaliacao\Controller\Factory\AvaliacaoControllerFactory;
 use Avaliacao\Controller\Factory\FipeControllerFactory;
 use Avaliacao\Controller\Factory\VeiculoControllerFactory;
 use Avaliacao\Controller\Factory\WebMotorsControllerFactory;
@@ -25,7 +24,6 @@ use Avaliacao\Form\WebMotorsForm;
 use Avaliacao\Repository\AvaliacaoFipeRepository;
 use Avaliacao\Repository\Factory\AvaliacaoFipeRepositoryFactory;
 use Avaliacao\Repository\Factory\VeiculoRepositoryFactory;
-use Avaliacao\Repository\Factory\WebMotorsRepositoryFactory;
 use Avaliacao\Repository\VeiculoRepository;
 use Avaliacao\Repository\WebMotorsRepository;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;

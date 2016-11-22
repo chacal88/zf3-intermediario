@@ -12,6 +12,8 @@ use Avaliacao\Lib\Enum\RoutesEnum;
 use Avaliacao\Service\ApiDetranService;
 use Avaliacao\Service\ApiService;
 use Avaliacao\Service\VeiculoService;
+use Common\Lib\StrFormat;
+use DataWashModule\Service\DataWashServiceConsult;
 use Zend\Authentication\AuthenticationServiceInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -50,6 +52,10 @@ class VeiculoController extends AbstractActionController
      * @var AuthenticationServiceInterface
      */
     private $authService;
+    /**
+     * @var DataWashServiceConsult
+     */
+    private $dataWashServiceConsult;
 
     /**
      * VeiculoController constructor.
@@ -65,7 +71,7 @@ class VeiculoController extends AbstractActionController
         VeiculoService $veiculoService,
         ApiService $apiService,
         ApiDetranService $apiDetranService,
-        AuthenticationServiceInterface $authService)
+        AuthenticationServiceInterface $authService,DataWashServiceConsult $dataWashServiceConsult)
     {
 
         $this->veiculoForm = $veiculoForm;
@@ -74,6 +80,7 @@ class VeiculoController extends AbstractActionController
         $this->apiService = $apiService;
         $this->apiDetranService = $apiDetranService;
         $this->authService = $authService;
+        $this->dataWashServiceConsult = $dataWashServiceConsult;
     }
 
     /**
@@ -137,6 +144,7 @@ class VeiculoController extends AbstractActionController
 
         $veiculo = $this->apiService->findCar($veiculo);
 
+
         if (empty($veiculo->getRenavam())) {
             return ['form' => $form];
         }
@@ -145,6 +153,7 @@ class VeiculoController extends AbstractActionController
 
         $veiculoBot = $this->apiDetranService->insertVeiculo($veiculo);
 
+//        \Zend\Debug\Debug::dump($veiculoBot);exit;
         if (empty($veiculoBot['id'])) {
 
             $veiculo = $this->veiculoService->delete($veiculo);
@@ -183,11 +192,11 @@ class VeiculoController extends AbstractActionController
 
             $cliente = $veiculo->getCliente();
 
-            if (empty($cliente) && !($cliente = $this->veiculoService->findOneBy(Cliente::class, ['cpfCnpj' => $veiculo->getProprietarioDoc()]))) {
-                if($cpf){
-                    $cliente = $this->apiService->findByDoc(StrFormat::format($cpf));
-                }else{
-                    $cliente = $this->apiService->findByDoc($veiculo->getProprietarioDoc());
+            if($cpf){
+                $cliente = $this->dataWashServiceConsult->findByDoc(StrFormat::format($cpf));
+            }else {
+                if (empty($cliente) && !($cliente = $this->veiculoService->findOneBy(Cliente::class, ['cpfCnpj' => $veiculo->getProprietarioDoc()]))) {
+                    $cliente = $this->dataWashServiceConsult->findByDoc($veiculo->getProprietarioDoc());
                 }
             }
             $form->bind($cliente);

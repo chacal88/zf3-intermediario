@@ -4,6 +4,8 @@ namespace Avaliacao\Entity;
 
 use Common\Entity\Traits\TEntity;
 use Common\Lib\DateTimeStrategy;
+use DataWash\Entity\PessoaFisica;
+use DataWash\Entity\PessoaJuridica;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
@@ -350,105 +352,58 @@ class Cliente
 //    }
 
     /**
-     * @param $data
+     * @param $pessoaFisica
      */
-    public function exchangeApiCpf($data)
+    public function exchangeApiCpf(PessoaFisica $pessoaFisica)
     {
-        if (!empty($data->DADOS->NOME)) {
-            $this->setNome((string)$data->DADOS->NOME);
-        }
-
-        if (!empty($data->DADOS->CPF)) {
-            $this->setCpfCnpj((string)$data->DADOS->CPF);
-        }
-
-        if (!empty($data->DADOS->DATA_NASC)) {
-            $this->setData($data->DADOS->DATA_NASC);
-        }
-
-        if (!empty($data->DADOS->SEXO)) {
-            $this->setSexo((string)$data->DADOS->SEXO);
-        }
-
+        $this->setNome($pessoaFisica->getNome());
+        $this->setCpfCnpj($pessoaFisica->getCpf());
+        $this->setData($pessoaFisica->getDataNascimento());
+        $this->setSexo($pessoaFisica->getSexo());
         $this->setTipo('Fisica');
 
-        $enderecoArray = $data->DADOS->ENDERECOS->ENDERECO;
-        $enderecoSize = count($enderecoArray);
-        if (count($enderecoSize) > 0) {
-            for ($i = 0; $i < $enderecoSize; $i++) {
-                $endereco = new Endereco();
-                $endereco->exchangeApi($enderecoArray[$i]);
-                $this->addEnderecos($endereco);
-            }
+
+        while($item = $pessoaFisica->getEnderecos()->iterate()) {
+            $endereco = new Endereco();
+            $endereco->exchangeApi($item);
+            $endereco->setCliente($this);
+            $this->enderecos [] = $endereco;
         }
 
-        $telefoneArray = $data->DADOS->TELEFONES_FIXOS->TELEFONE;
-        $telefoneSize = count($telefoneArray);
-        if (count($telefoneSize) > 0) {
-            for ($i = 0; $i < $telefoneSize; $i++) {
-                $telefone = new Telefone();
-                $telefone->setNumero((string)$telefoneArray[$i]);
-                $telefone->setTipo('Residencial');
-                $this->addTelefones($telefone);
-            }
-        }
+        while($item = $pessoaFisica->getTelefones()->iterate()) {
+            $telefone = new Telefone();
+            $telefone->exchangeApi($item);
+            $telefone->setCliente($this);
+            $this->telefones[] = $telefone;
 
-        $telefoneArray = $data->DADOS->TELEFONES_MOVEIS->TELEFONE;
-        $telefoneSize = count($telefoneArray);
-        if (count($telefoneSize) > 0) {
-            for ($i = 0; $i < $telefoneSize; $i++) {
-                $telefone = new Telefone();
-                $telefone->setNumero((string)$telefoneArray[$i]);
-                $telefone->setTipo('Cel');
-                $telefone->setCliente($this);
-                $this->addTelefones($telefone);
-            }
-        }
-
-        $telefoneArray = $data->DADOS->TELEFONES_COMERCIAIS->TELEFONE;
-        $telefoneSize = count($telefoneArray);
-        if (count($telefoneSize) > 0) {
-            for ($i = 0; $i < $telefoneSize; $i++) {
-                $telefone = new Telefone();
-                $telefone->setNumero((string)$telefoneArray[$i]);
-                $telefone->setTipo('Comercial');
-                $telefone->setCliente($this);
-                $this->addTelefones($telefone);
-            }
         }
     }
 
     /**
-     * @param $data
+     * @param $pessoaJuridica
      */
-    public function exchangeApiCnpj($data)
+    public function exchangeApiCnpj(PessoaJuridica $pessoaJuridica)
     {
-        $this->nome = (string)(!empty($data->DADOS->RAZAO_SOCIAL)) ? $data->DADOS->RAZAO_SOCIAL : null;
-        $this->cpfCnpj = (!empty($data->DADOS->CNPJ)) ? $data->DADOS->CNPJ : null;
-        $this->data = (!empty($data->DADOS->DATA_ABERTURA)) ? $data->DADOS->DATA_ABERTURA : null;
-        $this->tipo = 'Juridica';
 
-        $enderecoArray = $data->DADOS->ENDERECOS;
-        $enderecoSize = count($data->DADOS->ENDERECOS);
-        if (count($enderecoSize) > 0) {
-            for ($i = 0; $i < $enderecoSize; $i++) {
-                $endereco = new Endereco();
-                $endereco->exchangeApi($enderecoArray[$i]->ENDERECO);
-                $endereco->setCliente($this);
-                $this->enderecos [] = $endereco;
-            }
+        $this->setNome($pessoaJuridica->getRazaoSocial());
+        $this->setCpfCnpj($pessoaJuridica->getCnpj());
+        $this->setData($pessoaJuridica->getDataAbertura());
+        $this->setTipo('Juridica');
+
+
+        while($item = $pessoaJuridica->getEnderecos()->iterate()) {
+            $endereco = new Endereco();
+            $endereco->exchangeApi($item);
+            $endereco->setCliente($this);
+            $this->enderecos [] = $endereco;
         }
 
-        $telefoneArray = $data->DADOS->TELEFONES->TELEFONE;
-        $telefoneSize = count($telefoneArray);
-        if (count($telefoneSize) > 0) {
-            for ($i = 0; $i < $telefoneSize; $i++) {
-                $telefone = new Telefone();
-                $telefone->setNumero($telefoneArray[$i]);
-                $telefone->setTipo('Comercial');
-                $telefone->setCliente($this);
-                $this->telefones[] = $telefone;
-            }
+        while($item = $pessoaJuridica->getTelefones()->iterate()) {
+            $telefone = new Telefone();
+            $telefone->exchangeApi($item);
+            $telefone->setCliente($this);
+            $this->telefones[] = $telefone;
+
         }
     }
 
@@ -490,20 +445,6 @@ class Cliente
             }
         }
 
-//        if(!empty($data['veiculos'])){
-//
-//            $veiculoArray   = $data['veiculos'];
-//            $veiculosSize    = count($telefoneArray);
-//
-//            if(count($veiculosSize) >0)
-//            {
-//                for($i=0;$i< $veiculosSize;$i++){
-//                    $veiculo = new Veiculo();
-//                    $veiculo->hydrate($veiculoArray[$i]);
-//                    $this->veiculos[] = $veiculo;
-//                }
-//            }
-//        }
         return $this;
     }
 }

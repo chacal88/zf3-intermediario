@@ -162,9 +162,28 @@ $form->prepare();
         return false;
     }
 
-    function remove_element(buttom) {
-        buttom.closest('fieldset').remove();
+    function remove_element(button) {
+        button.closest('fieldset').remove();
         return false;
+    }
+
+    function get_element(button) {
+
+        var index = $(button).attr("name");
+        index = index.replace(/[^0-9]/g,'');
+        var cep = $("[name='cliente[enderecos]["+index+"][cep]']").val();
+
+        $.ajax({
+            type: "GET",
+            url: "/consulta/cep/" + cep,
+            success: function (result) {
+                $("[name='cliente[enderecos]["+index+"][logradouro]']").val(result.data.logradouro);
+                $("[name='cliente[enderecos]["+index+"][numero]']").val(result.data.numero);
+                $("[name='cliente[enderecos]["+index+"][bairro]']").val(result.data.bairro);
+                $("[name='cliente[enderecos]["+index+"][cep]']").val(result.data.cep);
+            }
+        });
+
     }
 
 </script>

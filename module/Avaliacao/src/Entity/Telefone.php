@@ -176,4 +176,13 @@ class Telefone
         return $this->whatsapp;
     }
 
+    /**
+     * @param $data
+     */
+    public function exchangeApi(\DataWash\Entity\Telefone $data)
+    {
+        $this->setNumero($data->getNumero());
+        $this->setTipo($data->getTipo());
+        $this->setDdd($data->getDdd());
+    }
 }
