@@ -116,6 +116,7 @@ $form->prepare();
             <div id='#action-div' style="display: none;"  class="form-actions right">
                 <?php
                     echo $this->formHidden($form->get('codigo'));
+                    echo $this->formHidden($form->get('valor_fipe'));
                     echo $this->formSubmit($submit);
                 ?>
             </div>
@@ -148,7 +149,7 @@ $form->prepare();
                         marca.empty().append(function () {
                             var output = "<option>Selecione</option>";
                             $.each(result.marcas, function (key, value) {
-                                output += "<option value='" + key + "' >" + value + " </option>";
+                                output += "<option value='" + value.codigo + "' >" + value.nome + " </option>";
                             });
                             return output;
                         });
@@ -168,13 +169,11 @@ $form->prepare();
                     url: "../get-modelos",
                     data: {tipo: tipo.val(),marca: marca.val()},
                     success: function (result) {
-                        console.log(result.modelos);
-                        //                    var obj = jQuery.parseJSON( result.modelos );
-                        //                    console.log(obj);
+
                         modelo.empty().append(function () {
                             var output = "<option>Selecione</option>";
                             $.each(result.modelos, function (key, value) {
-                                output += "<option value='" + key + "' >" + value + " </option>";
+                                output += "<option value='" + value.codigo + "' >" + value.nome + " </option>";
                             });
                             return output;
                         });
@@ -197,7 +196,7 @@ $form->prepare();
                         ano.empty().append(function () {
                             var output = "<option>Selecione</option>";
                             $.each(result.anos, function (key, value) {
-                                output += "<option value='" + key + "' >" + value + " </option>";
+                                output += "<option value='" + value.codigo + "' >" + value.nome + " </option>";
                             });
                             return output;
                         });
@@ -247,6 +246,8 @@ $form->prepare();
                         $('#campo_valor').empty().append(function () {
                             return result.veiculo.Valor
                         });
+
+                        $('#valor_fipe').val(result.veiculo.Valor);
 
                         codigo.val(result.veiculo.CodigoFipe);
                     }

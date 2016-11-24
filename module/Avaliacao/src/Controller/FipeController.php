@@ -18,7 +18,9 @@ use Avaliacao\Lib\Enum\RoutesEnum;
 use Avaliacao\Service\FipeService;
 use Avaliacao\Service\VeiculoService;
 use Avaliacao\Service\WebMotorsService;
+use Symfony\Component\Debug\Tests\DebugClassLoaderTest;
 use Zend\Authentication\AuthenticationServiceInterface;
+use Zend\I18n\Filter\NumberFormat;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
@@ -70,6 +72,8 @@ class FipeController extends AbstractActionController
     public function avaliarAction()
     {
 
+        /** @var Veiculo $veiculo */
+
         $id = (int)$this->params()->fromRoute('id', 0);
 
         if (!$id) {
@@ -86,16 +90,18 @@ class FipeController extends AbstractActionController
             return ['form' => $form, 'veiculo' => $veiculo];
         }
 
-
         $form->setData($request->getPost());
 
-        $form->isValid();
+        if(!$form->isValid()){
+            return ['form' => $form, 'veiculo' => $veiculo];
+        }
+
         $avaliacao = new AvaliacaoFipe();
         $avaliacao->hydrate($form->getData());
         $avaliacao->setVeiculo($veiculo);
         $avaliacao->setAvaliador($this->authService->getIdentity());
+
         $avaliacao = $this->fipeService->save($avaliacao);
-        //  return $this->redirect()->toRoute(RoutesEnum::VEICULO);
 
         return $this->redirect()->toRoute(RoutesEnum::FIPE, ['action' => 'observacao', 'id' => $avaliacao->getId()]);
 
@@ -114,6 +120,7 @@ class FipeController extends AbstractActionController
         $avaliacao = $this->fipeService->findOneBy(AvaliacaoFipe::class, ['id' => $id]);
 
         $form = $this->observacaoForm;
+
         $form->bind($avaliacao);
 
         $request = $this->getRequest();
@@ -135,67 +142,64 @@ class FipeController extends AbstractActionController
 
         $this->fipeService->update($avaliacao);
 
-        return $this->redirect()->toRoute(RoutesEnum::VEICULO);
+        return $this->redirect()->toRoute(RoutesEnum::VEICULO, ['action' => 'view', 'id' => $avaliacao->getVeiculo()->getId()]);
 
     }
 
 
     public function getMarcasAction()
     {
-        $tipo = $this->params()->fromPost('tipo');
+        $tipo  = $this->params()->fromPost('tipo');
+
         $this->fipeService->setTipo($tipo);
-        $marca = $this->fipeService->getMarcas();
-        $selectMarcas = array();
-        for ($i = 0; $i < count($marca); $i++) {
-            $selectMarcas[$marca[$i]['codigo']] = $marca[$i]['nome'];
-        }
+
+        $marcas = $this->fipeService->getMarcas();
+
         return new JsonModel([
-            'marcas' => $selectMarcas
+            'marcas' => $marcas
         ]);
     }
 
     public function getModelosAction()
     {
-        $tipo = $this->params()->fromPost('tipo');
+        $tipo  = $this->params()->fromPost('tipo');
+        $marca = $this->params()->fromPost('marca', 0);
+
         $this->fipeService->setTipo($tipo);
 
-        $marca = (int)$this->params()->fromPost('marca', 0);
-        $modelo = $this->fipeService->getModelos($marca);
-        $selectModelos = array();
-        for ($i = 0; $i < count($modelo); $i++) {
-            $selectModelos[$modelo[$i]['codigo']] = $modelo[$i]['nome'];
-        }
+        $modelos = $this->fipeService->getModelos($marca);
+
         return new JsonModel([
-            'modelos' => $selectModelos
+            'modelos' => $modelos
         ]);
     }
 
     public function getAnosAction()
     {
-        $tipo = $this->params()->fromPost('tipo');
+        $tipo   = $this->params()->fromPost('tipo');
+        $marca  = $this->params()->fromPost('marca', 0);
+        $modelo = $this->params()->fromPost('modelo', 0);
+
         $this->fipeService->setTipo($tipo);
 
-        $marca = (int)$this->params()->fromPost('marca', 0);
-        $modelo = (int)$this->params()->fromPost('modelo', 0);
-        $anos = $this->fipeService->getAnos($marca, $modelo);
-        $selectAnos = array();
-        for ($i = 0; $i < count($anos); $i++) {
-            $selectAnos[$anos[$i]['codigo']] = $anos[$i]['nome'];
-        }
+        $anos   = $this->fipeService->getAnos($marca, $modelo);
+
         return new JsonModel([
-            'anos' => $selectAnos
+            'anos' => $anos
         ]);
     }
 
     public function getVeiculoAction()
     {
-        $tipo = $this->params()->fromPost('tipo');
+        $tipo   = $this->params()->fromPost('tipo');
+        $marca  = $this->params()->fromPost('marca', 0);
+        $modelo = $this->params()->fromPost('modelo', 0);
+        $ano    = $this->params()->fromPost('ano', 0);
+
         $this->fipeService->setTipo($tipo);
 
-        $marca = $this->params()->fromPost('marca', 0);
-        $modelo = $this->params()->fromPost('modelo', 0);
-        $ano = $this->params()->fromPost('ano', 0);
         $veiculo = $this->fipeService->getVeiculo($marca, $modelo, $ano);
+
         return new JsonModel([
             'veiculo' => $veiculo
         ]);

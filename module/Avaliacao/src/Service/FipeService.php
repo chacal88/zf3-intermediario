@@ -44,6 +44,7 @@ class FipeService implements IRepository
     {
         $uri = $this->url . $this->tipo . '/marcas/' . $codMarca . '/modelos';
         $modelos = $this->request($uri);
+
         return $modelos['modelos'];
 
     }

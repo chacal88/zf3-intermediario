@@ -19,11 +19,8 @@ class ObservacaoInputFilter extends InputFilter
         ]);
 
         $this->add([
-            'name' => 'kilometragem',
+            'name' => 'quilometragem',
             'required' => true,
-            'filters' => [
-                ['name' => NumberFormat::class],
-            ],
             'validators' => [
                 [
                     'name' => NotEmpty::class,
@@ -59,10 +56,6 @@ class ObservacaoInputFilter extends InputFilter
         $this->add([
             'name' => 'valor',
             'require' => true,
-            'filters' => [
-                ['name' => NumberFormat::class],
-                ['name' => StripTags::class]
-            ],
             'validators' => [
                 [
                     'name' => NotEmpty::class,

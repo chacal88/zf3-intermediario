@@ -1,4 +1,12 @@
 <?php
+/**
+ * Copyright (c) 2016 , Nexxus Tecnologia All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification, are permitted,:
+ *
+ */
+
+declare(strict_types = 1);
 
 
 namespace Avaliacao\Entity;
@@ -8,9 +16,14 @@ use Avaliacao\Entity\Traits\TAvaliador;
 use Common\Entity\Traits\TEntity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
-use User\Entity\User;
 
 /**
+ * Class AvaliacaoFipe
+ *
+ * @author Kaue Rodrigues <kauemsc@gmail.com>
+ *
+ * @package Avaliacao\Entity
+ *
  * @ORM\Table(
  *         name="avaliacao_fipe"
  *         )
@@ -59,7 +72,7 @@ class AvaliacaoFipe
     private $codigo;
 
     /**
-     * @ORM\Column(name="quilometragem", type="float", nullable=true)
+     * @ORM\Column(name="quilometragem", type="float", scale=2, nullable=true)
      * @Serializer\Type("float")
      * @var float
      */
@@ -75,25 +88,33 @@ class AvaliacaoFipe
     /**
      * @ORM\Column(name="obs", type="text", nullable=true)
      * @Serializer\Type("text")
-     * @var text
+     * @var string
      */
     private $obs;
 
     /**
-     * @ORM\Column(name="valor", type="float", nullable=true)
+     * @ORM\Column(name="valor", type="float", scale=2,  nullable=true)
      * @Serializer\Type("float")
      * @var float
      */
     private $valor;
 
     /**
+     * @ORM\Column(name="valor_fipe", type="string",length=22, nullable=true)
+     * @Serializer\Type("string")
+     * @var string
+     */
+    private $valorFipe;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Avaliacao\Entity\Veiculo",cascade={"persist"})
      * @ORM\JoinColumn(name="veiculo_id", referencedColumnName="id",nullable=true)
+     * @var Veiculo
      */
     private $veiculo;
 
-
     use TAvaliador;
+
 
     /**
      * @return string
@@ -105,10 +126,12 @@ class AvaliacaoFipe
 
     /**
      * @param string $tipo
+     * @return AvaliacaoFipe
      */
-    public function setTipo($tipo)
+    public function setTipo(string $tipo)
     {
         $this->tipo = $tipo;
+        return $this;
     }
 
     /**
@@ -121,10 +144,12 @@ class AvaliacaoFipe
 
     /**
      * @param string $marca
+     * @return AvaliacaoFipe
      */
-    public function setMarca($marca)
+    public function setMarca(string $marca)
     {
         $this->marca = $marca;
+        return $this;
     }
 
     /**
@@ -137,10 +162,12 @@ class AvaliacaoFipe
 
     /**
      * @param string $modelo
+     * @return AvaliacaoFipe
      */
-    public function setModelo($modelo)
+    public function setModelo(string $modelo)
     {
         $this->modelo = $modelo;
+        return $this;
     }
 
     /**
@@ -153,10 +180,12 @@ class AvaliacaoFipe
 
     /**
      * @param string $ano
+     * @return AvaliacaoFipe
      */
-    public function setAno($ano)
+    public function setAno(string $ano)
     {
         $this->ano = $ano;
+        return $this;
     }
 
     /**
@@ -169,10 +198,12 @@ class AvaliacaoFipe
 
     /**
      * @param string $codigo
+     * @return AvaliacaoFipe
      */
-    public function setCodigo($codigo)
+    public function setCodigo(string $codigo)
     {
         $this->codigo = $codigo;
+        return $this;
     }
 
     /**
@@ -185,10 +216,13 @@ class AvaliacaoFipe
 
     /**
      * @param float $quilometragem
+     * @return AvaliacaoFipe
      */
-    public function setQuilometragem($quilometragem)
+    public function setQuilometragem(string $quilometragem)
     {
-        $this->quilometragem = $quilometragem;
+        $filter = new \Zend\I18n\Filter\NumberParse('pt_BR');
+        $this->quilometragem = $filter->filter($quilometragem);
+        return $this;
     }
 
     /**
@@ -201,14 +235,16 @@ class AvaliacaoFipe
 
     /**
      * @param string $pneu
+     * @return AvaliacaoFipe
      */
-    public function setPneu($pneu)
+    public function setPneu(string $pneu)
     {
         $this->pneu = $pneu;
+        return $this;
     }
 
     /**
-     * @return text
+     * @return string
      */
     public function getObs()
     {
@@ -216,11 +252,13 @@ class AvaliacaoFipe
     }
 
     /**
-     * @param text $obs
+     * @param string $obs
+     * @return AvaliacaoFipe
      */
-    public function setObs($obs)
+    public function setObs(string $obs)
     {
         $this->obs = $obs;
+        return $this;
     }
 
     /**
@@ -233,14 +271,35 @@ class AvaliacaoFipe
 
     /**
      * @param float $valor
+     * @return AvaliacaoFipe
      */
-    public function setValor($valor)
+    public function setValor(string $valor)
     {
-        $this->valor = $valor;
+        $filter = new \Zend\I18n\Filter\NumberParse('pt_BR');
+        $this->valor = $filter->filter($valor);
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
+     */
+    public function getValorFipe()
+    {
+        return $this->valorFipe;
+    }
+
+    /**
+     * @param string $valorFipe
+     * @return AvaliacaoFipe
+     */
+    public function setValorFipe(string $valorFipe)
+    {
+        $this->valorFipe = $valorFipe;
+        return $this;
+    }
+
+    /**
+     * @return Veiculo
      */
     public function getVeiculo()
     {
@@ -248,11 +307,13 @@ class AvaliacaoFipe
     }
 
     /**
-     * @param mixed $veiculo
+     * @param Veiculo $veiculo
+     * @return AvaliacaoFipe
      */
-    public function setVeiculo($veiculo)
+    public function setVeiculo(Veiculo $veiculo)
     {
         $this->veiculo = $veiculo;
+        return $this;
     }
 
 }

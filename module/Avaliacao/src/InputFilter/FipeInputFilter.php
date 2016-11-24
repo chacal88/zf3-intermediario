@@ -39,5 +39,11 @@ class FipeInputFilter extends InputFilter
             'allow_empty' => false
         ]);
 
+        $this->add([
+            'name' => 'valor_fipe',
+            'required' => true,
+            'allow_empty' => false
+        ]);
+
     }
 }

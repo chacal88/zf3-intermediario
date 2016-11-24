@@ -1,23 +1,6 @@
 <h1>Cadastrar Veiculo</h1>
 <?php
 
-$marca = $form->get('marcaFipe');
-$marca->setAttribute('class', 'form-control')
-    ->setLabelAttributes(['class' => 'control-label']);
-
-$modelo = $form->get('modeloFipe');
-$modelo->setAttribute('class', 'form-control')
-    ->setLabel('Selecione o modelo')
-    ->setLabelAttributes(['class' => 'control-label']);
-
-$ano = $form->get('anoFipe');
-$ano->setAttribute('class', 'form-control')
-    ->setLabel('Selecione o Ano')
-    ->setLabelAttributes(['class' => 'control-label']);
-
-$submit = $form->get('submit');
-$submit->setAttribute('class', 'btn btn-success');
-
 $form->setAttribute('action', $this->url(Avaliacao\Lib\Enum\RoutesEnum::VEICULO, ['action' => 'fipe','id' => $veiculo->getId()]));
 $form->prepare();
 ?>
@@ -83,23 +66,27 @@ $form->prepare();
 
             <?php echo $this->form()->openTag($form); ?>
 
-            <?php $message = $this->formElementErrors($marca, ['class' => 'help-block']); ?>
+            <?php $message = $this->formElementErrors($form->get('marca'), ['class' => 'help-block']); ?>
 
             <div class="form-group<?= $message ? " has-error" : "" ?>">
-                <?= $this->formLabel($marca); ?>
-                <?= $this->formElement($marca); ?>
+                <?= $this->formLabel($form->get('marca')); ?>
+                <?= $this->formElement($form->get('marca')); ?>
                 <?= $message ?>
             </div>
 
+            <?php $message = $this->formElementErrors($form->get('modelo'), ['class' => 'help-block']); ?>
+
             <div class="form-group<?= $message ? " has-error" : "" ?>">
-                <?= $this->formLabel($modelo); ?>
-                <?= $this->formElement($modelo); ?>
+                <?= $this->formLabel($form->get('modelo')); ?>
+                <?= $this->formElement($form->get('modelo')); ?>
                 <?= $message ?>
             </div>
 
+            <?php $message = $this->formElementErrors($form->get('ano'), ['class' => 'help-block']); ?>
+
             <div class="form-group<?= $message ? " has-error" : "" ?>">
-                <?= $this->formLabel($ano); ?>
-                <?= $this->formElement($ano); ?>
+                <?= $this->formLabel($form->get('ano')); ?>
+                <?= $this->formElement($form->get('ano')); ?>
                 <?= $message ?>
             </div>
 
@@ -132,8 +119,9 @@ $form->prepare();
 
             <div class="form-actions right">
                 <?php
-                    echo $this->formHidden($form->get('codigoFipe'));
-                    echo $this->formSubmit($submit);
+                    echo $this->formHidden($form->get('codigo'));
+                    echo $this->formHidden($form->get('valor'));
+                    echo $this->formSubmit($form->get('submit'));
                 ?>
             </div>
 
@@ -212,6 +200,10 @@ $form->prepare();
                         document.getElementById('#fipe-div').style.display = 'block';
 
                         $('#fipe-codigo').val(result.veiculo.CodigoFipe);
+
+                        $('#valor').empty().append(function () {
+                            return result.veiculo.Valor
+                        });
 
                         $('#codigofipe').val(result.veiculo.CodigoFipe);
 

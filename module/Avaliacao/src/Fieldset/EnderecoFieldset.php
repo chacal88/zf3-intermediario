@@ -85,6 +85,21 @@ class EnderecoFieldset extends Fieldset implements InputFilterProviderInterface
         ]);
 
         $this->add([
+            'name' => 'cidade',
+            'type' => Element\Text::class,
+            'options' => [
+                'label' => 'Cidade',
+            ],
+            'attributes' => [
+                'required' => 'required',
+                'class' => 'form-control'
+            ],
+            'label_attributes' => [
+                'class' => 'control-label'
+            ],
+        ]);
+
+        $this->add([
             'name' => 'cep',
             'type' => Element\Number::class,
             'options' => [

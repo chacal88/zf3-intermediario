@@ -20,14 +20,14 @@ class  ObservacaoForm extends Form
         ]);
 
         $this->add([
-            'name' => 'kilometragem',
-            'type' => Element\Number::class,
+            'name' => 'quilometragem',
+            'type' => Element\Text::class,
             'options' => [
-                'label'=> 'Kilometragem'
+                'label'=> 'quilometragem'
             ],
             'attributes' => [
                 'required' => 'required',
-                'class' => 'form-control'
+                'class' => 'form-control quilometro'
             ],
             'label_attributes' => [
                 'class' => 'control-label'
@@ -73,13 +73,13 @@ class  ObservacaoForm extends Form
 
         $this->add([
             'name' => 'valor',
-            'type' => Element\Number::class,
+            'type' => Element\Text::class,
             'options' => [
                 'label'=> 'Valor'
             ],
             'attributes' => [
                 'required' => 'required',
-                'class' => 'form-control',
+                'class' => 'form-control dinheiro',
                  'id' => 'valor'
             ],
             'label_attributes' => [

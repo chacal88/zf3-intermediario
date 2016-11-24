@@ -55,11 +55,11 @@ $form->prepare();
 
             <?php echo $this->form()->openTag($form); ?>
 
-            <?php $message = $this->formElementErrors($form->get('kilometragem'), ['class' => 'help-block']); ?>
+            <?php $message = $this->formElementErrors($form->get('quilometragem'), ['class' => 'help-block']); ?>
 
             <div class="form-group<?= $message ? " has-error" : "" ?>">
-                <?= $this->formLabel($form->get('kilometragem')); ?>
-                <?= $this->formElement($form->get('kilometragem')); ?>
+                <?= $this->formLabel($form->get('quilometragem')); ?>
+                <?= $this->formElement($form->get('quilometragem')); ?>
                 <?= $message ?>
             </div>
 
@@ -99,3 +99,9 @@ $form->prepare();
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("input.dinheiro").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
+        $("input.quilometro").maskMoney({suffix:' km', allowNegative: false, thousands:'.', decimal:',', affixesStay: false});
+    });
+</script>

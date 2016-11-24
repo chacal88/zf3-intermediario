@@ -107,32 +107,47 @@ $this->headTitle("Veiculos");
         <h3 class="panel-title">Avaliações</h3>
     </div>
     <div class="panel-body">
-        <table class="table table-striped table-bordered table-hover " width="100%" id="veiculosTable">
-            <thead>
-            <tr>
-                <th class="all">Avaliador</th>
-                <th class="none">Valor</th>
-                <th class="none">Pneu</th>
-                <th class="none">Quilometragem</th>
-                <th class="none">Obs</th>
-                <th class="none">Ações</th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php
-                /** @var $avaliacao \Avaliacao\Entity\AvaliacaoFipe */
-                foreach ($veiculo->getAvaliacoes() as $avaliacao): ?>
+
+        <?php if (!count($veiculo->getAvaliacoes()) > 0): ?>
+            <p>Sem Avaliações</p>
+        <?php else: ?>
+            <table class="table table-striped table-bordered table-hover " width="100%" id="veiculosTable">
+                <thead>
                 <tr>
-                    <td><?= $this->escapeHtml($avaliacao->getAvaliador()->getFullName()); ?></td>
-                    <td><?= $this->currencyFormat($avaliacao->getValor(), 'BRL', null, 'pt_BR');?></td>
-                    <td><?= $this->escapeHtml($avaliacao->getPneu()); ?></td>
-                    <td><?= $this->escapeHtml($avaliacao->getQuilometragem()); ?> KM</td>
-                    <td><?= $this->escapeHtml($avaliacao->getObs()); ?></td>
-                    <td>
-                    </td>
+                    <th class="all">Avaliador</th>
+                    <th class="none">Valor Avaliacao</th>
+                    <th class="none">Cotação Fipe</th>
+                    <th class="none">Pneu</th>
+                    <th class="none">Quilometragem</th>
+                    <th class="none">Obs</th>
+                    <th class="none">Data Avaliação</th>
+                    <th class="none">Ações</th>
                 </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                <?php
+                    /** @var $avaliacao \Avaliacao\Entity\AvaliacaoFipe */
+                    foreach ($veiculo->getAvaliacoes() as $avaliacao): ?>
+                    <tr>
+                        <td><?= $this->escapeHtml($avaliacao->getAvaliador()->getFullName()); ?></td>
+                        <td><?= $this->currencyFormat($avaliacao->getValor(), 'BRL', true, 'pt_BR');?></td>
+                        <td><?= $this->escapeHtml($avaliacao->getValorFipe());?></td>
+                        <td><?= $this->escapeHtml($avaliacao->getPneu()); ?></td>
+                        <td><?= $this->escapeHtml($avaliacao->getQuilometragem()); ?> KM</td>
+                        <td><?= $this->escapeHtml($avaliacao->getObs()); ?></td>
+                        <td><?php echo $this->dateFormat(
+                                $avaliacao->getCreated(),
+                                IntlDateFormatter::MEDIUM, // date
+                                IntlDateFormatter::MEDIUM, // time
+                                "pt_BR"
+                            ); ?>
+                        <td>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+
+        <?php endif; ?>
     </div>
 </div>

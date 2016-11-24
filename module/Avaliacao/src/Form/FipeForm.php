@@ -15,16 +15,20 @@ class  FipeForm extends Form
         parent::__construct('fipe');
 
         $this->add([
+            'name' => 'id',
+            'type' => Element\Hidden::class
+        ]);
+
+        $this->add([
             'type' => Element\Select::class,
             'name' => 'tipo',
             'options' => [
                 'label' => 'Tipo',
                 'value_options' => [
-                    '' =>'Selecione',
                     'motos' => 'Motos',
                     'carros' => 'Carros',
                     'caminhoes' => 'Caminhoes'
-                ],
+                ]
             ],
             'attributes' => [
                 'id' => 'select-tipo'
@@ -36,7 +40,10 @@ class  FipeForm extends Form
             'type' => Element\Select::class,
             'attributes' => [
                 'id' => 'select-marca'
-            ]
+            ],
+            'options' => array(
+                'disable_inarray_validator' => true,
+            ),
         ]);
 
         $this->add([
@@ -44,7 +51,10 @@ class  FipeForm extends Form
             'type' => Element\Select::class,
             'attributes' => [
                 'id' => 'select-modelo'
-            ]
+            ],
+            'options' => array(
+                'disable_inarray_validator' => true,
+            ),
         ]);
 
         $this->add([
@@ -52,7 +62,10 @@ class  FipeForm extends Form
             'type' => Element\Select::class,
             'attributes' => [
                 'id' => 'select-ano'
-            ]
+            ],
+            'options' => array(
+                'disable_inarray_validator' => true,
+            ),
         ]);
 
         $this->add([
@@ -60,6 +73,14 @@ class  FipeForm extends Form
             'type' => Element\Text::class,
             'attributes' => [
                 'id' => 'codigo-fipe'
+            ]
+        ]);
+
+        $this->add([
+            'name' => 'valor_fipe',
+            'type' => Element\Text::class,
+            'attributes' => [
+                'id' => 'valor_fipe'
             ]
         ]);
 

@@ -64,14 +64,6 @@ $form->prepare();
         <?= $message ?>
     </div>
 
-    <?php $message = $this->formElementErrors($cliente->get('email'), ['class' => 'help-block']); ?>
-
-    <div class="form-group<?= $message ? " has-error" : "" ?>">
-        <?= $this->formLabel($cliente->get('email')); ?>
-        <?= $this->formElement($cliente->get('email')); ?>
-        <?= $message ?>
-    </div>
-
     <?php if ($cliente->get('tipo')->getValue()  == 'Fisica'): ?>
         <?php $message = $this->formElementErrors($cliente->get('sexo'), ['class' => 'help-block']); ?>
 
@@ -102,6 +94,15 @@ $form->prepare();
     <div class="telefone form-inline">
         <?php echo $this->formCollection($cliente->get('telefones')); ?>
         <button class="btn btn-primary" onclick="return add_telefone()">Adicionar Telefone</button>
+    </div>
+
+
+    <?php $message = $this->formElementErrors($cliente->get('email'), ['class' => 'help-block']); ?>
+
+    <div class="form-group<?= $message ? " has-error" : "" ?>">
+        <?= $this->formLabel($cliente->get('email')); ?>
+        <?= $this->formElement($cliente->get('email')); ?>
+        <?= $message ?>
     </div>
 
     <div class="form-actions right">
@@ -180,6 +181,7 @@ $form->prepare();
                 $("[name='cliente[enderecos]["+index+"][logradouro]']").val(result.data.logradouro);
                 $("[name='cliente[enderecos]["+index+"][numero]']").val(result.data.numero);
                 $("[name='cliente[enderecos]["+index+"][bairro]']").val(result.data.bairro);
+                $("[name='cliente[enderecos]["+index+"][cidade]']").val(result.data.cidade);
                 $("[name='cliente[enderecos]["+index+"][cep]']").val(result.data.cep);
             }
         });
