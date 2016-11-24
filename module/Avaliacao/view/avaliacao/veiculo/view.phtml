@@ -48,7 +48,7 @@ $this->headTitle("Veiculos");
     <div class="panel-body">
         <div class="row marketing">
             <div class="col-lg-6">
-                <label>Nome</label> - <span><?php echo $veiculo->getCliente()->getNome(); ?></span>
+                <label>Nome</label> - <span><?php echo $veiculo->getCliente()->getNome() ?? $veiculo->getCliente()->getNome() ?></span>
             </div>
 
             <?php if ($veiculo->getCliente()->getTipo() == 'Fisica'): ?>
