@@ -13,9 +13,9 @@ abstract class ApiDetranEnum
 
     const API_FILA_URL = "http://192.241.142.82:3000";
 
-    const API_EMAIL = "kauemsc@gmail.com";
+    const API_EMAIL = "triumph@velotron.com.br";
 
-    const API_PASSWORD = "102030ka";
+    const API_PASSWORD = "triumph123456";
 
     const API_FILA_URL_TOKEN = "token";
 

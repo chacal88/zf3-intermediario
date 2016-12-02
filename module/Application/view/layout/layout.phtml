@@ -35,6 +35,8 @@
                 <!-- BEGIN THEME PANEL -->
                 <!--<?= $this->layoutThemePainel ?>-->
                 <!-- END THEME PANEL -->
+                <?php $this->FlashMsg(); ?>
+                <?php echo $this->inlineScript() ?>
                 <?= $this->content; ?>
             </div>
             <!-- END CONTENT BODY -->

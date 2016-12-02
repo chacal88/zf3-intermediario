@@ -26,11 +26,14 @@
     </div>
 </div>
 
+
+
 <div class="portlet-body form">
 
     <?php echo $this->form()->openTag($form); ?>
 
     <?php $message = $this->formElementErrors($placa, ['class' => 'help-block']); ?>
+
 
     <div class="form-group<?= $message ? " has-error" : "" ?>">
         <?= $this->formLabel($placa); ?>

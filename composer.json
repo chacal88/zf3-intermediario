@@ -36,7 +36,8 @@
         "respect/validation": "*",
         "chacal/common": "dev-master",
         "chacal/consulta-cep": "dev-master",
-        "chacal/consulta-datawash": "dev-master"
+        "chacal/consulta-datawash": "dev-master",
+        "jenzri-nizar/zf3-flashmessenger": "^1.0"
     },
     "autoload": {
         "psr-4": {

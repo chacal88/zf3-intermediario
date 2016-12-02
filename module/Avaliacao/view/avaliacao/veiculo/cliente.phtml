@@ -24,6 +24,9 @@ $form->setAttribute('action', $this->url(RoutesEnum::VEICULO, ['action' => 'clie
 
 $form->prepare();
 ?>
+<script type="text/javascript">
+var cliente_id = "<?php echo $this->veiculoId; ?>";
+</script>
 
 <div class="portlet-body form">
 
@@ -57,7 +60,7 @@ $form->prepare();
         <div class="input-group">
             <?= $this->formElement($cliente->get('cpfCnpj')); ?>
             <a class="input-group-addon"
-               href="<?= $this->url(RoutesEnum::VEICULO, ['action' => 'cliente','id' => $this->veiculoId ],['query' => ['cpf' => '06416206919']]) ?>" >
+               id="w3s"  href="" >
                 <i class="fa fa-search font-blue"></i>
             </a>
         </div>
@@ -188,4 +191,10 @@ $form->prepare();
 
     }
 
+    $(document).ready(function(){
+        $("#w3s").click(function(){
+            var cpf = $("[name='cliente[cpfCnpj]']").val();
+            $("#w3s").attr("href", "/avaliacao/veiculo/cliente/" + cliente_id + "?cpf=" + cpf);
+        });
+    });
 </script>

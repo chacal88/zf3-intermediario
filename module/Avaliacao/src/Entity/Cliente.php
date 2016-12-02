@@ -362,21 +362,27 @@ class Cliente
         $this->setSexo($pessoaFisica->getSexo());
         $this->setTipo('Fisica');
 
+        if ($pessoaFisica->getEnderecos()) {
 
-        while($item = $pessoaFisica->getEnderecos()->iterate()) {
-            $endereco = new Endereco();
-            $endereco->exchangeApi($item);
-            $endereco->setCliente($this);
-            $this->enderecos [] = $endereco;
+            while ($item = $pessoaFisica->getEnderecos()->iterate()) {
+                $endereco = new Endereco();
+                $endereco->exchangeApi($item);
+                $endereco->setCliente($this);
+                $this->enderecos [] = $endereco;
+            }
         }
 
-        while($item = $pessoaFisica->getTelefones()->iterate()) {
-            $telefone = new Telefone();
-            $telefone->exchangeApi($item);
-            $telefone->setCliente($this);
-            $this->telefones[] = $telefone;
 
+        if ($pessoaFisica->getTelefones()) {
+            while ($item = $pessoaFisica->getTelefones()->iterate()) {
+                $telefone = new Telefone();
+                $telefone->exchangeApi($item);
+                $telefone->setCliente($this);
+                $this->telefones[] = $telefone;
+
+            }
         }
+
     }
 
     /**
@@ -391,19 +397,25 @@ class Cliente
         $this->setTipo('Juridica');
 
 
-        while($item = $pessoaJuridica->getEnderecos()->iterate()) {
-            $endereco = new Endereco();
-            $endereco->exchangeApi($item);
-            $endereco->setCliente($this);
-            $this->enderecos [] = $endereco;
+        if ($pessoaJuridica->getEnderecos()) {
+
+            while ($item = $pessoaJuridica->getEnderecos()->iterate()) {
+                $endereco = new Endereco();
+                $endereco->exchangeApi($item);
+                $endereco->setCliente($this);
+                $this->enderecos [] = $endereco;
+            }
         }
 
-        while($item = $pessoaJuridica->getTelefones()->iterate()) {
-            $telefone = new Telefone();
-            $telefone->exchangeApi($item);
-            $telefone->setCliente($this);
-            $this->telefones[] = $telefone;
+        if ($pessoaJuridica->getTelefones()) {
 
+            while ($item = $pessoaJuridica->getTelefones()->iterate()) {
+                $telefone = new Telefone();
+                $telefone->exchangeApi($item);
+                $telefone->setCliente($this);
+                $this->telefones[] = $telefone;
+
+            }
         }
     }
 

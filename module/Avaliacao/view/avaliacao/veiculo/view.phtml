@@ -45,66 +45,90 @@ $this->headTitle("Veiculos");
     <div class="panel-heading">
         <h3 class="panel-title">Cliente</h3>
     </div>
+
     <div class="panel-body">
-        <div class="row marketing">
-            <div class="col-lg-6">
-                <label>Nome</label> - <span><?php echo $veiculo->getCliente()->getNome() ?? $veiculo->getCliente()->getNome() ?></span>
+        <?php if (is_null($veiculo->getCliente())): ?>
+            <p>Cliente não cadastrado</p>
+            <a class="btn btn-sm btn-default active"
+               href="<?= $this->url(RoutesEnum::VEICULO, ['action' => 'cliente','id'=>$veiculo->getId()]); ?>">
+                Cadastrar
+            </a>
+        <?php else: ?>
+            <div class="row marketing">
+                <div class="col-lg-6">
+                    <label>Nome</label> - <span><?php echo $veiculo->getCliente()->getNome() ?></span>
+                </div>
+
+                <?php if ($veiculo->getCliente()->getTipo() == 'Fisica'): ?>
+                    <div class="col-lg-6">
+                        <label>Cpf</label> - <span><?php echo $veiculo->getCliente()->getCpfCnpj(); ?></span>
+                    </div>
+                    <div class="col-lg-6">
+                        <label>Sexo</label> - <span><?php echo $veiculo->getCliente()->getSexo(); ?></span>
+                    </div>
+                <?php else: ?>
+                    <div class="col-lg-6">
+                        <label>Cnpj</label> - <span><?php echo $veiculo->getCliente()->getCpfCnpj(); ?></span>
+                    </div>
+                <?php endif; ?>
+                <div class="col-lg-6">
+                    <label>Email</label> - <span><?php echo $veiculo->getCliente()->getEmail(); ?></span>
+                </div>
+
+                <div class="col-lg-6">
+                    <label>Nascimento</label> - <span><?php echo $this->dateFormat(
+                            $veiculo->getCliente()->getData(),
+                            IntlDateFormatter::MEDIUM, // date
+                            IntlDateFormatter::NONE, // time
+                            "pt_BR"
+                        ); ?></span>
+                </div>
             </div>
-
-            <?php if ($veiculo->getCliente()->getTipo() == 'Fisica'): ?>
-                <div class="col-lg-6">
-                    <label>Cpf</label> - <span><?php echo $veiculo->getCliente()->getCpfCnpj(); ?></span>
-                </div>
-                <div class="col-lg-6">
-                    <label>Sexo</label> - <span><?php echo $veiculo->getCliente()->getSexo(); ?></span>
-                </div>
-            <?php else: ?>
-                <div class="col-lg-6">
-                    <label>Cnpj</label> - <span><?php echo $veiculo->getCliente()->getCpfCnpj(); ?></span>
-                </div>
-            <?php endif; ?>
-            <div class="col-lg-6">
-                <label>Email</label> - <span><?php echo $veiculo->getCliente()->getEmail(); ?></span>
+            <div class="row marketing">
+                <h4 style="margin-left: 10px;">Endereços</h4>
+                <?php foreach ($veiculo->getCliente()->getEnderecos() as $key => $val): ?>
+                    <div class="col-lg-12">
+                        <address>
+                            <i class="fa fa-home fa-lg"></i>
+                            <?= $val->getLogradouro() ?>, <?= $val->getNumero() ?>,<?= $val->getComplemento() ?>
+                            <?= $val->getBairro() ?> <?= $val->getCidade() ?>
+                            , <?= $val->getUf() ?> <?= $val->getCep() ?>
+                        </address>
+                    </div>
+                <?php endforeach; ?>
             </div>
+            <div class="row marketing">
 
-            <div class="col-lg-6">
-                <label>Nascimento</label> - <span><?php echo $this->dateFormat(
-                        $veiculo->getCliente()->getData(),
-                        IntlDateFormatter::MEDIUM, // date
-                        IntlDateFormatter::NONE, // time
-                        "pt_BR"
-                    ); ?></span>
+                <h4 style="margin-left: 10px;">Telefones</h4>
+                <?php foreach ($veiculo->getCliente()->getTelefones() as $key => $val): ?>
+                    <div class="col-lg-6">
+                        <?php if ($val->isWhatsapp()): ?>
+                            <i class="fa fa-mobile fa-lg"></i>
+                        <?php else: ?>
+                            <i style="color: green" class="fa fa-whatsapp"></i>
+                        <?php endif; ?>
+                        Telefone <?= $val->getTipo(); ?> - <?= $val->getNumero(); ?>
+                    </div>
+                <?php endforeach; ?>
+
+
             </div>
-            <h4 style="margin-left: 10px;">Endereços</h4>
-            <?php foreach ($veiculo->getCliente()->getEnderecos() as $key => $val): ?>
-                <div class="col-lg-12">
-                    <address>
-                        <i class="fa fa-home fa-lg"></i>
-                        <?= $val->getLogradouro() ?>, <?= $val->getNumero() ?>,<?= $val->getComplemento() ?>
-                        <?= $val->getBairro() ?> <?= $val->getCidade() ?>, <?= $val->getUf() ?> <?= $val->getCep() ?>
-                    </address>
-                </div>
-            <?php endforeach; ?>
-
-            <h4 style="margin-left: 10px;">Telefones</h4>
-            <?php foreach ($veiculo->getCliente()->getTelefones() as $key => $val): ?>
-                <div class="col-lg-6">
-                    <?php if ($val->isWhatsapp()): ?>
-                        <i class="fa fa-mobile fa-lg"></i>
-                    <?php else: ?>
-                        <i style="color: green" class="fa fa-whatsapp"></i>
-                    <?php endif; ?>
-                    Telefone <?= $val->getTipo(); ?> - <?= $val->getNumero(); ?>
-                </div>
-            <?php endforeach; ?>
-
-
-        </div>
+        <?php endif; ?>
     </div>
 </div>
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">Avaliações</h3>
+        <div class="row">
+            <div class="col-lg-10">
+                <h3 class="panel-title">Avaliações</h3>
+            </div>
+            <div class="col-lg-2">
+                <a class="pull-right btn btn-circle btn-sm btn-default active"
+                   href="<?= $this->url(RoutesEnum::FIPE, ['action' => 'avaliar', 'id' => $veiculo->getId()]); ?>">
+                    Avaliar
+                </a>
+            </div>
+        </div>
     </div>
     <div class="panel-body">
 
@@ -126,12 +150,12 @@ $this->headTitle("Veiculos");
                 </thead>
                 <tbody>
                 <?php
-                    /** @var $avaliacao \Avaliacao\Entity\AvaliacaoFipe */
-                    foreach ($veiculo->getAvaliacoes() as $avaliacao): ?>
+                /** @var $avaliacao \Avaliacao\Entity\AvaliacaoFipe */
+                foreach ($veiculo->getAvaliacoes() as $avaliacao): ?>
                     <tr>
                         <td><?= $this->escapeHtml($avaliacao->getAvaliador()->getFullName()); ?></td>
-                        <td><?= $this->currencyFormat($avaliacao->getValor(), 'BRL', true, 'pt_BR');?></td>
-                        <td><?= $this->escapeHtml($avaliacao->getValorFipe());?></td>
+                        <td><?= $this->currencyFormat($avaliacao->getValor(), 'BRL', true, 'pt_BR'); ?></td>
+                        <td><?= $this->escapeHtml($avaliacao->getValorFipe()); ?></td>
                         <td><?= $this->escapeHtml($avaliacao->getPneu()); ?></td>
                         <td><?= $this->escapeHtml($avaliacao->getQuilometragem()); ?> KM</td>
                         <td><?= $this->escapeHtml($avaliacao->getObs()); ?></td>

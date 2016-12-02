@@ -128,6 +128,34 @@ class Veiculo
     private $status;
 
     /**
+     * @ORM\Column(name="situacao", type="string", length=30, nullable=true)
+     *
+     * @var string
+     */
+    protected $situacao;
+
+    /**
+     * @ORM\Column(name="restricao_avenda", type="string", length=30, nullable=true)
+     *
+     * @var string
+     */
+    protected $restricaoAvenda;
+
+    /**
+     * @ORM\Column(name="informacoes_pendentes", type="string", length=120, nullable=true)
+     *
+     * @var string
+     */
+    protected $informacoesPendentes;
+
+    /**
+     * @ORM\Column(name="restricoes", type="string", length=120, nullable=true)
+     *
+     * @var string
+     */
+    protected $restricoes;
+
+    /**
      * @ORM\OneToMany(targetEntity="Avaliacao\Entity\Debito",mappedBy="veiculo", cascade={"persist","remove"})
      *
      * @var ArrayCollection
@@ -510,6 +538,78 @@ class Veiculo
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSituacao()
+    {
+        return $this->situacao;
+    }
+
+    /**
+     * @param string $situacao
+     * @return Veiculo
+     */
+    public function setSituacao(string $situacao)
+    {
+        $this->situacao = $situacao;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRestricaoAvenda()
+    {
+        return $this->restricaoAvenda;
+    }
+
+    /**
+     * @param string $restricaoAvenda
+     * @return Veiculo
+     */
+    public function setRestricaoAvenda(string $restricaoAvenda)
+    {
+        $this->restricaoAvenda = $restricaoAvenda;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInformacoesPendentes()
+    {
+        return $this->informacoesPendentes;
+    }
+
+    /**
+     * @param string $informacoesPendentes
+     * @return Veiculo
+     */
+    public function setInformacoesPendentes(string $informacoesPendentes)
+    {
+        $this->informacoesPendentes = $informacoesPendentes;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRestricoes()
+    {
+        return $this->restricoes;
+    }
+
+    /**
+     * @param string $restricoes
+     * @return Veiculo
+     */
+    public function setRestricoes(string $restricoes)
+    {
+        $this->restricoes = $restricoes;
+        return $this;
     }
 
     /**

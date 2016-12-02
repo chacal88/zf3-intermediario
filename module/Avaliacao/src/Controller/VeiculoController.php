@@ -14,8 +14,10 @@ use Avaliacao\Service\ApiService;
 use Avaliacao\Service\VeiculoService;
 use Common\Lib\StrFormat;
 use DataWashModule\Service\DataWashServiceConsult;
+use Respect\Validation\Rules\No;
 use Zend\Authentication\AuthenticationServiceInterface;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Validator\NotEmpty;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -126,43 +128,58 @@ class VeiculoController extends AbstractActionController
         $request = $this->getRequest();
 
         if (!$request->isPost()) {
+
             return ['form' => $form];
         }
 
         $form->setData($request->getPost());
 
         if (!$form->isValid()) {
+            $this->flashMessenger()->addWarningMessage("Verifique a placa.");
             return ['form' => $form];
         }
-
         /** @var Veiculo $veiculo */
         $veiculo = $form->getData();
 
-        if ($this->veiculoService->findOneBy(Veiculo::class, ['placa' => $veiculo->getPlaca()])) {
-            return $this->redirect()->toRoute(RoutesEnum::VEICULO, ['action' => 'view', 'id' => $veiculo->getId()]);
+        if ($veiculoDb = $this->veiculoService->findOneBy(Veiculo::class, ['placa' => $veiculo->getPlaca()])) {
+
+            $this->flashMessenger()->addWarningMessage("Veiculo já cadastrado");
+            return $this->redirect()->toRoute(
+                RoutesEnum::VEICULO, [
+                    'action' => 'view',
+                    'id' => $veiculoDb->getId()
+                ]);
         }
 
         $veiculo = $this->apiService->findCar($veiculo);
 
 
-        if (empty($veiculo->getRenavam())) {
-            return ['form' => $form];
+        if (!$veiculo->getRenavam()) {
+            $this->flashMessenger()->addErrorMessage('Renavam não localizado, insira manualmente');
+            return [
+                'form' => $form
+            ];
         }
 
         $veiculo = $this->veiculoService->save($veiculo);
 
         $veiculoBot = $this->apiDetranService->insertVeiculo($veiculo);
 
-//        \Zend\Debug\Debug::dump($veiculoBot);exit;
         if (empty($veiculoBot['id'])) {
+            $form->bind($veiculo);
+            if(isset($veiculoBot['msg'])){
+                if($veiculoBot['msg'] == "Validation error"){
+                    $this->flashMessenger()->addErrorMessage('Veiculo ja consta em monitoramento, contate um administrador.');
+                }
 
+            }
+            $this->flashMessenger()->addErrorMessage('Erro ao comunica-se com Detran.');
             $veiculo = $this->veiculoService->delete($veiculo);
-
-            //TODO criar validacao pra exibir na view
-            throw new \InvalidArgumentException('Não foi possivel se comunicar com Detran.', 500);
+            return ['form' => $form];
         }
 
         $veiculo->setIdBot($veiculoBot['id']);
+
         $veiculo->setAvaliador($this->authService->getIdentity());
 
         $veiculo = $this->veiculoService->update($veiculo);
@@ -216,7 +233,7 @@ class VeiculoController extends AbstractActionController
 
         $this->veiculoService->update($veiculo);
 
-        return $this->redirect()->toRoute(RoutesEnum::VEICULO);
+        return $this->redirect()->toRoute(RoutesEnum::VEICULO,['action' => 'view','id'=>$veiculoId]);
 
     }
 
@@ -236,7 +253,7 @@ class VeiculoController extends AbstractActionController
             return $this->redirect()->toRoute(RoutesEnum::VEICULO);
         }
 
-        $this->apiDetranService->deleteVeiculo($veiculo);
+//        $this->apiDetranService->deleteVeiculo($veiculo);
 
         $this->veiculoService->delete($veiculo);
 

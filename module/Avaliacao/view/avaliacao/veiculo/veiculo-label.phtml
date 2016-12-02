@@ -26,6 +26,22 @@
     <label>Cor</label> - <span><?php echo $veiculo->getCor(); ?></span>
 </div>
 
+<div class="col-lg-6">
+    <label>Restrições</label> - <span><?php echo $veiculo->getRestricoes(); ?></span>
+</div>
+
+<div class="col-lg-6">
+    <label>Informações Pendentes</label> - <span><?php echo $veiculo->getInformacoesPendentes(); ?></span>
+</div>
+
+<div class="col-lg-6">
+    <label>Restrições a Venda</label> - <span><?php echo $veiculo->getRestricaoAvenda(); ?></span>
+</div>
+
+<div class="col-lg-6">
+    <label>Situação</label> - <span><?php echo $veiculo->getSituacao(); ?></span>
+</div>
+
 <?php if (count($veiculo->getDebitos()) > 0): ?>
     <h4 style="margin-left: 10px;">Debitos</h4>
     <?php foreach ($veiculo->getDebitos() as $key => $val): ?>
